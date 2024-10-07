@@ -1,14 +1,12 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
-  const location = useLocation();
-  const isLoginPage = location.pathname === "/login";
   return (
     <>
       <BrowserRouter>
-        {!isLoginPage && <Sidebar />}
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          {/* <Route path="/" element={<MainPage />} /> */}
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
