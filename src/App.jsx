@@ -13,7 +13,6 @@ const location = useLocation();
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
           </Routes>
-        </div>
       </BrowserRouter>
     </>
   );
