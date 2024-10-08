@@ -10,6 +10,8 @@ const LoginPage = () => {
     // 로그인 처리 로직 추가
     console.log('Username:', username)
     console.log('Password:', password)
+    //추가 : 로딩 페이지 이동
+    navigate("/loding");
   }
 
   return (
