@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import LoadingPage from "./pages/LoadingPage";
 
 function App() {
   return (
@@ -9,7 +8,7 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<MainPage />} /> */}
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/loading" element={<LoadingPage />} />
+          {/* <Route path="/loading" element={<LoadingPage />} /> */}
         </Routes>
       </BrowserRouter>
     </>
