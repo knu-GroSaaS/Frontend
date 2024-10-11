@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner";
 
-const LoadingPage = () => {
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+
+const LoginSuccess = () => {
+    const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [isLoginInProgress, setIsLoginInProgress] = useState(true); // 로그인 진행 상태
   const [currentTime, setCurrentTime] = useState(''); // 현재 시간 표시
   const navigate = useNavigate();
@@ -71,7 +73,7 @@ const LoadingPage = () => {
 
         {/* 로딩 상태일 때만 로딩 아이콘 */}
         {isLoading ? (
-          <div className="text-4xl animate-spin mb-4">🔄</div>
+          <LoadingSpinner />
         ) : (
           <div className="text-gray-500 mb-4">준비 중...</div>
         )}
@@ -82,6 +84,6 @@ const LoadingPage = () => {
       </div>
     </div>
   );
-};
+}
 
-export default LoadingPage;
+export default LoginSuccess;
