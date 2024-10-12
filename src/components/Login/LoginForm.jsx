@@ -1,18 +1,29 @@
 import { useState } from "react"
 import LoginSuccess from "./LoginSuccess";
+import { getLogin } from "../../apis/login/loginapi";
 
 const LoginForm = () => {
     const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    // 로그인 처리 로직 추가
-    console.log('Username:', username)
-    console.log('Password:', password)
-    setIsLoggedIn(true);
-    //추가 : 로딩 페이지 이동
+    try {
+      // function : 로그인 API 호출 //
+      const loginSuccess = await getLogin(username, password);
+      console.log("Login attempt with:", { username, password });
+      if (loginSuccess) {
+        setIsLoggedIn(true);
+      } else {
+        throw new Error("Login failed");
+      }
+    } catch (err) {
+      console.error("Login failed", err);
+      setErrorMessage(
+        "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요."
+      );
+    }
   }
   if (isLoggedIn) {
     return <LoginSuccess />;
