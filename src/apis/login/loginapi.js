@@ -8,8 +8,7 @@ import { useAuthStore } from "../../store";
  * @returns
  */
 export const getLogin = async (username, password) => {
-  const response = await axiosInstance.post("/loginok", { username, password }, {
-    withCredentials: true, // 쿠키를 포함한 요청
+  const response = await axiosInstance.post("/login", { username, password }, {
   });
 //   const { accessToken } = response.data;
 //   useAuthStore.getState().setTokens(accessToken);
