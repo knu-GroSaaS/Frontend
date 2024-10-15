@@ -6,6 +6,7 @@ const LoginForm = () => {
     const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -53,6 +54,7 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 mb-4 border border-gray-300 rounded-md"
           />
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
           <button
             type="submit"
             className={`w-full p-2 rounded-md text-white ${username && password ? 'bg-indigo-500 hover:bg-indigo-700 cursor-pointer' : 'bg-indigo-300 cursor-not-allowed'}`}
