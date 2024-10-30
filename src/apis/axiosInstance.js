@@ -6,17 +6,6 @@ const axiosInstance = axios.create({
   withCredentials: true, // 쿠키를 포함한 요청
 });
 
-axiosInstance.interceptors.request.use(
-  (config) => {
-    // 세션 방식에서는 Authorization 헤더를 설정할 필요가 없습니다.
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// 리프레시 토큰 관리 함수는 필요하지 않으므로 제거합니다.
 // 세션 방식에서는 서버가 세션을 관리합니다.
 
 axiosInstance.interceptors.response.use(
@@ -26,7 +15,8 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401) {
       // 세션이 만료된 경우 로그아웃 처리
-      useAuthStore.getState().clearToken(); // 세션 관련 정보를 초기화
+      useAuthStore.getState().clearAuth(); // 세션 관련 정보를 초기화
+      originalRequest._retry = true;
       return Promise.reject(error);
     }
     return Promise.reject(error);
