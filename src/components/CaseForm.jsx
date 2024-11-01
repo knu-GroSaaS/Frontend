@@ -49,7 +49,7 @@ const CaseForm = () => {
             </div>
           </div>
           <div className="flex justify-end mt-4">
-            <button className="bg-blue-500 text-white p-2 rounded">+ Create Case</button>
+            <button className="bg-[#BEACEB] text-white p-2 rounded">+ Create Case</button>
           </div>
         </div>
       </div>
