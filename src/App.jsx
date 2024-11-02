@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import MainPage from "./pages/MainPage"
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import CaselistPage from "./pages/DashboardPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   return (
