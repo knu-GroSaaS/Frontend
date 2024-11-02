@@ -1,7 +1,7 @@
 import CaseForm from "../components/CaseForm";
 
-const CaselistPage = () => {
+const DashboardPage = () => {
   return <CaseForm />;
 };
 
-export default CaselistPage;
+export default DashboardPage;
