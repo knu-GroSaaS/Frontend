@@ -11,3 +11,6 @@
         <div style={{width: 25, height: 25, left: 0, top: 0, position: 'absolute', background: '#040404'}}></div>
     </div>
 </div>
+
+
+export default SideBar;
