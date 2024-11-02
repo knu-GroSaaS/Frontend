@@ -22,7 +22,7 @@ const LoginForm = () => {
     } catch (err) {
       console.error("Login failed", err);
       setErrorMessage(
-        "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요."
+        "로그인에 실패했습니다.\n아이디와 비밀번호를 확인해주세요."
       );
     }
   }
@@ -33,7 +33,7 @@ const LoginForm = () => {
   return (
     <>
       <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-gray-300 p-10 rounded-lg shadow-md w-80 text-center">
+      <div className="bg-gray-300 p-10 rounded-lg shadow-md w-96 h-fit text-center">
         <img src="/Grosaas_logo.png" alt="Logo" className="w-12 h-12 mb-5 mx-auto" />
         <h2 className="mb-5 font-semibold">
           <span className="text-indigo-600">GroSaaS</span> Dashboard
@@ -54,7 +54,7 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 mb-4 border border-gray-300 rounded-md"
           />
-          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          {errorMessage && <div className="text-red-500 text-sm h-14">{errorMessage.split('\n').map((line, index) => (<div key={index}>{line}</div>))}</div>}
           <button
             type="submit"
             className={`w-full p-2 rounded-md text-white ${username && password ? 'bg-indigo-500 hover:bg-indigo-700 cursor-pointer' : 'bg-indigo-300 cursor-not-allowed'}`}

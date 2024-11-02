@@ -6,19 +6,19 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  
+
   useEffect(() => {
     if (confirmPassword && password !== confirmPassword) {
-      setErrorMessage('비밀번호가 같지 않습니다.');
+      setErrorMessage("비밀번호가 같지 않습니다.");
     } else {
-      setErrorMessage('');
+      setErrorMessage("");
     }
   }, [password, confirmPassword]);
 
   const handleSignUp = (e) => {
     e.preventDefault();
     // 회원가입 로직 추가
-    console.log("회원가입 정보:", { name, email, password});
+    console.log("회원가입 정보:", { name, email, password });
   };
 
   const handleDuplicateCheck = (type) => {
@@ -28,12 +28,20 @@ const SignUpForm = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-gray-300 p-10 rounded-lg shadow-md w-80 text-center">
-        <img src="/Grosaas_logo.png" alt="Logo" className="w-12 h-12 mb-5 mx-auto" />
+      <div className="bg-gray-300 p-10 rounded-lg shadow-md w-96 text-center">
+        <img
+          src="/Grosaas_logo.png"
+          alt="Logo"
+          className="w-12 h-12 mb-5 mx-auto"
+        />
         <h2 className="mb-5 font-semibold">
           <span className="text-indigo-600">GroSaaS</span> Dashboard
         </h2>
-        <p className="mb-5 text-sm text-gray-600">Create your GroSaaS account<br />to get started!</p>
+        <p className="mb-5 text-sm text-gray-600">
+          Create your GroSaaS account
+          <br />
+          to get started!
+        </p>
         <form onSubmit={handleSignUp} className="flex flex-col">
           <div className="flex items-center mb-4">
             <input
@@ -45,8 +53,8 @@ const SignUpForm = () => {
             />
             <button
               type="button"
-              onClick={() => handleDuplicateCheck("이름")}
-              className="p-2 h-10 bg-blue-500 text-white text-[10.9px] leading-none rounded-md"
+              onClick={() => handleDuplicateCheck("username")}
+              className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white text-xs rounded-md flex items-center justify-center"
             >
               중복 확인
             </button>
@@ -59,12 +67,12 @@ const SignUpForm = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 p-2 border border-gray-300 rounded-md mr-2"
             />
-            <button
+           <button
               type="button"
-              onClick={() => handleDuplicateCheck("이메일")}
-              className="p-2 h-10 bg-blue-500 text-white text-[10.9px] leading-none rounded-md"
+              onClick={() => handleDuplicateCheck("email")}
+              className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white text-xs rounded-md flex items-center justify-center"
             >
-              중복확인
+              중복 확인
             </button>
           </div>
           <input
@@ -83,8 +91,14 @@ const SignUpForm = () => {
           />
           <button
             type="submit"
-            className={`w-full p-2 rounded-md text-white ${name && email && password && confirmPassword && !errorMessage? 'bg-indigo-500 hover:bg-indigo-700 cursor-pointer' : 'bg-indigo-300 cursor-not-allowed'}`}
-            disabled={!name || !email || !password || !confirmPassword || !errorMessage}
+            className={`w-full p-2 rounded-md text-white ${
+              name && email && password && confirmPassword && !errorMessage
+                ? "bg-indigo-500 hover:bg-indigo-700 cursor-pointer"
+                : "bg-indigo-300 cursor-not-allowed"
+            }`}
+            disabled={
+              !name || !email || !password || !confirmPassword || !errorMessage
+            }
           >
             Sign Up
           </button>
