@@ -3,7 +3,7 @@ import LoginSuccess from "./LoginSuccess";
 import { getLogin } from "../../apis/login/loginapi";
 
 const LoginForm = () => {
-    const [username, setUsername] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -63,10 +63,16 @@ const LoginForm = () => {
             Log In
           </button>
         </form>
+        <p className="text-center text-sm text-gray-500 mt-4">
+          계정이 없으신가요?{" "}
+          <a href="/signup" className="text-blue-500">
+            회원가입
+          </a>
+        </p>
       </div>
     </div>
     </>
   );
-  }
-  
-  export default LoginForm;
+}
+
+export default LoginForm;
