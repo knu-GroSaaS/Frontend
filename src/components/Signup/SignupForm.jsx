@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const SignUpForm = () => {
   const [name, setName] = useState("");
@@ -6,6 +7,12 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [nicknameError, setNicknameError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   useEffect(() => {
     if (confirmPassword && password !== confirmPassword) {
@@ -21,9 +28,44 @@ const SignUpForm = () => {
     console.log("회원가입 정보:", { name, email, password });
   };
 
-  const handleDuplicateCheck = (type) => {
-    // 중복 확인 로직 추가
-    console.log(`${type} 중복 확인`);
+  const handleUsernameCheck = async () => {
+    if (!name.trim()) {
+      setNicknameError("");
+      return;
+    }
+    try {
+      const isNicknameAvailable = await getCheckNickname(name);
+      if (isNicknameAvailable) {
+        setNicknameError("이미 사용 중인 닉네임입니다.");
+        setIsNicknameChecked(false);
+      } else {
+        setIsNicknameChecked(true);
+        setNicknameError("사용 가능한 닉네임입니다.");
+      }
+    } catch (err) {
+      console.error("Nickname check failed", err);
+      setNicknameError("닉네임 중복 체크에 실패했습니다.");
+    }
+  };
+
+  const handleEmailCheck = async () => {
+    if (!email.trim()) {
+      setEmailError("");
+      return;
+    }
+    try {
+      const isEmailAvailable = await getCheckEmail(email);
+      if (isEmailAvailable) {
+        setEmailError("이미 사용 중인 이메일입니다.");
+        setIsEmailChecked(false);
+      } else {
+        setIsEmailChecked(true);
+        setEmailError("사용 가능한 이메일입니다.");
+      }
+    } catch (err) {
+      console.error("Email check failed", err);
+      setEmailError("이메일 중복 체크에 실패했습니다.");
+    }
   };
 
   return (
@@ -53,7 +95,7 @@ const SignUpForm = () => {
             />
             <button
               type="button"
-              onClick={() => handleDuplicateCheck("username")}
+              onClick={() => handleUsernameCheck("username")}
               className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white text-xs rounded-md flex items-center justify-center"
             >
               중복 확인
@@ -69,7 +111,7 @@ const SignUpForm = () => {
             />
            <button
               type="button"
-              onClick={() => handleDuplicateCheck("email")}
+              onClick={() => handleEmailCheck("email")}
               className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white text-xs rounded-md flex items-center justify-center"
             >
               중복 확인
@@ -91,7 +133,7 @@ const SignUpForm = () => {
           />
           <button
             type="submit"
-            className={`w-full p-2 rounded-md text-white ${
+            className={`w-30 h-20 p-2 rounded-md text-3xl text-white ${
               name && email && password && confirmPassword && !errorMessage
                 ? "bg-indigo-500 hover:bg-indigo-700 cursor-pointer"
                 : "bg-indigo-300 cursor-not-allowed"
@@ -100,7 +142,7 @@ const SignUpForm = () => {
               !name || !email || !password || !confirmPassword || !errorMessage
             }
           >
-            Sign Up
+            {isLoading ? <LoadingSpinner /> : "Sign up!"}
           </button>
           <p className="text-center text-sm text-gray-500 mt-4">
             이미 계정이 있으신가요?{" "}
