@@ -55,8 +55,8 @@ const LoginSuccess = () => {
 
   // 로딩 화면 UI
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-200">
-      <div className="bg-gray-300 p-10 shadow-md w-80 text-center">
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="bg-gray-300 p-10 rounded-lg shadow-md w-80 text-center">
         <img src="/Grosaas_logo.png" alt="Logo" className="w-12 h-12 mb-5 mx-auto" />
         <h1 className="mb-5 font-semibold">
           <span className="text-indigo-600">GroSaaS</span> Dashboard

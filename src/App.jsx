@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import CaselistPage from "./pages/CaselistPage";
-import MainPage from "./pages/MainPage";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   return (
@@ -10,7 +9,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<CaselistPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
     </>
