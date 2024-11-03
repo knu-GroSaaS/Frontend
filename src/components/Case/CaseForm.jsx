@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import data from "/data"
 
 const CaseForm = () => {
   return (
@@ -43,56 +44,8 @@ const CaseForm = () => {
 
             <div className="overflow-y-auto h-[250px]">
               {/* Sample Data Rows */}
-              {[
-                {
-                  caseNumber: "240901 -734212",
-                  subject: "F5 BIGIP: NETWORK IM-",
-                  product: "F5 BIGIP",
-                  severity: "Major",
-                  date: "24.09.01 12:51:33",
-                  contact: "User01",
-                },
-                {
-                  caseNumber: "240901 -734211",
-                  subject: "FireEyes: NETWORK IM-",
-                  product: "FireEyes",
-                  severity: "Major",
-                  date: "24.09.01 11:09:33",
-                  contact: "User01",
-                },
-                {
-                  caseNumber: "240817 -623411",
-                  subject: "F5 BIGIP: CREATE AUTH-",
-                  product: "F5 BIGIP",
-                  severity: "Major",
-                  date: "24.08.17 08:51:12",
-                  contact: "User02",
-                },
-                {
-                  caseNumber: "240815 -618988",
-                  subject: "F5 BIGIP: SSH ACCESS-",
-                  product: "F5 BIGIP",
-                  severity: "Minor",
-                  date: "24.08.15 05:45:07",
-                  contact: "User02",
-                },
-                {
-                  caseNumber: "240810 -617898",
-                  subject: "F5 BIGIP: CRON SCHED-",
-                  product: "F5 BIGIP",
-                  severity: "Critical",
-                  date: "24.08.10 03:23:08",
-                  contact: "User03",
-                },
-                {
-                  caseNumber: "240801 -523411",
-                  subject: "FireEyes: HOW TO CHEC-",
-                  product: "FireEyes",
-                  severity: "Critical",
-                  date: "24.08.01 12:51:33",
-                  contact: "User01",
-                },
-              ].map((row, index) => (
+              {/* READ data API */}
+              {data.datas.map((row, index) => (
                 <div
                   key={index}
                   className="flex flex-row justify-between border-b p-4 h-16"
