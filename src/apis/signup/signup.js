@@ -8,28 +8,42 @@ import axiosInstance from "../axiosInstance";
  * @returns
  */
 export const getJoin = async (username, email, password) => {
-    const response = await axiosInstance.post("/join", {
-        username,
-        email,
-        password,        
-    });
-    // const { accessToken } = response.data;
-    // useAuthStore.getState().setTokens(accessToken);
-    return response.data;
-  };
+  const response = await axiosInstance.post(
+    "/join",
+    {
+      username,
+      email,
+      password,
+    },
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }
+  );
+  // const { accessToken } = response.data;
+  // useAuthStore.getState().setTokens(accessToken);
+  return response.data;
+};
 
 /**
  * 아이디/이메일 중복 체크
- * @param {string} param value
+ * @param {string} value value
  * @param {string} type username / email
  * @return {boolean} TRUE/FALSE
  */
-export const getCheck = async (type, param) => {
-    const response = await axiosInstance.get("/join/dupli", {
-      params: {        
-        type,
-        param
+export const getCheck = async (type, value) => {
+  const response = await axiosInstance.post(
+    "/join/dupli",
+    {
+      type,
+      value,
+    },
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    });
-    return response.data;
+    }
+  );
+  return response.data;
 };

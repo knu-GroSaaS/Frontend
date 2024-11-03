@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
+import { getCheck } from "../../apis/signup/signup";
 
 const SignUpForm = () => {
   const [name, setName] = useState("");
@@ -14,18 +15,33 @@ const SignUpForm = () => {
   const [nicknameError, setNicknameError] = useState("");
   const [emailError, setEmailError] = useState("");
 
-  useEffect(() => {
-    if (confirmPassword && password !== confirmPassword) {
-      setErrorMessage("비밀번호가 같지 않습니다.");
-    } else {
-      setErrorMessage("");
-    }
-  }, [password, confirmPassword]);
-
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    // 회원가입 로직 추가
-    console.log("회원가입 정보:", { name, email, password });
+    setIsLoading(true);
+    if (password !== confirmPassword) {
+      setErrorMessage("비밀번호가 일치하지 않습니다.");
+      setIsLoading(false);
+      return;
+    }
+    if (!isNicknameChecked) {
+      setErrorMessage("닉네임 중복 체크를 해주세요.");
+      setIsLoading(false);
+      return;
+    }
+    if (!isEmailChecked) {
+      setErrorMessage("이메일 중복 체크를 해주세요.");
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const res = await getJoin(name, email, password);
+      navi("/login");
+    } catch (err) {
+      console.error("Signup failed", err);
+      setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleUsernameCheck = async () => {
@@ -34,7 +50,7 @@ const SignUpForm = () => {
       return;
     }
     try {
-      const isNicknameAvailable = await getCheckNickname(name);
+      const isNicknameAvailable = await getCheck("username", name);
       if (isNicknameAvailable) {
         setNicknameError("이미 사용 중인 닉네임입니다.");
         setIsNicknameChecked(false);
@@ -54,7 +70,7 @@ const SignUpForm = () => {
       return;
     }
     try {
-      const isEmailAvailable = await getCheckEmail(email);
+      const isEmailAvailable = await getCheck("email", email);
       if (isEmailAvailable) {
         setEmailError("이미 사용 중인 이메일입니다.");
         setIsEmailChecked(false);
@@ -84,8 +100,8 @@ const SignUpForm = () => {
           <br />
           to get started!
         </p>
-        <form onSubmit={handleSignUp} className="flex flex-col">
-          <div className="flex items-center mb-4">
+        <form onSubmit={handleSignUp} method="POST" className="flex flex-col">
+          <div className={`flex items-center ${!isNicknameChecked ? "mb-4" : ""}`}>
             <input
               type="text"
               placeholder="이름"
@@ -95,21 +111,27 @@ const SignUpForm = () => {
             />
             <button
               type="button"
-              onClick={() => handleUsernameCheck("username")}
+              onClick={handleUsernameCheck}
               className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white text-xs rounded-md flex items-center justify-center"
             >
               중복 확인
             </button>
           </div>
-          <div className="flex items-center mb-4">
+          {isNicknameChecked ? (
+            <p className="text-blue-500 text-sm">{nicknameError}</p>
+          ) : (
+            <p className="text-red-500 text-sm">{nicknameError}</p>
+          )}
+          <div className={`flex items-center ${!isEmailChecked ? "mb-4" : ""}`}>
             <input
               type="email"
               placeholder="이메일 주소"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 p-2 border border-gray-300 rounded-md mr-2"
+              required
             />
-           <button
+            <button
               type="button"
               onClick={() => handleEmailCheck("email")}
               className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white text-xs rounded-md flex items-center justify-center"
@@ -117,6 +139,11 @@ const SignUpForm = () => {
               중복 확인
             </button>
           </div>
+          {isEmailChecked ? (
+            <p className="text-blue-500 text-sm">{emailError}</p>
+          ) : (
+            <p className="text-red-500 text-sm">{emailError}</p>
+          )}
           <input
             type="password"
             placeholder="비밀번호"
