@@ -1,4 +1,4 @@
-import CaseForm from "../components/CaseForm";
+import CaseForm from "../components/Case/CaseForm";
 
 const DashboardPage = () => {
   return <CaseForm />;
