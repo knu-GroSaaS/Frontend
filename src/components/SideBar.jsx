@@ -3,38 +3,38 @@ import { Link } from 'react-router-dom';
 
 const SideBar = () => {
     return (
-        <div style={{ width: '276px', height: '100vh', background: '#BEACEB', position: 'relative', padding: '60px 0' }}>
+        <div className="w-[276px] h-screen bg-[#BEACEB] relative py-16">
             {/* Logo and Text */}
-            <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '19.5px', marginBottom: '5px' }}>
-                <img style={{ width: 50, height: 50, marginRight: 5 }} src="../Grosaas_logo.png" alt="Logo" />
-                <div style={{ color: '#2B00FF', fontSize: 25, fontFamily: 'Inter', fontWeight: '700', wordWrap: 'break-word'}}>GroSaaS</div>
+            <div className="flex items-center pl-[19.5px] mb-1.5">
+                <img className="w-12 h-12 mr-1.5" src="../Grosaas_logo.png" alt="Logo" />
+                <div className="text-[#2B00FF] text-xl font-bold" style={{ fontFamily: 'Inter' }}>GroSaaS</div>
             </div>
 
             {/* Dashboard Title */}
-            <div style={{ color: '#040404', fontSize: 30, fontFamily: 'Inter', fontWeight: '700', wordWrap: 'break-word',marginLeft: '19.5px', marginTop: '5px' }}>
+            <div className="text-black text-2xl font-bold ml-[19.5px] mt-1.5" style={{ fontFamily: 'Inter' }}>
                 Dashboard
             </div>
 
             {/* Menu Items */}
-            <div style={{ marginTop: '30px', marginLeft: '19.5px', color: 'white', fontSize: 20, fontFamily: 'Inter', fontWeight: '700', wordWrap: 'break-word', lineHeight: '2.5' }}>
-                <Link to="/security-event" style={{ color: 'white', textDecoration: 'none', display: 'block' }}>Security Event</Link>
-                <Link to="/devices-status" style={{ color: 'white', textDecoration: 'none', display: 'block' }}>Devices Status</Link>
-                <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none', display: 'block' }}>My Case List</Link>
-                <Link to="/download-history" style={{ color: 'white', textDecoration: 'none', display: 'block' }}>Download History</Link>
+            <div className="mt-8 ml-[19.5px] text-white text-lg font-bold leading-relaxed space-y-2">
+                <Link to="/security-event" className="block">Security Event</Link>
+                <Link to="/devices-status" className="block">Devices Status</Link>
+                <Link to="/dashboard" className="block">My Case List</Link>
+                <Link to="/download-history" className="block">Download History</Link>
             </div>
 
             {/* Admin Information */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'absolute', bottom: '60px', width: '100%', padding: '0 19.5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img style={{ width: 50, height: 50, marginRight: 10 }} src="../usericon.png" alt="User Icon" />
-                    <div style={{ color: '#000', fontSize: 18, fontWeight: '700' }}>Admin</div>
+            <div className="flex items-center justify-between absolute bottom-16 w-full px-[19.5px]">
+                <div className="flex items-center">
+                    <img className="w-12 h-12 mr-2.5" src="../usericon.png" alt="User Icon" />
+                    <div className="text-black text-base font-bold">Admin</div>
                 </div>
-                <img style={{ width: 20, height: 20 }} src="../settingicon.png" alt="Setting Icon" />
+                <img className="w-5 h-5" src="../settingicon.png" alt="Setting Icon" />
             </div>
 
             {/* Logout */}
-            <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', bottom: '20px', left: '19.5px', color: '#000', fontSize: 18, fontWeight: '700' }}>
-                <img style={{ width: 20, height: 20, marginRight: 10 }} src="../logouticon.png" alt="Logout Icon" />
+            <div className="flex items-center absolute bottom-5 left-[19.5px] text-black text-base font-bold">
+                <img className="w-5 h-5 mr-2.5" src="../logouticon.png" alt="Logout Icon" />
                 <div>Log out</div>
             </div>
         </div>
