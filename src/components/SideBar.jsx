@@ -1,7 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SideBar = () => {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        // 로컬 스토리지에 저장된 토큰 삭제
+        localStorage.removeItem('authToken');
+
+        // 메인 페이지로 이동
+        navigate('/');
+    };
+
     return (
         <div className="w-[276px] h-screen bg-[#BEACEB] relative py-16">
             {/* Logo and Text */}
@@ -33,7 +43,7 @@ const SideBar = () => {
             </div>
 
             {/* Logout */}
-            <div className="flex items-center absolute bottom-5 left-[19.5px] text-black text-base font-bold">
+            <div className="flex items-center absolute bottom-5 left-[19.5px] text-black text-base font-bold cursor-pointer" onClick={handleLogout}>
                 <img className="w-5 h-5 mr-2.5" src="../logouticon.png" alt="Logout Icon" />
                 <div>Log out</div>
             </div>
