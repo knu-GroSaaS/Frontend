@@ -5,11 +5,11 @@ const SideBar = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        // 예: 로컬 스토리지에 저장된 토큰 삭제
+        // 로컬 스토리지에 저장된 토큰 삭제
         localStorage.removeItem('authToken');
 
-        // 로그인 페이지로 이동
-        navigate('/login');
+        // 메인 페이지로 이동
+        navigate('/');
     };
 
     return (
