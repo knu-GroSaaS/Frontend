@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { creatCase } from '../../apis/case/caseapi';
 
 const CaseInfo = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const CaseInfo = () => {
     product: '',
     version: '',
     serialNumber: '',
-    severity: '', // 새로운 필드 추가
+    severity: '',
   });
 
   const handleChange = (e) => {
@@ -16,15 +17,27 @@ const CaseInfo = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    navigate('/somewhere');
+    try {
+      // API 호출하여 서버에 데이터 전송
+      await creatCase(
+        formData.product,
+        formData.version,
+        formData.problemTitle,
+        formData.serialNumber,  // description으로 간주
+        1  // 예시 UserID. 실제 사용 시 유동적으로 설정
+      );
+      console.log('Form submitted:', formData);
+      navigate('/somewhere'); // 성공적으로 전송 후 다른 페이지로 이동
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-[#D9D9D9] p-8 rounded shadow-md"> {/* 색상 변경 */}
+      <div className="w-full max-w-md bg-[#D9D9D9] p-8 rounded shadow-md">
         <h2 className="text-2xl font-semibold text-center mb-6">Case Information</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
