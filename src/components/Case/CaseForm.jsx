@@ -1,8 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import data from "/data"
+import { Link, useNavigate } from "react-router-dom"; 
+import data from "/data";
 
 const CaseForm = () => {
+  const navigate = useNavigate(); 
+
+  const handleCreateCase = () => {
+    navigate('/create'); 
+  };
+
   return (
     <div className="flex flex-col w-full h-screen">
       {/* Header */}
@@ -44,7 +50,6 @@ const CaseForm = () => {
 
             <div className="overflow-y-auto h-[250px]">
               {/* Sample Data Rows */}
-              {/* READ data API */}
               {data.datas.map((row, index) => (
                 <div
                   key={index}
@@ -73,7 +78,10 @@ const CaseForm = () => {
             </div>
           </div>
           <div className="flex justify-end mt-4">
-            <button className="bg-[#BEACEB] text-white p-2 rounded">
+            <button 
+              className="bg-[#BEACEB] text-white p-2 rounded"
+              onClick={handleCreateCase} // 버튼 클릭 시 handleCreateCase 호출
+            >
               + Create Case
             </button>
           </div>
