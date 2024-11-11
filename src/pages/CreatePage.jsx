@@ -1,9 +1,9 @@
 import CaseInfo from "../components/Case/CaseInfo";
 
-const TmpPage = () => {
+const CreatePage = () => {
   return(
     <CaseInfo/>
   )
 }
 
-export default TmpPage;
+export default CreatePage;
