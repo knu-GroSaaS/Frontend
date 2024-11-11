@@ -3,7 +3,6 @@ import MainPage from "./pages/MainPage"
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
-import TmpPage from "./pages/TmpPage";
 import CreatePage from "./pages/CreatePage";
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/create" element={<CreatePage />} />
-          <Route path="/tmppage" element={<TmpPage />} />
         </Routes>
       </BrowserRouter>
     </>

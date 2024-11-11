@@ -29,7 +29,7 @@ const CaseInfo = () => {
         1  // 예시 UserID. 실제 사용 시 유동적으로 설정
       );
       console.log('Form submitted:', formData);
-      navigate('/somewhere'); // 성공적으로 전송 후 다른 페이지로 이동
+      navigate('/dashboard'); // 성공적으로 전송 후 다른 페이지로 이동
     } catch (error) {
       console.error('Error submitting form:', error);
     }
