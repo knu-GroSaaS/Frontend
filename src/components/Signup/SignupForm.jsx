@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
-import { getCheck } from "../../apis/signup/signup";
+import { getCheck, getJoin } from "../../apis/signup/signup";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [name, setName] = useState("");
@@ -12,12 +13,17 @@ const SignUpForm = () => {
 
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
   const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false); // 이메일 형식 유효성 상태
   const [nicknameError, setNicknameError] = useState("");
   const [emailError, setEmailError] = useState("");
+
+  const navi = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage("");
+
     if (password !== confirmPassword) {
       setErrorMessage("비밀번호가 일치하지 않습니다.");
       setIsLoading(false);
@@ -34,7 +40,7 @@ const SignUpForm = () => {
       return;
     }
     try {
-      const res = await getJoin(name, email, password);
+      await getJoin(name, email, password);
       navi("/login");
     } catch (err) {
       console.error("Signup failed", err);
@@ -51,33 +57,34 @@ const SignUpForm = () => {
     }
     try {
       const isNicknameAvailable = await getCheck("username", name);
-      if (isNicknameAvailable) {
-        setNicknameError("이미 사용 중인 닉네임입니다.");
-        setIsNicknameChecked(false);
-      } else {
-        setIsNicknameChecked(true);
-        setNicknameError("사용 가능한 닉네임입니다.");
-      }
+      setIsNicknameChecked(isNicknameAvailable);
+      setNicknameError(isNicknameAvailable ? "사용 가능한 닉네임입니다." : "이미 사용 중인 닉네임입니다.");
     } catch (err) {
       console.error("Nickname check failed", err);
       setNicknameError("닉네임 중복 체크에 실패했습니다.");
     }
   };
 
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    setEmail(email);
+
+    // 이메일 형식 검증
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setIsEmailValid(emailPattern.test(email));
+    setIsEmailChecked(false); // 이메일 중복 체크 초기화
+    setEmailError("");
+  };
+
   const handleEmailCheck = async () => {
-    if (!email.trim()) {
-      setEmailError("");
+    if (!email.trim() || !isEmailValid) {
+      setEmailError("올바른 이메일 형식을 입력해주세요.");
       return;
     }
     try {
       const isEmailAvailable = await getCheck("email", email);
-      if (isEmailAvailable) {
-        setEmailError("이미 사용 중인 이메일입니다.");
-        setIsEmailChecked(false);
-      } else {
-        setIsEmailChecked(true);
-        setEmailError("사용 가능한 이메일입니다.");
-      }
+      setIsEmailChecked(isEmailAvailable);
+      setEmailError(isEmailAvailable ? "사용 가능한 이메일입니다." : "이미 사용 중인 이메일입니다.");
     } catch (err) {
       console.error("Email check failed", err);
       setEmailError("이메일 중복 체크에 실패했습니다.");
@@ -87,11 +94,7 @@ const SignUpForm = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-gray-300 p-10 rounded-lg shadow-md w-96 text-center">
-        <img
-          src="/Grosaas_logo.png"
-          alt="Logo"
-          className="w-12 h-12 mb-5 mx-auto"
-        />
+        <img src="/Grosaas_logo.png" alt="Logo" className="w-12 h-12 mb-5 mx-auto" />
         <h2 className="mb-5 font-semibold">
           <span className="text-indigo-600">GroSaaS</span> Dashboard
         </h2>
@@ -100,8 +103,8 @@ const SignUpForm = () => {
           <br />
           to get started!
         </p>
-        <form onSubmit={handleSignUp} method="POST" className="flex flex-col">
-          <div className={`flex items-center ${!isNicknameChecked ? "mb-4" : ""}`}>
+        <form onSubmit={handleSignUp} className="flex flex-col">
+          <div className={`flex items-center ${!nicknameError ? "mb-4" : ""}`}>
             <input
               type="text"
               placeholder="이름"
@@ -112,38 +115,35 @@ const SignUpForm = () => {
             <button
               type="button"
               onClick={handleUsernameCheck}
-              className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white text-xs rounded-md flex items-center justify-center"
+              className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 text-white text-xs rounded-md flex items-center justify-center"
             >
               중복 확인
             </button>
           </div>
-          {isNicknameChecked ? (
-            <p className="text-blue-500 text-sm">{nicknameError}</p>
-          ) : (
-            <p className="text-red-500 text-sm">{nicknameError}</p>
-          )}
-          <div className={`flex items-center ${!isEmailChecked ? "mb-4" : ""}`}>
+          <div className="text-sm">
+            <p className={`text-${isNicknameChecked ? "blue" : "red"}-500`}>{nicknameError}</p>
+          </div>
+          <div className={`flex items-center ${!emailError ? "mb-4" : ""}`}>
             <input
               type="email"
               placeholder="이메일 주소"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange} // 이메일 변경 핸들러
               className="flex-1 p-2 border border-gray-300 rounded-md mr-2"
               required
             />
             <button
               type="button"
-              onClick={() => handleEmailCheck("email")}
-              className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white text-xs rounded-md flex items-center justify-center"
+              onClick={handleEmailCheck}
+              className={`w-20 h-10 ${isEmailValid ? "bg-indigo-600 hover:bg-indigo-700" : "bg-gray-400 cursor-not-allowed"} text-white text-xs rounded-md flex items-center justify-center`}
+              disabled={!isEmailValid} // 이메일 형식이 유효하지 않으면 버튼 비활성화
             >
               중복 확인
             </button>
           </div>
-          {isEmailChecked ? (
-            <p className="text-blue-500 text-sm">{emailError}</p>
-          ) : (
-            <p className="text-red-500 text-sm">{emailError}</p>
-          )}
+          <div className="text-sm">
+            <p className={`text-${isEmailChecked ? "blue" : "red"}-500`}>{emailError}</p>
+          </div>
           <input
             type="password"
             placeholder="비밀번호"
@@ -160,22 +160,25 @@ const SignUpForm = () => {
           />
           <button
             type="submit"
-            className={`w-30 h-20 p-2 rounded-md text-3xl text-white ${
-              name && email && password && confirmPassword && !errorMessage
-                ? "bg-indigo-500 hover:bg-indigo-700 cursor-pointer"
-                : "bg-indigo-300 cursor-not-allowed"
-            }`}
             disabled={
-              !name || !email || !password || !confirmPassword || !errorMessage
+              !name || !email || !password || !confirmPassword || !isNicknameChecked || !isEmailChecked || !isEmailValid || isLoading
             }
+            className={`w-30 h-20 p-2 rounded-md text-3xl text-white ${
+              !name || !email || !password || !confirmPassword || !isNicknameChecked || !isEmailChecked || !isEmailValid || isLoading
+                ? "bg-indigo-300 cursor-not-allowed"
+                : "bg-indigo-500 hover:bg-indigo-700 cursor-pointer"
+            }`}
           >
             {isLoading ? <LoadingSpinner /> : "Sign up!"}
           </button>
+          {errorMessage && (
+            <p className="text-red-500 mt-4">{errorMessage}</p>
+          )}
           <p className="text-center text-sm text-gray-500 mt-4">
             이미 계정이 있으신가요?{" "}
-            <a href="/login" className="text-blue-500">
+            <Link to="/login" className="text-blue-500">
               로그인
-            </a>
+            </Link>
           </p>
         </form>
       </div>
