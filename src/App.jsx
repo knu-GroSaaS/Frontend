@@ -16,6 +16,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/create" element={<CreatePage />} />
+          <Route path="/update" element={<UpdatePage />} />
           <Route path="/case/:id" element={<CaseUnit/>}/>
         </Routes>
       </BrowserRouter>
