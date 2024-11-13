@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { creatCase } from '../../apis/case/caseapi';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { editCase } from '../../apis/case/caseapi';
+import axios from 'axios';
 
-const CaseInfo = () => {
+const CaseInfo = ({ editing = false }) => {
   const navigate = useNavigate();
+  const { id: caseId } = useParams();
   const [formData, setFormData] = useState({
     problemTitle: '',
     product: '',
@@ -11,6 +13,41 @@ const CaseInfo = () => {
     serialNumber: '',
     severity: '',
   });
+  const [originalData, setOriginalData] = useState(null);
+
+  // 데이터가 변경되었는지 확인하는 함수
+  const isEdited = () => {
+    return (
+      formData.problemTitle !== originalData?.problemTitle ||
+      formData.product !== originalData?.product ||
+      formData.version !== originalData?.version ||
+      formData.serialNumber !== originalData?.serialNumber ||
+      formData.severity !== originalData?.severity
+    );
+  };
+
+  // API를 통해 기존 데이터 불러오기
+  useEffect(() => {
+    if (editing) {
+      axios.get(`/api/board/${caseId}`).then((response) => {
+        const caseData = response.data;
+        setFormData({
+          problemTitle: caseData.subject,
+          product: caseData.product,
+          version: caseData.version,
+          serialNumber: caseData.description,
+          severity: caseData.severity,
+        });
+        setOriginalData({
+          problemTitle: caseData.subject,
+          product: caseData.product,
+          version: caseData.version,
+          serialNumber: caseData.description,
+          severity: caseData.severity,
+        });
+      });
+    }
+  }, [editing, caseId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,25 +57,31 @@ const CaseInfo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // API 호출하여 서버에 데이터 전송
-      await creatCase(
-        formData.product,
-        formData.version,
-        formData.problemTitle,
-        formData.serialNumber,  // description으로 간주
-        1  // 예시 UserID. 실제 사용 시 유동적으로 설정
-      );
-      console.log('Form submitted:', formData);
-      navigate('/dashboard'); // 성공적으로 전송 후 다른 페이지로 이동
+      if (editing) {
+        // editCase API 호출
+        await editCase(
+          caseId,
+          formData.product,
+          formData.version,
+          formData.problemTitle,
+          formData.serialNumber, // description으로 사용
+          1 // 실제로는 사용자 ID를 동적으로 설정
+        );
+        navigate(`/dashboard/cases/${caseId}`); // 수정 후 상세 페이지로 이동
+      } else {
+        // 새 케이스 생성 로직 필요
+      }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error updating case:', error);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-[#D9D9D9] p-8 rounded shadow-md">
-        <h2 className="text-2xl font-semibold text-center mb-6">Case Information</h2>
+        <h2 className="text-2xl font-semibold text-center mb-6">
+          {editing ? 'Edit Case Information' : 'Create Case Information'}
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-gray-700">Problem Title:</label>
@@ -103,8 +146,9 @@ const CaseInfo = () => {
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
+            disabled={!isEdited()}
           >
-            Create
+            {editing ? 'Update' : 'Create'}
           </button>
         </form>
       </div>

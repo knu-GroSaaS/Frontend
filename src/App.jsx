@@ -5,6 +5,7 @@ import SignupPage from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreatePage from "./pages/CreatePage";
 import CaseUnit from "./components/Case/CaseUnit";
+import UpdatePage from "./pages/UpdatePage";
 
 function App() {
   return (
