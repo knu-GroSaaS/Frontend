@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { editCase } from '../../apis/case/caseapi';
+import { editCase, createCase } from '../../apis/case/caseapi'; // createCase 추가
 import axios from 'axios';
 
 const CaseInfo = ({ editing = false }) => {
   const navigate = useNavigate();
   const { id: caseId } = useParams();
+
   const [formData, setFormData] = useState({
     problemTitle: '',
     product: '',
@@ -13,75 +14,74 @@ const CaseInfo = ({ editing = false }) => {
     serialNumber: '',
     severity: '',
   });
-  const [originalData, setOriginalData] = useState(null);
 
-  // 데이터가 변경되었는지 확인하는 함수
-  const isEdited = () => {
-    return (
-      formData.problemTitle !== originalData?.problemTitle ||
-      formData.product !== originalData?.product ||
-      formData.version !== originalData?.version ||
-      formData.serialNumber !== originalData?.serialNumber ||
-      formData.severity !== originalData?.severity
-    );
-  };
+  const [originalData, setOriginalData] = useState({});
+  const [isEdited, setIsEdited] = useState(false);
 
-  // API를 통해 기존 데이터 불러오기
   useEffect(() => {
     if (editing) {
-      axios.get(`/api/board/${caseId}`).then((response) => {
-        const caseData = response.data;
-        setFormData({
-          problemTitle: caseData.subject,
-          product: caseData.product,
-          version: caseData.version,
-          serialNumber: caseData.description,
-          severity: caseData.severity,
-        });
-        setOriginalData({
-          problemTitle: caseData.subject,
-          product: caseData.product,
-          version: caseData.version,
-          serialNumber: caseData.description,
-          severity: caseData.severity,
-        });
+      axios.get(`/api/board/${caseId}`).then((res) => {
+        const { product, version, subject, description, severity } = res.data;
+        const fetchedData = {
+          problemTitle: subject,
+          product,
+          version,
+          serialNumber: description,
+          severity,
+        };
+        setFormData(fetchedData);
+        setOriginalData(fetchedData);
       });
     }
   }, [editing, caseId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [name]: value };
+      setIsEdited(JSON.stringify(updatedFormData) !== JSON.stringify(originalData));
+      return updatedFormData;
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (editing) {
-        // editCase API 호출
         await editCase(
           caseId,
           formData.product,
           formData.version,
           formData.problemTitle,
-          formData.serialNumber, // description으로 사용
-          1 // 실제로는 사용자 ID를 동적으로 설정
+          formData.serialNumber,
+          1 // 사용자 ID 1번
         );
-        navigate(`/dashboard/cases/${caseId}`); // 수정 후 상세 페이지로 이동
+        alert('Case updated successfully!'); // 성공 알림
       } else {
-        // 새 케이스 생성 로직 필요
+        await createCase(
+          formData.product,
+          formData.version,
+          formData.problemTitle,
+          formData.serialNumber, // description으로 간주
+          1 // 사용자 ID
+        );
+        alert('Case created successfully!'); // 성공 알림
       }
+      navigate('/dashboard'); // 대시보드로 이동
     } catch (error) {
-      console.error('Error updating case:', error);
+      console.error('Error saving case:', error);
+      alert('An error occurred while saving the case.'); // 오류 알림
     }
+  };
+
+  const handleClose = () => {
+    navigate('/dashboard');
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-[#D9D9D9] p-8 rounded shadow-md">
-        <h2 className="text-2xl font-semibold text-center mb-6">
-          {editing ? 'Edit Case Information' : 'Create Case Information'}
-        </h2>
+        <h2 className="text-2xl font-semibold text-center mb-6">{editing ? 'Update' : 'Create'} Case</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-gray-700">Problem Title:</label>
@@ -143,13 +143,22 @@ const CaseInfo = ({ editing = false }) => {
               <option value="critical">Critical</option>
             </select>
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
-            disabled={!isEdited()}
-          >
-            {editing ? 'Update' : 'Create'}
-          </button>
+          <div className="flex justify-between">
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
+              disabled={!isEdited && editing}
+            >
+              {editing ? 'Update' : 'Create'}
+            </button>
+            <button
+              type="button"
+              className="w-full ml-2 bg-gray-500 text-white py-2 rounded hover:bg-gray-600 transition duration-200"
+              onClick={handleClose}
+            >
+              Close
+            </button>
+          </div>
         </form>
       </div>
     </div>

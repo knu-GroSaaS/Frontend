@@ -9,7 +9,7 @@ import axiosInstance from "../axiosInstance";
  * @param {number} userId
  * @returns
  */
-export const creatCase = async (product, version, subject, description, userId) => {
+export const createCase = async (product, version, subject, description, userId) => {
     const response = await axiosInstance.post("/api/board", {
         product,
         version,
