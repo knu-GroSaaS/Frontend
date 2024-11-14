@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { editCase, createCase } from '../../apis/case/caseapi'; // createCase 추가
+import { editCase, createCase } from '../../apis/case/caseapi';
 import axios from 'axios';
 
 const CaseInfo = ({ editing = false }) => {
@@ -20,18 +20,24 @@ const CaseInfo = ({ editing = false }) => {
 
   useEffect(() => {
     if (editing) {
-      axios.get(`/api/board/${caseId}`).then((res) => {
-        const { product, version, subject, description, severity } = res.data;
-        const fetchedData = {
-          problemTitle: subject,
-          product,
-          version,
-          serialNumber: description,
-          severity,
-        };
-        setFormData(fetchedData);
-        setOriginalData(fetchedData);
-      });
+      const fetchData = async () => {
+        try {
+          const res = await axios.get(`/api/board/${caseId}`);
+          const { product, version, subject, description, severity } = res.data;
+          const fetchedData = {
+            problemTitle: subject,
+            product,
+            version,
+            serialNumber: description,
+            severity,
+          };
+          setFormData(fetchedData);
+          setOriginalData(fetchedData);
+        } catch (error) {
+          console.error('Error fetching case data:', error);
+        }
+      };
+      fetchData();
     }
   }, [editing, caseId]);
 
