@@ -6,7 +6,6 @@ import axios from 'axios';
 const CaseInfo = () => {
   const navigate = useNavigate();
   const { id: caseId } = useParams();
-  const location = useLocation();
 
   const editing = location.state?.editing || false;
 
