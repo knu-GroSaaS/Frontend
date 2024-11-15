@@ -1,14 +1,19 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLocation } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { getCase } from "../../apis/case/caseapi";
 import LoadingSpinner from "../LoadingSpinner";
 
 const CaseUnit = () => {
-  const { id } = useParams();
+  const location = useLocation();
+  const { id } = location.state || {};  
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  if (!id) {
+    return <div className="text-center text-gray-600 mt-8">Invalid case ID.</div>;
+  }
 
   const getPost = async (id) => {
     try {
@@ -60,7 +65,10 @@ const CaseUnit = () => {
         <div className="flex justify-center mt-6">
           <Link
             className="px-4 py-2 bg-purple-600 text-white font-semibold rounded hover:bg-purple-700 transition"
-            to={`/dashboard/${id}/edit`}
+            to={{
+              pathname: '/update',
+              state: {id},
+            }}
           >
             Edit
           </Link>
