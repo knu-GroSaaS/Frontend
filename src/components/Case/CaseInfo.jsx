@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams, useLoaction } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { editCase, createCase } from '../../apis/case/caseapi';
 import axios from 'axios';
 

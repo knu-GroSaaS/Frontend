@@ -1,16 +1,26 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom"; 
-import data from "/data";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getCaselist } from "../../apis/case/caseapi";
 
 const CaseForm = () => {
-  const navigate = useNavigate(); 
+  const [caseList, setCaseList] = useState([]); // 상태를 통해 데이터를 저장
 
-  const handleViewCase = (id) => {
-    navigate('/case', { state: { id } });
-  };
-  
+  useEffect(() => {
+    // 백엔드에서 데이터 가져오기
+    const fetchCaseList = async () => {
+      try {
+        const response = await getCaselist(); // 백엔드 API 호출
+        setCaseList(response.data); // 데이터 상태에 저장
+      } catch (error) {
+        console.error("Error fetching case list:", error);
+      }
+    };
+
+    fetchCaseList();
+  }, []); // 컴포넌트가 마운트될 때 한 번만 호출
+
   const handleCreateCase = () => {
-    navigate('/create'); 
+    navigate("/create");
   };
 
   return (
@@ -53,12 +63,11 @@ const CaseForm = () => {
             </div>
 
             <div className="overflow-y-auto h-[250px]">
-              {/* Sample Data Rows */}
-              {data.datas.map((row, index) => (
+              {/* 데이터 행 표시 */}
+              {caseList.map((row, index) => (
                 <div
                   key={index}
                   className="flex flex-row justify-between border-b p-4 h-16"
-                  onClick={() => {handleViewCase(1)}}
                 >
                   <div className="text-sm w-1/6 flex items-center justify-center">
                     {row.caseNumber}
@@ -83,7 +92,7 @@ const CaseForm = () => {
             </div>
           </div>
           <div className="flex justify-end mt-4">
-            <button 
+            <button
               className="bg-[#BEACEB] text-white p-2 rounded"
               onClick={handleCreateCase} // 버튼 클릭 시 handleCreateCase 호출
             >
