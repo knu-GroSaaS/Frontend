@@ -5,6 +5,10 @@ import data from "/data";
 const CaseForm = () => {
   const navigate = useNavigate(); 
 
+  const handleViewCase = (id) => {
+    navigate(`/dashboard/${id}`); 
+  };
+
   const handleCreateCase = () => {
     navigate('/create'); 
   };
@@ -54,6 +58,7 @@ const CaseForm = () => {
                 <div
                   key={index}
                   className="flex flex-row justify-between border-b p-4 h-16"
+                  onClick={() => {handleViewCase(1)}}
                 >
                   <div className="text-sm w-1/6 flex items-center justify-center">
                     {row.caseNumber}
