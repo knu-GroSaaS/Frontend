@@ -28,26 +28,40 @@ const CaseUnit = () => {
   }, [id]);
 
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (!post) {
-    return <div>Case data not found.</div>;
+    return <div className="text-center text-gray-600 mt-8">Case data not found.</div>;
   }
 
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-2xl font-bold">{post.subject}</h1>
-        <p className="text-lg">Product: {post.product}</p>
-        <p>Version: {post.version}</p>
-        <p>Status: {post.caseStatus}</p>
-        <p>Created At: {new Date(post.createdAt).toLocaleString()}</p>
-        <p>Updated At: {new Date(post.updatedAt).toLocaleString()}</p>
-        <p>Description:</p>
-        <p>{post.description}</p>
-        <div>
-          <Link className="btn btn-primary" to={`/dashboard/${id}/edit`}>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
+      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">{post.subject}</h1>
+        
+        <div className="mb-4">
+          <p className="text-lg text-gray-700"><span className="font-semibold">Product:</span> {post.product}</p>
+          <p className="text-lg text-gray-700"><span className="font-semibold">Version:</span> {post.version}</p>
+          <p className="text-lg text-gray-700"><span className="font-semibold">Status:</span> {post.caseStatus}</p>
+          <p className="text-lg text-gray-700"><span className="font-semibold">Created At:</span> {new Date(post.createdAt).toLocaleString()}</p>
+          <p className="text-lg text-gray-700"><span className="font-semibold">Updated At:</span> {new Date(post.updatedAt).toLocaleString()}</p>
+        </div>
+
+        <div className="mb-6">
+          <p className="font-semibold text-lg text-gray-700">Description:</p>
+          <p className="text-gray-600">{post.description}</p>
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <Link
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded hover:bg-purple-700 transition"
+            to={`/dashboard/${id}/edit`}
+          >
             Edit
           </Link>
         </div>
