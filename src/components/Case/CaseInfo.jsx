@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { editCase, createCase } from '../../apis/case/caseapi';
 import axios from 'axios';
 
 const CaseInfo = () => {
   const navigate = useNavigate();
   const { id: caseId } = useParams();
+  const location = useLocation();
 
   const editing = location.state?.editing || false;
 
