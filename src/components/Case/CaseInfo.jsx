@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLoaction } from 'react-router-dom';
 import { editCase, createCase } from '../../apis/case/caseapi';
 import axios from 'axios';
 
-const CaseInfo = ({ editing = false }) => {
+const CaseInfo = () => {
   const navigate = useNavigate();
   const { id: caseId } = useParams();
+  const location = useLocation();
+
+  const editing = location.state?.editing || false;
 
   const [formData, setFormData] = useState({
     problemTitle: '',
@@ -19,7 +22,7 @@ const CaseInfo = ({ editing = false }) => {
   const [isEdited, setIsEdited] = useState(false);
 
   useEffect(() => {
-    if (editing) {
+    if (editing && caseId) {
       const fetchData = async () => {
         try {
           const res = await axios.get(`/api/board/${caseId}`);

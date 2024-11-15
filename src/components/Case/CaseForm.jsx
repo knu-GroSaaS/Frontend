@@ -6,9 +6,9 @@ const CaseForm = () => {
   const navigate = useNavigate(); 
 
   const handleViewCase = (id) => {
-    navigate(`/dashboard/${id}`); 
+    navigate('/case', { state: { id } });
   };
-
+  
   const handleCreateCase = () => {
     navigate('/create'); 
   };

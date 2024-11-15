@@ -18,7 +18,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/create" element={<CreatePage />} />
           <Route path="/update" element={<UpdatePage />} />
-          <Route path="/dashboard/:id" element={<CaseUnit/>}/>
+          <Route path="/case" element={<CaseUnit/>}/>
         </Routes>
       </BrowserRouter>
     </>
