@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { getCaselist } from "../../apis/case/caseapi";
 
 const CaseForm = () => {
-  const [caseList, setCaseList] = useState([]); // 초기 상태를 빈 배열로 설정
-  const navigate = useNavigate(); // useNavigate 추가
+  const [caseList, setCaseList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCaseList = async () => {
@@ -13,10 +13,10 @@ const CaseForm = () => {
         const sortedData = (response || []).sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-        setCaseList(sortedData || []); // response.data가 없으면 빈 배열 할당
+        setCaseList(sortedData || []);
       } catch (error) {
         console.error("Error fetching case list:", error);
-        setCaseList([]); // 오류 시 빈 배열로 설정
+        setCaseList([]);
       }
     };
 
@@ -45,29 +45,30 @@ const CaseForm = () => {
             <div className="ml-2 font-bold text-4xl">Caselist</div>
           </div>
           <div className="flex flex-col">
+            {/* 헤더 */}
             <div className="flex flex-row justify-between border-b p-4 bg-gray-200">
-              <div className="font-bold text-[#b6b6b6] w-1/8 text-center">
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
                 Case ID
               </div>
-              <div className="font-bold text-[#b6b6b6] w-1/8 text-center">
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Status
               </div>
-              <div className="font-bold text-[#b6b6b6] w-1/8 text-center">
+              <div className="font-bold text-[#b6b6b6] flex-[1.25] text-center px-2">
                 Created At
               </div>
-              <div className="font-bold text-[#b6b6b6] w-1/8 text-center">
+              <div className="font-bold text-[#b6b6b6] flex-[1.25] text-center px-2">
                 Updated At
               </div>
-              <div className="font-bold text-[#b6b6b6] w-1/8 text-center">
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Subject
               </div>
-              <div className="font-bold text-[#b6b6b6] w-1/8 text-center">
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Product
               </div>
-              <div className="font-bold text-[#b6b6b6] w-1/8 text-center">
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Description
               </div>
-              <div className="font-bold text-[#b6b6b6] w-1/8 text-center">
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Version
               </div>
             </div>
@@ -75,42 +76,43 @@ const CaseForm = () => {
             <div className="overflow-y-auto h-[250px]">
               {/* 데이터 행 표시 */}
               {caseList.map((row, index) => (
-                <div
+                <Link
+                  to={`/case/${row.caseId}`}
                   key={index}
                   className="flex flex-row justify-between border-b p-4 h-16"
                 >
-                  <div className="text-sm w-1/8 flex items-center justify-center">
+                  <div className="text-sm flex-[0.75] flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.caseId}
                   </div>
-                  <div className="text-sm w-1/8 flex items-center justify-center">
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.caseStatus}
                   </div>
-                  <div className="text-sm w-1/8 flex items-center justify-center">
+                  <div className="text-sm flex-[1.25] flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {new Date(row.createdAt).toLocaleString()}
                   </div>
-                  <div className="text-sm w-1/8 flex items-center justify-center">
+                  <div className="text-sm flex-[1.25] flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {new Date(row.updatedAt).toLocaleString()}
                   </div>
-                  <div className="text-sm w-1/8 flex items-center justify-center">
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.subject}
                   </div>
-                  <div className="text-sm w-1/8 flex items-center justify-center">
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.product}
                   </div>
-                  <div className="text-sm w-1/8 flex items-center justify-center">
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.description}
                   </div>
-                  <div className="text-sm w-1/8 flex items-center justify-center">
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.version}
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
           <div className="flex justify-end mt-4">
             <button
               className="bg-[#BEACEB] text-white p-2 rounded"
-              onClick={handleCreateCase} // 버튼 클릭 시 handleCreateCase 호출
+              onClick={handleCreateCase}
             >
               + Create Case
             </button>

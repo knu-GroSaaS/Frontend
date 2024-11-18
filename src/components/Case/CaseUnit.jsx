@@ -1,13 +1,12 @@
 import axios from "axios";
-import { useEffect, useState, useLocation } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { getCase } from "../../apis/case/caseapi";
 import LoadingSpinner from "../LoadingSpinner";
 
 const CaseUnit = () => {
-  const location = useLocation();
-  const { id } = location.state || {};  
+  const { id } = useParams();  
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
