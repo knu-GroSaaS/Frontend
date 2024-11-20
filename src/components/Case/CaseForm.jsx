@@ -40,11 +40,18 @@ const CaseForm = () => {
 
       <div className="flex flex-row flex-grow">
         {/* Main Content */}
-        <div className="flex-grow bg-white p-4">
-          <div className="flex">
+        <div className="flex-grow bg-white p-4 flex flex-col">
+          <div className="flex justify-between items-center mb-4">
             <div className="ml-2 font-bold text-4xl">Caselist</div>
+            <button
+              className="bg-[#BEACEB] text-white p-2 rounded"
+              onClick={handleCreateCase}
+            >
+              + Create Case
+            </button>
           </div>
-          <div className="flex flex-col">
+
+          <div className="flex flex-col flex-grow">
             {/* 헤더 */}
             <div className="flex flex-row justify-between border-b p-4 bg-gray-200">
               <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
@@ -73,7 +80,7 @@ const CaseForm = () => {
               </div>
             </div>
 
-            <div className="overflow-y-auto h-[250px]">
+            <div className="overflow-y-auto flex-grow">
               {/* 데이터 행 표시 */}
               {caseList.map((row, index) => (
                 <Link
@@ -108,14 +115,6 @@ const CaseForm = () => {
                 </Link>
               ))}
             </div>
-          </div>
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-[#BEACEB] text-white p-2 rounded"
-              onClick={handleCreateCase}
-            >
-              + Create Case
-            </button>
           </div>
         </div>
       </div>
