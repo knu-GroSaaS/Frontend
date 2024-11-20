@@ -25,12 +25,15 @@ export const getLogin = async (username, password) => {
   Cookies.set("refreshToken", refreshToken, {
     expires: refreshHours / 24,
     path: "/",
-    secure: true,
+    // secure: true, //https 환경에서만 사용
   });
   // Token 읽기
   // const token = Cookies.get("accessToken");
   // console.log("Access Token from Cookie:", token);
   useAuthStore.getState().setTokens(accessToken, refreshToken);
+  const redirectPath = Cookies.get("redirectPath") || "/dashboard"; // 기본 경로 설정
+  Cookies.remove("redirectPath"); // 리다이렉션 경로 삭제
+  window.location.href = redirectPath; // 저장된 경로로 이동
   return response.data;
 };
 
