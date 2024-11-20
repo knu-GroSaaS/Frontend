@@ -34,7 +34,7 @@ const CaseForm = () => {
         <div className="font-bold text-[#d9d9d9] text-xl">Dashboard &gt;</div>
         <div className="flex items-center">
           <Link className="ml-2 font-bold text-xl">알림</Link>
-          <Link className="ml-2 font-bold text-xl">Admin</Link>
+          <Link className="ml-2 font-bold text-xl">MyPage</Link>
         </div>
       </div>
 
@@ -56,17 +56,20 @@ const CaseForm = () => {
               <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
                 Case #
               </div>
-              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
-                Subject
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                Problem Title
               </div>
               <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Product
               </div>
               <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
-                Description
+                Version
               </div>
               <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
-                Version
+                Serial Number
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
+                Severity
               </div>
             </div>
 
@@ -82,16 +85,19 @@ const CaseForm = () => {
                     {caseList.length - index}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {row.subject}
+                    {row.problemTitle}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.product}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {row.description}
+                    {row.version}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {row.version}
+                    {row.serialNumber}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.severity}
                   </div>
                 </Link>
               ))}

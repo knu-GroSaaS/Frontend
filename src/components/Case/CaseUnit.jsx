@@ -64,7 +64,7 @@ const CaseUnit = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          {post.subject}
+          {post.problemTitle}
         </h1>
 
         <div className="mb-4">
@@ -73,6 +73,13 @@ const CaseUnit = () => {
           </p>
           <p className="text-lg text-gray-700">
             <span className="font-semibold">Version:</span> {post.version}
+          </p>
+          <p className="text-lg text-gray-700">
+            <span className="font-semibold">Serial Number:</span>{" "}
+            {post.serialNumber}
+          </p>
+          <p className="text-lg text-gray-700">
+            <span className="font-semibold">Severity:</span> {post.severity}
           </p>
           <p className="text-lg text-gray-700">
             <span className="font-semibold">Status:</span> {post.caseStatus}
@@ -87,18 +94,10 @@ const CaseUnit = () => {
           </p>
         </div>
 
-        <div className="mb-6">
-          <p className="font-semibold text-lg text-gray-700">Description:</p>
-          <p className="text-gray-600">{post.description}</p>
-        </div>
-
         <div className="flex justify-center mt-6">
           <Link
             className="px-4 py-2 bg-purple-600 text-white font-semibold rounded hover:bg-purple-700 transition"
-            to={{
-              pathname: "/update",
-              state: { id },
-            }}
+            to={`/update/${id}`}
           >
             Edit
           </Link>
