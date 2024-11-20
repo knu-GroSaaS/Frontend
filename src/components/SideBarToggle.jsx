@@ -40,11 +40,11 @@ const SideBarToggle = ({ isOpen, toggleSidebar }) => {
               GroSaaS
             </div>
             <button
-                onClick={toggleSidebar}
-                className="text-white hover:text-indigo-200"
-              >
-                Close
-              </button>
+              onClick={toggleSidebar}
+              className="text-white hover:text-indigo-200"
+            >
+              Close
+            </button>
           </div>
 
           {/* Dashboard Title */}

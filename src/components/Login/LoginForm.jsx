@@ -34,7 +34,7 @@ const LoginForm = () => {
     <>
       <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-gray-300 p-10 rounded-lg shadow-md w-96 h-fit text-center">
-        <img src="/Grosaas_logo.png" alt="Logo" className="w-12 h-12 mb-5 mx-auto" />
+        <img src="src/assets/Grosaas_logo.png" alt="Logo" className="w-12 h-12 mb-5 mx-auto" />
         <h2 className="mb-5 font-semibold">
           <span className="text-indigo-600">GroSaaS</span> Dashboard
         </h2>
