@@ -1,54 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { editCase, createCase } from '../../apis/case/caseapi';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { editCase, createCase, getCase } from "../../apis/case/caseapi";
 
-const CaseInfo = () => {
+const CaseInfo = ({ editing = false }) => {
   const navigate = useNavigate();
-  const { id: caseId } = useParams();
-  const location = useLocation();
-
-  const editing = location.state?.editing || false;
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
-    problemTitle: '',
-    product: '',
-    version: '',
-    serialNumber: '',
-    severity: '',
+    problemTitle: "",
+    product: "",
+    version: "",
+    serialNumber: "",
+    severity: "",
   });
 
   const [originalData, setOriginalData] = useState({});
-  const [isEdited, setIsEdited] = useState(false);
 
   useEffect(() => {
-    if (editing && caseId) {
+    if (editing) {
       const fetchData = async () => {
         try {
-          const res = await axios.get(`/api/board/${caseId}`);
-          const { product, version, subject, description, severity } = res.data;
+          const res = await getCase(id);
+          console.log(res);
+          const { problemTitle, product, version, serialNumber, severity } =
+            res;
           const fetchedData = {
-            problemTitle: subject,
+            problemTitle,
             product,
             version,
-            serialNumber: description,
+            serialNumber,
             severity,
           };
           setFormData(fetchedData);
           setOriginalData(fetchedData);
         } catch (error) {
-          console.error('Error fetching case data:', error);
+          console.error("Error fetching case data:", error);
         }
       };
       fetchData();
     }
-  }, [editing, caseId]);
+  }, [editing, id]);
+
+  const isEdited = () => {
+    return formData !== originalData;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => {
       const updatedFormData = { ...prev, [name]: value };
-      setIsEdited(JSON.stringify(updatedFormData) !== JSON.stringify(originalData));
       return updatedFormData;
     });
   };
@@ -59,38 +59,40 @@ const CaseInfo = () => {
       if (editing) {
         await editCase(
           caseId,
+          formData.problemTitle,
           formData.product,
           formData.version,
-          formData.problemTitle,
           formData.serialNumber,
-          1 // 사용자 ID 1번
+          formData.severity
         );
-        alert('Case updated successfully!'); // 성공 알림
+        alert("Case updated successfully!"); // 성공 알림
       } else {
         await createCase(
+          formData.problemTitle,
           formData.product,
           formData.version,
-          formData.problemTitle,
-          formData.serialNumber, // description으로 간주
-          1 // 사용자 ID
+          formData.serialNumber,
+          formData.severity
         );
-        alert('Case created successfully!'); // 성공 알림
+        alert("Case created successfully!"); // 성공 알림
       }
-      navigate('/dashboard'); // 대시보드로 이동
+      navigate("/dashboard"); // 대시보드로 이동
     } catch (error) {
-      console.error('Error saving case:', error);
-      alert('An error occurred while saving the case.'); // 오류 알림
+      console.error("Error saving case:", error);
+      alert("An error occurred while saving the case."); // 오류 알림
     }
   };
 
   const handleClose = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-[#D9D9D9] p-8 rounded shadow-md">
-        <h2 className="text-2xl font-semibold text-center mb-6">{editing ? 'Update' : 'Create'} Case</h2>
+        <h2 className="text-2xl font-semibold text-center mb-6">
+          {editing ? "Update" : "Create"} Case
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-gray-700">Problem Title:</label>
@@ -156,9 +158,9 @@ const CaseInfo = () => {
             <button
               type="submit"
               className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
-              disabled={!isEdited && editing}
+              disabled={!isEdited() && editing}
             >
-              {editing ? 'Update' : 'Create'}
+              {editing ? "Update" : "Create"}
             </button>
             <button
               type="button"

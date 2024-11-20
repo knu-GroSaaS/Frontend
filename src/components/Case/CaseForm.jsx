@@ -34,13 +34,13 @@ const CaseForm = () => {
         <div className="font-bold text-[#d9d9d9] text-xl">Dashboard &gt;</div>
         <div className="flex items-center">
           <Link className="ml-2 font-bold text-xl">알림</Link>
-          <Link className="ml-2 font-bold text-xl">Admin</Link>
+          <Link className="ml-2 font-bold text-xl">MyPage</Link>
         </div>
       </div>
 
       <div className="flex flex-row flex-grow">
         {/* Main Content */}
-        <div className="flex-grow bg-white p-4 flex flex-col">
+        <div className="flex-grow bg-white p-4">
           <div className="flex justify-between items-center mb-4">
             <div className="ml-2 font-bold text-4xl">Caselist</div>
             <button
@@ -50,37 +50,30 @@ const CaseForm = () => {
               + Create Case
             </button>
           </div>
-
-          <div className="flex flex-col flex-grow">
+          <div className="flex flex-col">
             {/* 헤더 */}
             <div className="flex flex-row justify-between border-b p-4 bg-gray-200">
               <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
-                Case ID
+                Case #
               </div>
-              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
-                Status
-              </div>
-              <div className="font-bold text-[#b6b6b6] flex-[1.25] text-center px-2">
-                Created At
-              </div>
-              <div className="font-bold text-[#b6b6b6] flex-[1.25] text-center px-2">
-                Updated At
-              </div>
-              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
-                Subject
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                Problem Title
               </div>
               <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Product
               </div>
               <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
-                Description
+                Version
               </div>
               <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
-                Version
+                Serial Number
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
+                Severity
               </div>
             </div>
 
-            <div className="overflow-y-auto flex-grow">
+            <div className="overflow-y-auto max-h-[250px] border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50">
               {/* 데이터 행 표시 */}
               {caseList.map((row, index) => (
                 <Link
@@ -89,28 +82,22 @@ const CaseForm = () => {
                   className="flex flex-row justify-between border-b p-4 h-16"
                 >
                   <div className="text-sm flex-[0.75] flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {row.caseId}
+                    {caseList.length - index}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {row.caseStatus}
-                  </div>
-                  <div className="text-sm flex-[1.25] flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {new Date(row.createdAt).toLocaleString()}
-                  </div>
-                  <div className="text-sm flex-[1.25] flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {new Date(row.updatedAt).toLocaleString()}
-                  </div>
-                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {row.subject}
+                    {row.problemTitle}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.product}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {row.description}
+                    {row.version}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {row.version}
+                    {row.serialNumber}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.severity}
                   </div>
                 </Link>
               ))}
