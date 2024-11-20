@@ -2,22 +2,28 @@ import axiosInstance from "../axiosInstance";
 
 /**
  * 새로운 Case 생성
+ * @param {string} problemTitle
  * @param {string} product
  * @param {string} version
- * @param {string} subject
- * @param {string} description
- * @param {number} userId
+ * @param {string} serialNumber
+ * @param {number} severity
  * @returns
  */
-export const createCase = async (product, version, subject, description, userId) => {
-    const response = await axiosInstance.post("/api/board", {
-        product,
-        version,
-        subject,
-        description,
-        userId,
-    });
-    return response.data;
+export const createCase = async (
+  problemTitle,
+  product,
+  version,
+  serialNumber,
+  severity
+) => {
+  const response = await axiosInstance.post("/api/board", {
+    problemTitle,
+    product,
+    version,    
+    serialNumber,
+    severity,
+  });
+  return response.data;
 };
 
 /**
@@ -25,10 +31,10 @@ export const createCase = async (product, version, subject, description, userId)
  * @returns
  */
 export const getCaselist = async (params) => {
-    const response = await axiosInstance.get("/api/board", {
-        params,
-    });
-    return response.data;
+  const response = await axiosInstance.get("/api/board", {
+    params,
+  });
+  return response.data;
 };
 
 /**
@@ -37,8 +43,8 @@ export const getCaselist = async (params) => {
  * @returns
  */
 export const getCase = async (caseId) => {
-    const response = await axiosInstance.get(`/api/board/${caseId}`);
-    return response.data;
+  const response = await axiosInstance.get(`/api/board/${caseId}`);
+  return response.data;
 };
 
 /**
@@ -50,23 +56,30 @@ export const getCase = async (caseId) => {
  * @param {number} userId
  * @returns
  */
-export const editCase = async (caseId, product, version, subject, description, userId) => {
-    const response = await axiosInstance.put(`/api/board${caseId}`, {
-        product,
-        version,
-        subject,
-        description,
-        userId,
-    });
-    return response.data;
+export const editCase = async (
+  caseId,
+  problemTitle,
+  product,
+  version,
+  serialNumber,
+  severity
+) => {
+  const response = await axiosInstance.put(`/api/board${caseId}`, {
+    problemTitle,
+    product,
+    version,
+    serialNumber,
+    severity,
+  });
+  return response.data;
 };
-    
+
 /**
  * 특정 Case 삭제
  * @param {number} caseId
  * @returns
  */
 export const deleteCase = async (caseId) => {
-    const response = await axiosInstance.delete(`/api/board/${caseId}`);
-    return response.data;
+  const response = await axiosInstance.delete(`/api/board/${caseId}`);
+  return response.data;
 };
