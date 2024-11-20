@@ -1,18 +1,28 @@
-// src/store/authStore.js
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import Cookies from "js-cookie";
 
-// Zustand 스토어 생성
-export const useAuthStore = create(
-  persist(
-    (set) => ({
-      user: null, // 사용자 정보를 저장할 수 있는 공간
-      setUser: (user) => set({ user }), // 사용자 정보 설정
-      clearAuth: () => set({ user: null }), // 세션 초기화 메서드
-    }),
-    {
-      name: "auth-storage", // 세션 스토리지에 저장할 이름
-      getStorage: () => sessionStorage, // sessionStorage를 사용
-    }
-  )
-);
+// Zustand 상태 관리
+export const useAuthStore = create((set) => {
+  // 쿠키에서 초기 토큰 읽기
+  const initialAccessToken = Cookies.get("accessToken") || null;
+  const initialRefreshToken = Cookies.get("refreshToken") || null;
+
+  return {
+    accessToken: initialAccessToken,
+    refreshToken: initialRefreshToken,
+
+    // 토큰 설정 함수
+    setTokens: (accessToken, refreshToken) => {
+      Cookies.set("accessToken", accessToken, { expires: 1, path: "/" }); // 1일 후 만료
+      Cookies.set("refreshToken", refreshToken, { expires: 1, path: "/" });
+      set({ accessToken, refreshToken });
+    },
+
+    // 토큰 및 인증 상태 초기화 함수
+    clearAuth: () => {
+      Cookies.remove("accessToken", { path: "/" });
+      Cookies.remove("refreshToken", { path: "/" });
+      set({ accessToken: null, refreshToken: null });
+    },
+  };
+});
