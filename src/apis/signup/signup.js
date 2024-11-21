@@ -4,16 +4,18 @@ import axiosInstance from "../axiosInstance";
  * 회원가입 API
  * @param {string} username
  * @param {string} email
- * @param {string} password
+ * @param {string} phoneNum
+ * @param {string} site
  * @returns
  */
-export const getJoin = async (username, email, password) => {
+export const getJoin = async (username, email, phoneNum, site) => {
   const response = await axiosInstance.post(
     "/join",
     {
       username,
       email,
-      password,
+      phoneNum,
+      site,
     },
     {
       headers: {
