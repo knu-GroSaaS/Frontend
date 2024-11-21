@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams, useRevalidator } from 'react-router-dom';
-import { editCase, createCase } from '../../apis/case/caseapi';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { editCase, createCase, getCase } from "../../apis/case/caseapi";
 
 const CaseInfo = ({ editing = false }) => {
   const navigate = useNavigate();
@@ -14,25 +14,26 @@ const CaseInfo = ({ editing = false }) => {
     severity: "",
   });
 
-  const [originalData, setOriginalData] = useState({});
+  const [originalData, setOriginalData] = useState(null); // null indicates no data fetched yet
 
   useEffect(() => {
     if (editing) {
       const fetchData = async () => {
         try {
           const res = await getCase(id);
-          console.log(res);
-          const { problemTitle, product, version, serialNumber, severity } =
-            res;
-          const fetchedData = {
-            problemTitle,
-            product,
-            version,
-            serialNumber,
-            severity,
-          };
-          setFormData(fetchedData);
-          setOriginalData(fetchedData);
+          if (res) {
+            const { problemTitle, product, version, serialNumber, severity } =
+              res;
+            const fetchedData = {
+              problemTitle: problemTitle || "",
+              product: product || "",
+              version: version || "",
+              serialNumber: serialNumber || "",
+              severity: severity || "",
+            };
+            setFormData(fetchedData);
+            setOriginalData(fetchedData);
+          }
         } catch (error) {
           console.error("Error fetching case data:", error);
         }
@@ -42,15 +43,16 @@ const CaseInfo = ({ editing = false }) => {
   }, [editing, id]);
 
   const isEdited = () => {
-    return formData !== originalData;
+    // Deep comparison to check for changes
+    return JSON.stringify(formData) !== JSON.stringify(originalData);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => {
-      const updatedFormData = { ...prev, [name]: value };
-      return updatedFormData;
-    });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -58,32 +60,28 @@ const CaseInfo = ({ editing = false }) => {
     try {
       if (editing) {
         await editCase(
-          caseId,
+          id, // case ID
           formData.problemTitle,
           formData.product,
           formData.version,
           formData.serialNumber,
-          formData.severity,
-          UserId // 사용자 ID 1번
+          formData.severity
         );
-        alert("Case updated successfully!"); // 성공 알림
+        alert("Case updated successfully!");
       } else {
         await createCase(
           formData.problemTitle,
           formData.product,
           formData.version,
           formData.serialNumber,
-          formData.severity,
-          formData.problemTitle,
-          formData.serialNumber, // description으로 간주
-          userId // 사용자 ID
+          formData.severity
         );
-        alert("Case created successfully!"); // 성공 알림
+        alert("Case created successfully!");
       }
-      navigate("/dashboard"); // 대시보드로 이동
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error saving case:", error);
-      alert("An error occurred while saving the case."); // 오류 알림
+      alert("An error occurred while saving the case.");
     }
   };
 
