@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 const SignUpForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+  const [site, setSite] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,11 +24,6 @@ const SignUpForm = () => {
     setIsLoading(true);
     setErrorMessage("");
 
-    if (password !== confirmPassword) {
-      setErrorMessage("비밀번호가 일치하지 않습니다.");
-      setIsLoading(false);
-      return;
-    }
     if (!isNicknameChecked) {
       setErrorMessage("닉네임 중복 체크를 해주세요.");
       setIsLoading(false);
@@ -40,7 +35,7 @@ const SignUpForm = () => {
       return;
     }
     try {
-      await getJoin(name, email, password);
+      await getJoin(name, email, phoneNum, site);
       navi("/login");
     } catch (err) {
       console.error("Signup failed", err);
@@ -145,26 +140,26 @@ const SignUpForm = () => {
             <p className={`text-${isEmailChecked ? "blue" : "red"}-500`}>{emailError}</p>
           </div>
           <input
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            type="tel"
+            placeholder="전화번호"
+            value={phoneNum}
+            onChange={(e) => setPhoneNum(e.target.value)}
             className="p-2 mb-4 border border-gray-300 rounded-md"
           />
           <input
-            type="password"
-            placeholder="비밀번호 확인"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            type="site"
+            placeholder="사이트"
+            value={site}
+            onChange={(e) => setSite(e.target.value)}
             className="p-2 mb-4 border border-gray-300 rounded-md"
           />
           <button
             type="submit"
             disabled={
-              !name || !email || !password || !confirmPassword || !isNicknameChecked || !isEmailChecked || !isEmailValid || isLoading
+              !name || !email || !phoneNum || !site || !isNicknameChecked || !isEmailChecked || !isEmailValid || isLoading
             }
             className={`w-30 h-20 p-2 rounded-md text-3xl text-white ${
-              !name || !email || !password || !confirmPassword || !isNicknameChecked || !isEmailChecked || !isEmailValid || isLoading
+              !name || !email || !phoneNum || !site || !isNicknameChecked || !isEmailChecked || !isEmailValid || isLoading
                 ? "bg-indigo-300 cursor-not-allowed"
                 : "bg-indigo-500 hover:bg-indigo-700 cursor-pointer"
             }`}
