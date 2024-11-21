@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { editCase, createCase, getCase } from "../../apis/case/caseapi";
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useRevalidator } from 'react-router-dom';
 import { editCase, createCase } from '../../apis/case/caseapi';
-import axios from 'axios';
 
 const CaseInfo = ({ editing = false }) => {
   const navigate = useNavigate();
@@ -67,11 +63,8 @@ const CaseInfo = ({ editing = false }) => {
           formData.product,
           formData.version,
           formData.serialNumber,
-<<<<<<< HEAD
-          formData.severity
-=======
-          userId // 사용자 ID 1번
->>>>>>> 0ba6e40 (fix : userId 동적 설정)
+          formData.severity,
+          UserId // 사용자 ID 1번
         );
         alert("Case updated successfully!"); // 성공 알림
       } else {
@@ -79,14 +72,11 @@ const CaseInfo = ({ editing = false }) => {
           formData.problemTitle,
           formData.product,
           formData.version,
-<<<<<<< HEAD
           formData.serialNumber,
-          formData.severity
-=======
+          formData.severity,
           formData.problemTitle,
           formData.serialNumber, // description으로 간주
           userId // 사용자 ID
->>>>>>> 0ba6e40 (fix : userId 동적 설정)
         );
         alert("Case created successfully!"); // 성공 알림
       }
