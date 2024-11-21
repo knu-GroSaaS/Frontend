@@ -1,24 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../apis/axiosInstance";
+
 
 const UserInfo = () => {
   const [editMode, setEditMode] = useState(false);
   const [userData, setUserData] = useState({
-    name: "홍길동",
-    email: "honggildong@example.com",
-    phoneNum: "010-1234-5678",
-    site: "www.example.com",
+    name: "",
+    email: "",
+    phoneNum: "",
+    site: "",
   });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get("/user/info"); // 사용자 정보 API 호출
+        const { username, email, phoneNum, site } = response.data;
+        setUserData({
+          name: username,
+          email,
+          phoneNum,
+          site,
+        });
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+        alert("사용자 정보를 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    console.log("Updated user data:", userData);
-    // 서버로 업데이트 API 요청 추가 가능
-    setEditMode(false);
+  const handleSave = async () => {
+    try {
+      await axiosInstance.put("/user/update", {
+        username: userData.name,
+        email: userData.email,
+        phoneNum: userData.phoneNum,
+        site: userData.site,
+      });
+      alert("사용자 정보가 성공적으로 업데이트되었습니다.");
+      setEditMode(false);
+    } catch (error) {
+      console.error("Failed to update user data:", error);
+      alert("사용자 정보를 업데이트하는데 실패했습니다.");
+    }
   };
+
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
