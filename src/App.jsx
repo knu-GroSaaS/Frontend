@@ -6,6 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import CreatePage from "./pages/CreatePage";
 import CaseUnit from "./components/Case/CaseUnit";
 import UpdatePage from "./pages/UpdatePage";
+import MyPage from "./pages/MyPage";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
           <Route path="/create" element={<CreatePage />} />
           <Route path="/update/:id" element={<UpdatePage />} />
           <Route path="/case/:id" element={<CaseUnit/>}/>
+          <Route path="/mypage" element={<MyPage/>}/>
+          
         </Routes>
       </BrowserRouter>
     </>

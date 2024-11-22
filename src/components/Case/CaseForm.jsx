@@ -34,7 +34,7 @@ const CaseForm = () => {
         <div className="font-bold text-[#d9d9d9] text-xl">Dashboard &gt;</div>
         <div className="flex items-center">
           <Link className="ml-2 font-bold text-xl">알림</Link>
-          <Link className="ml-2 font-bold text-xl">MyPage</Link>
+          <Link to="/mypage" className="ml-2 font-bold text-xl">MyPage</Link>
         </div>
       </div>
 
