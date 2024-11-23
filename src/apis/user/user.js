@@ -9,7 +9,7 @@ import axiosInstance from "../axiosInstance";
  */
 export const changePassword = async (username, currentPassword, newPassword) => {
   try {
-    await axiosInstance.post(
+    const response = await axiosInstance.post(
       "/password/update",
       {
         username,
@@ -22,8 +22,14 @@ export const changePassword = async (username, currentPassword, newPassword) => 
         },
       }
     );
+    // 성공적으로 응답을 받았을 경우
+    console.log("Password updated successfully:", response.data);
   } catch (error) {
     console.error("Failed to update password:", error);
+    if (error.response) {
+      // 서버에서 반환하는 오류 메시지를 출력
+      console.error("Server error response:", error.response.data);
+    }
     throw error;
   }
 };

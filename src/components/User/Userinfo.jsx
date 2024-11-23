@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../apis/axiosInstance";
+import { changePassword } from "../../apis/user/user.js";
 
 const MyPage = () => {
   const [userData, setUserData] = useState({
@@ -13,6 +14,7 @@ const MyPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -42,20 +44,24 @@ const MyPage = () => {
       return;
     }
 
-    try {
-      await axiosInstance.put("/user/changepassword", {
-        currentPassword,
-        newPassword,
-      });
+    setIsSubmitting(true);
+    setError("");
 
-      setError("");
+    try {
+      await changePassword(userData.name, currentPassword, newPassword);
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
       alert("비밀번호가 성공적으로 변경되었습니다.");
     } catch (error) {
       console.error("Failed to change password:", error);
-      setError("비밀번호를 변경하는데 실패했습니다.");
+      if (error.response && error.response.data) {
+        setError(`비밀번호 변경 실패: ${error.response.data.message || "알 수 없는 오류 발생"}`);
+      } else {
+        setError("서버와의 연결에 실패했습니다.");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -116,9 +122,12 @@ const MyPage = () => {
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <button
             onClick={handlePasswordSubmit}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isSubmitting}
           >
-            변경
+            {isSubmitting ? "변경 중..." : "변경"}
           </button>
         </div>
       </div>
