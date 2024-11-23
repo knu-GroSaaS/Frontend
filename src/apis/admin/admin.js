@@ -5,7 +5,7 @@ import axiosInstance from "../axiosInstance";
  * @returns
  */
 export const getUser = async () => {
-  const response = await axiosInstance.post("/manager", {
+  const response = await axiosInstance.get("/manager", {
   });
   return response.data;
 };

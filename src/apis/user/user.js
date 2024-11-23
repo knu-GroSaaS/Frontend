@@ -18,7 +18,7 @@ export const changePassword = async (username, currentPassword, newPassword) => 
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
