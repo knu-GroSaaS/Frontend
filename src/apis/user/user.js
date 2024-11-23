@@ -5,7 +5,7 @@ import axiosInstance from "../axiosInstance";
  * @param {string} username - 사용자 아이디
  * @param {string} currentPassword - 현재 비밀번호
  * @param {string} newPassword - 새로운 비밀번호
- * @returns {Promise<void>}
+ * @returns 
  */
 export const changePassword = async (username, currentPassword, newPassword) => {
   try {
