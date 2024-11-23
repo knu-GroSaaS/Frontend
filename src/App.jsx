@@ -7,6 +7,7 @@ import CreatePage from "./pages/CreatePage";
 import CaseUnit from "./components/Case/CaseUnit";
 import UpdatePage from "./pages/UpdatePage";
 import MyPage from "./pages/MyPage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           <Route path="/update/:id" element={<UpdatePage />} />
           <Route path="/case/:id" element={<CaseUnit/>}/>
           <Route path="/mypage" element={<MyPage/>}/>
-          
+          <Route path="/adminpage" element={<AdminPage/>}/>
         </Routes>
       </BrowserRouter>
     </>
