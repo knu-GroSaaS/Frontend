@@ -1,34 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../../apis/axiosInstance";
-import { changePassword } from "../../apis/user/user.js";
-
-/**
- * 사용자 정보를 API로부터 가져오는 함수
- * @param {Function} setUserData - 사용자 데이터를 업데이트
- * @param {Function} setLoading - 로딩 상태를 업데이트
- */
-const fetchUserData = async (setUserData, setLoading) => {
-  try {
-    const response = await axiosInstance.get("/manager/getuser");
-    const { username, email, phoneNum, site } = response.data;
-    setUserData({
-      name: username,
-      email,
-      phoneNum,
-      site,
-    });
-  } catch (error) {
-    console.error("Failed to fetch user data:", error);
-    alert("사용자 정보를 불러오는데 실패했습니다.");
-  } finally {
-    setLoading(false);
-  }
-};
+import { changePassword, getUser } from "../../apis/user/user.js";
 
 const MyPage = () => {
   // 사용자 정보와 상태 관리 변수들
   const [userData, setUserData] = useState({
-    name: "",
+    username: "",
     email: "",
     phoneNum: "",
     site: "",
@@ -40,11 +16,30 @@ const MyPage = () => {
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [isSubmitting, setIsSubmitting] = useState(false); // 비밀번호 변경 버튼 상태
 
-  // 컴포넌트가 마운트될 때 사용자 데이터를 불러옴
   useEffect(() => {
-    fetchUserData(setUserData, setLoading);
-  }, []);
+    const fetchUserData = async () => {
+      try {
+        setLoading(true); // 로딩 시작
+        const response = await getUser();
+        setUserData(response.data); // 사용자 데이터 저장
+      } catch (error) {
+        console.error("사용자 정보 가져오기 실패:", error);
+        if (error.response && error.response.data) {
+          setError(
+            `서버 응답 오류: ${
+              error.response.data.message || "알 수 없는 문제 발생"
+            }`
+          );
+        } else {
+          setError("네트워크 오류 혹은 알 수 없는 문제 발생");
+        }
+      } finally {
+        setLoading(false); // 로딩 종료
+      }
+    };
 
+    fetchUserData(); // 함수 호출
+  }, []);
   /**
    * 비밀번호 변경 핸들러
    */
@@ -59,17 +54,23 @@ const MyPage = () => {
     setError(""); // 기존 에러 초기화
 
     try {
-      // API 호출(비밀번호 변경)
-      await changePassword(userData.name, currentPassword, newPassword);
-      // 성공 시 입력 필드 초기화
+      // 비밀번호 변경 API 호출
+      await changePassword(userData.username, currentPassword, newPassword);
+
+      // 성공 시 입력 필드 초기화 및 알림
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
       alert("비밀번호가 성공적으로 변경되었습니다.");
     } catch (error) {
       console.error("Failed to change password:", error);
+
       if (error.response && error.response.data) {
-        setError(`비밀번호 변경 실패: ${error.response.data.message || "알 수 없는 오류 발생"}`);
+        setError(
+          `비밀번호 변경 실패: ${
+            error.response.data.message || "알 수 없는 오류 발생"
+          }`
+        );
       } else {
         setError("서버와의 연결에 실패했습니다.");
       }
@@ -92,7 +93,7 @@ const MyPage = () => {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">사용자 정보</h2>
           <div className="mb-2">
-            <strong>아이디:</strong> <span>{userData.name}</span>
+            <strong>아이디:</strong> <span>{userData.username}</span>
           </div>
           <div className="mb-2">
             <strong>이메일:</strong> <span>{userData.email}</span>
@@ -109,7 +110,9 @@ const MyPage = () => {
         <div>
           <h2 className="text-xl font-semibold mb-4">비밀번호 변경</h2>
           <div className="mb-2">
-            <label className="block text-sm font-medium mb-1">현재 비밀번호</label>
+            <label className="block text-sm font-medium mb-1">
+              현재 비밀번호
+            </label>
             <input
               type="password"
               value={currentPassword}
@@ -118,7 +121,9 @@ const MyPage = () => {
             />
           </div>
           <div className="mb-2">
-            <label className="block text-sm font-medium mb-1">새 비밀번호</label>
+            <label className="block text-sm font-medium mb-1">
+              새 비밀번호
+            </label>
             <input
               type="password"
               value={newPassword}
@@ -127,7 +132,9 @@ const MyPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">비밀번호 확인</label>
+            <label className="block text-sm font-medium mb-1">
+              비밀번호 확인
+            </label>
             <input
               type="password"
               value={confirmPassword}
