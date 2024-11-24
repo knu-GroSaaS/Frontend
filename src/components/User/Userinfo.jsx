@@ -2,53 +2,66 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../../apis/axiosInstance";
 import { changePassword } from "../../apis/user/user.js";
 
+/**
+ * 사용자 정보를 API로부터 가져오는 함수
+ * @param {Function} setUserData - 사용자 데이터를 업데이트
+ * @param {Function} setLoading - 로딩 상태를 업데이트
+ */
+const fetchUserData = async (setUserData, setLoading) => {
+  try {
+    const response = await axiosInstance.get("/manager/getuser");
+    const { username, email, phoneNum, site } = response.data;
+    setUserData({
+      name: username,
+      email,
+      phoneNum,
+      site,
+    });
+  } catch (error) {
+    console.error("Failed to fetch user data:", error);
+    alert("사용자 정보를 불러오는데 실패했습니다.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 const MyPage = () => {
+  // 사용자 정보와 상태 관리 변수들
   const [userData, setUserData] = useState({
     name: "",
     email: "",
     phoneNum: "",
     site: "",
   });
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState(""); // 현재 비밀번호
+  const [newPassword, setNewPassword] = useState(""); // 새 비밀번호
+  const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인
+  const [error, setError] = useState(""); // 에러 메시지
+  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [isSubmitting, setIsSubmitting] = useState(false); // 비밀번호 변경 버튼 상태
 
+  // 컴포넌트가 마운트될 때 사용자 데이터를 불러옴
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance.get("/manager/getuser");
-        const { username, email, phoneNum, site } = response.data;
-        setUserData({
-          name: username,
-          email,
-          phoneNum,
-          site,
-        });
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-        alert("사용자 정보를 불러오는데 실패했습니다.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
+    fetchUserData(setUserData, setLoading);
   }, []);
 
+  /**
+   * 비밀번호 변경 핸들러
+   */
   const handlePasswordSubmit = async () => {
+    // 새 비밀번호와 확인 비밀번호가 일치하는지 확인
     if (newPassword !== confirmPassword) {
       setError("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    setIsSubmitting(true);
-    setError("");
+    setIsSubmitting(true); // 버튼 비활성화
+    setError(""); // 기존 에러 초기화
 
     try {
+      // API 호출(비밀번호 변경)
       await changePassword(userData.name, currentPassword, newPassword);
+      // 성공 시 입력 필드 초기화
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -61,10 +74,11 @@ const MyPage = () => {
         setError("서버와의 연결에 실패했습니다.");
       }
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); // 버튼 활성화
     }
   };
 
+  // 로딩 중일 때 화면 표시
   if (loading) {
     return <div>로딩 중...</div>;
   }
@@ -74,6 +88,7 @@ const MyPage = () => {
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
         <h1 className="text-3xl font-bold text-center mb-6">My Page</h1>
 
+        {/* 사용자 정보 섹션 */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">사용자 정보</h2>
           <div className="mb-2">
@@ -90,6 +105,7 @@ const MyPage = () => {
           </div>
         </div>
 
+        {/* 비밀번호 변경 섹션 */}
         <div>
           <h2 className="text-xl font-semibold mb-4">비밀번호 변경</h2>
           <div className="mb-2">
