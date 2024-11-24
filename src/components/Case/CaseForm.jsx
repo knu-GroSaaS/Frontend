@@ -34,7 +34,9 @@ const CaseForm = () => {
         <div className="font-bold text-[#d9d9d9] text-xl">Dashboard &gt;</div>
         <div className="flex items-center">
           <Link className="ml-2 font-bold text-xl">알림</Link>
-          <Link to="/mypage" className="ml-2 font-bold text-xl">MyPage</Link>
+          <Link to="/mypage" className="ml-2 font-bold text-xl">
+            MyPage
+          </Link>
         </div>
       </div>
 
@@ -52,11 +54,11 @@ const CaseForm = () => {
           </div>
           <div className="flex flex-col">
             {/* 헤더 */}
-            <div className="flex flex-row justify-between border-b p-4 bg-gray-200">
-              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+            <div className="flex flex-row justify-between border-b p-4 bg-gray-200 mr-4">
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Case #
               </div>
-              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+              <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
                 Problem Title
               </div>
               <div className="font-bold text-[#b6b6b6] flex-1 text-center px-2">
@@ -81,7 +83,7 @@ const CaseForm = () => {
                   key={index}
                   className="flex flex-row justify-between border-b p-4 h-16"
                 >
-                  <div className="text-sm flex-[0.75] flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {caseList.length - index}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
