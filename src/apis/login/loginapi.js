@@ -19,7 +19,7 @@ export const getLogin = async (username, password) => {
   );
   const { accessToken, refreshToken } = response.data;
   const hours = 1; // 시간 설정
-  const refreshHours = 24 * 7;
+  const refreshHours = 24;
   Cookies.set("accessToken", accessToken, { expires: hours / 24, path: "/" });
   Cookies.set("refreshToken", refreshToken, {
     expires: refreshHours / 24,

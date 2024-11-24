@@ -13,7 +13,7 @@ export const useAuthStore = create((set) => {
 
     // 토큰 설정 함수
     setTokens: (accessToken, refreshToken) => {
-      Cookies.set("accessToken", accessToken, { expires: 1, path: "/" }); // 1일 후 만료
+      Cookies.set("accessToken", accessToken, { expires: 1 / 24, path: "/" }); // 1일 후 만료
       Cookies.set("refreshToken", refreshToken, { expires: 1, path: "/" });
       set({ accessToken, refreshToken });
     },
