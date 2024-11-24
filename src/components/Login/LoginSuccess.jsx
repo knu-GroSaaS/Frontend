@@ -1,63 +1,63 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
-
+import { getUser } from "../../apis/user/user";
 
 const LoginSuccess = () => {
-    const [isLoading, setIsLoading] = useState(false); // 로딩 상태
-  const [isLoginInProgress, setIsLoginInProgress] = useState(true); // 로그인 진행 상태
-  const [currentTime, setCurrentTime] = useState(''); // 현재 시간 표시
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const [currentTime, setCurrentTime] = useState(""); // 현재 시간 표시
+  const [role, setRole] = useState(""); // 사용자 역할
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getUser();
+        setRole(response.data.usertype); // 사용자 역할 저장
+      } catch (error) {
+        console.error("사용자 정보 가져오기 실패:", error);
+      } finally {
+        // 최소 로딩 시간 확보
+        setTimeout(() => {
+          setIsLoading(false); // 최소 2초 후 로딩 종료
+        }, 2000);
+      }
+    };
+
+    fetchUserData(); // 데이터 가져오기
+  }, []);
+
+  useEffect(() => {
+    // 로딩이 완료되고 role이 설정되었을 때 이동
+    if (!isLoading && role) {
+      if (role === "ROLE_ADMIN") {
+        navigate("/adminpage");
+      } else {
+        navigate("/dashboard");
+      }
+    }
+  }, [isLoading, role, navigate]); // 의존성 배열에 role 추가
 
   // 현재 시간을 포맷팅하는 함수
   const updateTime = () => {
     const now = new Date();
-    const formattedTime = now.toISOString().split('T').join(' ').slice(0, 19);
+    const formattedTime = now.toISOString().split("T").join(" ").slice(0, 19);
     setCurrentTime(formattedTime);
   };
 
   useEffect(() => {
-    updateTime(); // 컴포넌트가 마운트될 때 시간 업데이트
-
-    let loadingTimer;
-    let isRequestComplete = false;
-
-    // 500ms 후에 로딩 상태로 전환
-    loadingTimer = setTimeout(() => {
-      if (!isRequestComplete) {
-        setIsLoading(true);
-      }
-    }, 500);
-
-    // 실제 비동기 로그인 요청 시뮬레이션 (예: 서버 요청)
-    const simulateLoginRequest = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // 2초 동안 대기
-        isRequestComplete = true; // 요청이 완료됨
-        setIsLoading(false); // 로딩 상태 해제
-        clearTimeout(loadingTimer); // 타이머 초기화
-        navigate("/dashboard"); // 대시보드로 이동
-      } catch (error) {
-        console.error("로그인 실패:", error);
-        setIsLoading(false);
-        clearTimeout(loadingTimer);
-      } finally {
-        setIsLoginInProgress(false);
-      }
-    };
-
-    simulateLoginRequest(); // 비동기 작업 실행
-
-    return () => {
-      clearTimeout(loadingTimer); // 컴포넌트 언마운트 시 타이머 정리
-    };
-  }, [navigate]);
+    updateTime(); // 컴포넌트 마운트 시 시간 업데이트
+  }, []);
 
   // 로딩 화면 UI
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-gray-300 p-10 rounded-lg shadow-md w-80 text-center">
-        <img src="/assets/Grosaas_logo.png" alt="Logo" className="w-12 h-12 mb-5 mx-auto" />
+        <img
+          src="/assets/Grosaas_logo.png"
+          alt="Logo"
+          className="w-12 h-12 mb-5 mx-auto"
+        />
         <h1 className="mb-5 font-semibold">
           <span className="text-indigo-600">GroSaaS</span> Dashboard
         </h1>
@@ -84,6 +84,6 @@ const LoginSuccess = () => {
       </div>
     </div>
   );
-}
+};
 
 export default LoginSuccess;
