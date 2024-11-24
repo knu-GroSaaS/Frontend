@@ -10,7 +10,6 @@ import axiosInstance from "../axiosInstance";
  * @returns
  */
 export const createCase = async (
-  userId,
   problemTitle,
   product,
   version,
@@ -23,7 +22,6 @@ export const createCase = async (
     version,
     serialNumber,
     severity,
-    userId,
   });
   return response.data;
 };
@@ -59,7 +57,6 @@ export const getCase = async (caseId) => {
  * @returns
  */
 export const editCase = async (
-  userId,
   caseId,
   problemTitle,
   product,
@@ -73,7 +70,6 @@ export const editCase = async (
     version,
     serialNumber,
     severity,
-    userId,
   });
   return response.data;
 };

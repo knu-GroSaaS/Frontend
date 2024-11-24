@@ -5,7 +5,6 @@ import { editCase, createCase, getCase } from "../../apis/case/caseapi";
 const CaseInfo = ({ editing = false }) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [userId, setUserId] = useState(0); // userId 상태 관리
   const [originalData, setOriginalData] = useState(null); // null indicates no data fetched yet
 
   const [formData, setFormData] = useState({
@@ -42,24 +41,6 @@ const CaseInfo = ({ editing = false }) => {
     }
   }, [editing, id]);
 
-  // useEffect(() => {
-  //   const fetchUserId = async () => {
-  //     try {
-  //       const response = await getUser(); // getUser 호출
-  //       const fetchedUserId = response?.data?.userId; // userId 추출
-  //       if (fetchedUserId) {
-  //         setUserId(fetchedUserId); // userId 상태 업데이트
-  //       } else {
-  //         console.error("userId가 응답에 포함되지 않았습니다.");
-  //       }
-  //     } catch (error) {
-  //       console.error("getUser 호출 중 에러 발생:", error);
-  //     }
-  //   };
-
-  //   fetchUserId();
-  // }, []);
-
   const isEdited = () => {
     // Deep comparison to check for changes
     return JSON.stringify(formData) !== JSON.stringify(originalData);
@@ -78,7 +59,6 @@ const CaseInfo = ({ editing = false }) => {
     try {
       if (editing) {
         await editCase(
-          userId,
           id, // case ID
           formData.problemTitle,
           formData.product,
@@ -90,7 +70,6 @@ const CaseInfo = ({ editing = false }) => {
       } else {
         console.log(formData);
         await createCase(
-          userId,
           formData.problemTitle,
           formData.product,
           formData.version,

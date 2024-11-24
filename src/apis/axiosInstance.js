@@ -66,7 +66,7 @@ axiosInstance.interceptors.response.use(
             }); // 1시간 유효
             Cookies.set("refreshToken", newRefreshToken, {
               path: "/",
-              expires: 7,
+              expires: 1,
             }); // 7일 유효
 
             useAuthStore.getState().setTokens(accessToken, newRefreshToken); // Zustand 상태 업데이트

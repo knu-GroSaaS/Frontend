@@ -17,10 +17,9 @@ export const getLogin = async (username, password) => {
       },
     }
   );
-  console.log(response.data);
   const { accessToken, refreshToken } = response.data;
   const hours = 1; // 시간 설정
-  const refreshHours = 24 * 7;
+  const refreshHours = 24;
   Cookies.set("accessToken", accessToken, { expires: hours / 24, path: "/" });
   Cookies.set("refreshToken", refreshToken, {
     expires: refreshHours / 24,
@@ -31,9 +30,9 @@ export const getLogin = async (username, password) => {
   // const token = Cookies.get("accessToken");
   // console.log("Access Token from Cookie:", token);
   useAuthStore.getState().setTokens(accessToken, refreshToken);
-  const redirectPath = Cookies.get("redirectPath") || "/dashboard"; // 기본 경로 설정
-  Cookies.remove("redirectPath"); // 리다이렉션 경로 삭제
-  window.location.href = redirectPath; // 저장된 경로로 이동
+  // const redirectPath = Cookies.get("redirectPath") || "/dashboard"; // 기본 경로 설정
+  // Cookies.remove("redirectPath"); // 리다이렉션 경로 삭제
+  // window.location.href = redirectPath; // 저장된 경로로 이동
   return response.data;
 };
 

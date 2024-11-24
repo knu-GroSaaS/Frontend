@@ -13,7 +13,6 @@ const LoginForm = () => {
     try {
       // function : 로그인 API 호출 //
       const loginSuccess = await getLogin(username, password);
-      console.log("Login attempt with:", { username, password });
       if (loginSuccess) {
         setIsLoggedIn(true);
       } else {
