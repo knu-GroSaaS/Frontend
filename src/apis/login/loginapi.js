@@ -31,7 +31,9 @@ export const getLogin = async (username, password) => {
   // const token = Cookies.get("accessToken");
   // console.log("Access Token from Cookie:", token);
   useAuthStore.getState().setTokens(accessToken, refreshToken);
-  const redirectPath = Cookies.get("redirectPath") || "/dashboard"; // 기본 경로 설정
+  const redirectPath = (username === "admin" && password === "admin123") ? "/adminPage" : "/dashboard";
+  Cookies.set("redirectPath", redirectPath, { path: "/" });
+  // const redirectPath = Cookies.get("redirectPath") || "/dashboard"; // 기본 경로 설정
   Cookies.remove("redirectPath"); // 리다이렉션 경로 삭제
   window.location.href = redirectPath; // 저장된 경로로 이동
   return response.data;
