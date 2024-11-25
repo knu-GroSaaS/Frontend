@@ -29,5 +29,5 @@ export const changePassword = (username, currentPassword, newPassword) => {
  * @returns {Promise<Object>} 사용자 정보 객체 반환
  */
 export const getUser = () => {
-  return axiosInstance.get("/manager/getuser");
+  return axiosInstance.get("/getuser");
 };
