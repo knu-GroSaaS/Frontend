@@ -86,7 +86,7 @@ export const deleteCase = async (caseId) => {
 
 /**
  * 특정 Case 검색
- * @param {number} caseId
+ * @param {string} keyword
  * @returns
  */
 export const searchCase = async (keyword) => {
