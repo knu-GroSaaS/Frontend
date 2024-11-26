@@ -1,9 +1,11 @@
 import React from "react";
 import AdminForm from "../components/Admin/AdminForm";
+import AdminSidebar from "../components/Admin/AdminSidebar";
 
 const AdminPage = () => {
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="flex">
+      <AdminSidebar />
       <AdminForm />
     </div>
   );
