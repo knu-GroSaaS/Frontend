@@ -19,6 +19,15 @@ const AdminForm = () => {
     fetchUserList();
   }, []);
 
+  const getStatusColor = (status) => {
+    if (status === "ACTIVE") {
+      return "bg-green-500"; // 초록불
+    } else if (status === "INACTIVE") {
+      return "bg-red-500"; // 빨간불
+    }
+    return "bg-gray-500"; // 기본 색상
+  };
+
   return (
     <div className="flex flex-col w-full h-screen">
       {/* Header */}
@@ -79,8 +88,14 @@ const AdminForm = () => {
                     row.phoneNum,
                     row.usertype,
                     row.site,
-                    row.status,
-                  ].map((cell, idx) => (
+                    <div className="flex justify-center items-center">
+                      <span
+                        className={`w-3 h-3 rounded-full ${getStatusColor(
+                          row.status
+                        )}`}
+                      ></span>
+                    </div>                  
+                    ].map((cell, idx) => (
                     <div
                       key={idx}
                       className="text-lg flex-[1] text-center px-2 overflow-hidden text-ellipsis whitespace-nowrap"
