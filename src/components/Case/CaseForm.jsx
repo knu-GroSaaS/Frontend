@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCaselist, searchCase } from "../../apis/case/caseapi";
+import { viewLog } from "../../apis/admin/opensearch";
 import Search from "../Search/Search";
 
 const CaseForm = () => {
   const [caseList, setCaseList] = useState([]);
+  const [log, setLog] = useState([null]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +23,14 @@ const CaseForm = () => {
       }
     };
 
+    const fetchLog = async () => {
+      const response = await viewLog();
+      setLog(response);
+      console.log(response);
+    }
+
     fetchCaseList();
+    fetchLog();
   }, []);
 
   const handleCreateCase = () => {
@@ -56,7 +65,7 @@ const CaseForm = () => {
 
       <div className="flex flex-row flex-grow">
         {/* Main Content */}
-        <div className="flex-grow bg-white p-4">
+        <div className="flex flex-col flex-grow bg-white p-4">
           <div className="flex justify-between items-center mb-4 gap-4">
             <div className="ml-2 font-bold text-4xl flex-shrink-0">Caselist</div>
             <Search onSearch={handleSearch} />
@@ -125,6 +134,9 @@ const CaseForm = () => {
                 </div>
               </>
             )}
+          </div>
+          <div className="flex flex-col flex-grow bg-white p-4">
+            <div className="ml-2 font-bold text-4xl flex-shrink-0">Log</div>
           </div>
         </div>
       </div>
