@@ -42,18 +42,108 @@ const AdminForm = () => {
               <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
                 Username
               </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                Password
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                Email
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                PhoneNum
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                UserType
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                Site
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                Status
+              </div>
+              {/* <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                CreateTime
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                UpdateTime
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                PasswordUpdateTime
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                DeleteTime
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                EmailVerified
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                EmailVerificationToken
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                ResetToken
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                TokenExpiryTime
+              </div>
+              <div className="font-bold text-[#b6b6b6] flex-[0.75] text-center px-2">
+                AuthStatus
+              </div> */}
             </div>
 
             <div className="overflow-y-auto max-h-[250px] border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50">
               {/* 데이터 행 표시 */}
               {userList.map((row, index) => (
-                <div>
-                  <div className="text-sm flex-[0.75] flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
-                    {index}
+                <div key={index} className="flex border-b">
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.id}
                   </div>
                   <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
                     {row.username}
                   </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.password}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.email}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.phoneNum}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.usertype}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.site}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.status}
+                  </div>
+                  {/* <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.createTime}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.updateTime}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.passwordUpdateTime}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.deleteTime}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.emailVerified}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.emailVerificationToken}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.resetToken}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.tokenExpiryTime}
+                  </div>
+                  <div className="text-sm flex-1 flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2">
+                    {row.authStatus}
+                  </div> */}
                 </div>
               ))}
             </div>
