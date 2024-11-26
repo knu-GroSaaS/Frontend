@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // 뒤로가기 기능을 위해 추가
 import { changePassword, getUser } from "../../apis/user/user.js";
 
 const MyPage = () => {
-  // 사용자 정보와 상태 관리 변수들
+  const navigate = useNavigate(); // 뒤로가기 기능
+
   const [userData, setUserData] = useState({
     username: "",
     email: "",
     phoneNum: "",
     site: "",
   });
-  const [currentPassword, setCurrentPassword] = useState(""); // 현재 비밀번호
-  const [newPassword, setNewPassword] = useState(""); // 새 비밀번호
-  const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인
-  const [error, setError] = useState(""); // 에러 메시지
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [isSubmitting, setIsSubmitting] = useState(false); // 비밀번호 변경 버튼 상태
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        setLoading(true); // 로딩 시작
+        setLoading(true);
         const response = await getUser();
-        setUserData(response.data); // 사용자 데이터 저장
+        setUserData(response.data);
       } catch (error) {
         console.error("사용자 정보 가져오기 실패:", error);
         if (error.response && error.response.data) {
@@ -34,30 +36,25 @@ const MyPage = () => {
           setError("네트워크 오류 혹은 알 수 없는 문제 발생");
         }
       } finally {
-        setLoading(false); // 로딩 종료
+        setLoading(false);
       }
     };
 
-    fetchUserData(); // 함수 호출
+    fetchUserData();
   }, []);
-  /**
-   * 비밀번호 변경 핸들러
-   */
+
   const handlePasswordSubmit = async () => {
-    // 새 비밀번호와 확인 비밀번호가 일치하는지 확인
     if (newPassword !== confirmPassword) {
       setError("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    setIsSubmitting(true); // 버튼 비활성화
-    setError(""); // 기존 에러 초기화
+    setIsSubmitting(true);
+    setError("");
 
     try {
-      // 비밀번호 변경 API 호출
       await changePassword(userData.username, currentPassword, newPassword);
 
-      // 성공 시 입력 필드 초기화 및 알림
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -75,11 +72,10 @@ const MyPage = () => {
         setError("서버와의 연결에 실패했습니다.");
       }
     } finally {
-      setIsSubmitting(false); // 버튼 활성화
+      setIsSubmitting(false);
     }
   };
 
-  // 로딩 중일 때 화면 표시
   if (loading) {
     return <div>로딩 중...</div>;
   }
@@ -143,15 +139,23 @@ const MyPage = () => {
             />
           </div>
           {error && <p className="text-red-500 mb-4">{error}</p>}
-          <button
-            onClick={handlePasswordSubmit}
-            className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
-              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "변경 중..." : "변경"}
-          </button>
+          <div className="flex justify-end gap-4"> {/* 버튼 컨테이너 */}
+            <button
+              onClick={handlePasswordSubmit}
+              className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "변경 중..." : "변경"}
+            </button>
+            <button
+              onClick={() => navigate(-1)} // 뒤로가기
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+            >
+              뒤로가기
+            </button>
+          </div>
         </div>
       </div>
     </div>
