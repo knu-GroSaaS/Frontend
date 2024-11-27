@@ -7,7 +7,7 @@ const size = 10; // 검색할 문서의 개수
 export const viewLog = async () => {
   try {
     // 검색 쿼리
-    const response = await axiosInstance.get(`/apii/${index}/_search`, {
+    const response = await axiosInstance.get(`/api/${index}/_search`, {
       baseURL: "https://210.109.55.61:9200",
       auth: {
         username: "admin", // 아이디
