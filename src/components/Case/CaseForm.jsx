@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCaselist, searchCase } from "../../apis/case/caseapi";
-import { viewLog } from "../../apis/admin/opensearch";
+import { viewLog } from "../../apis/case/opensearch";
 import Search from "../Search/Search";
 
 const CaseForm = () => {
