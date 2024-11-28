@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getUser } from "../apis/user/user.js";
 
 const SideBar = () => {
     const navigate = useNavigate();
+    const [username, setUsername] = useState('Loading...');
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await getUser();
+                setUsername(response.data.username); // 사용자 이름 설정
+            } catch (error) {
+                console.error('Failed to fetch user information:', error);
+                setUsername('Unknown User'); // 실패 시 기본 이름
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     const handleLogout = () => {
-        // 로컬 스토리지에 저장된 토큰 삭제
         localStorage.removeItem('authToken');
-
-        // 메인 페이지로 이동
         navigate('/');
     };
 
@@ -33,11 +46,14 @@ const SideBar = () => {
                 <Link to="/download-history" className="block">Download History</Link>
             </div>
 
-            {/* Admin Information */}
+            {/* User Information */}
             <div className="flex items-center justify-between absolute bottom-16 w-full px-[19.5px]">
                 <div className="flex items-center">
                     <img className="w-12 h-12 mr-2.5" src="/assets/usericon.png" alt="User Icon" />
-                    <div className="text-black text-base font-bold">Admin</div>
+                    {/* 사용자 이름에 링크 추가 */}
+                    <Link to="/mypage" className="text-black text-base font-bold hover:underline">
+                        {username}
+                    </Link>
                 </div>
                 <img className="w-5 h-5" src="/assets/settingicon.png" alt="Setting Icon" />
             </div>
