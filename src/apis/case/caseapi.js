@@ -89,9 +89,10 @@ export const deleteCase = async (caseId) => {
  * @param {string} keyword
  * @returns
  */
-export const searchCase = async (keyword) => {
+export const searchCase = async (keyWord) => {
   const response = await axiosInstance.get("/api/board/search", {
-    keyword,
+    params: { keyWord },
   });
+  console.log(response);
   return response.data;
 };
