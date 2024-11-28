@@ -40,7 +40,10 @@ jobs:
     - name: Deploy to Server - Set Permissions
       run: |
        sshpass -p "${{ secrets.PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.HOST }} "chmod -R 755 /var/www/html/dist"
-  
+
+    - name: Debug Secrets
+      run: echo "Password-> ${{ secrets.PASSWORD }}"
+      
     - name: Deploy to Server - Restart Nginx
       run: |
        sshpass -p "${{ secrets.PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.HOST }} "sudo -S service nginx restart"
