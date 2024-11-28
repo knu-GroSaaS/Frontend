@@ -1,0 +1,46 @@
+name: Deploy React App
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # 최신 Ubuntu 버전에서 실행
+
+    steps:
+      # Git 체크아웃
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+      # Node.js 버전 설정
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+      # 의존성 설치 및 빌드
+    - name: Install dependencies and build
+      run: |
+        npm install
+        npm run build
+
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass  # sshpass 설치
+
+    - name: Deploy to Server - Create Directory
+      run: |
+        sshpass -p "${{ secrets.PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.HOST }} "mkdir -p /var/www/html/dist"
+    
+    - name: Deploy to Server - Copy Files
+      run: |
+        sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no -P 50 -r dist/* admin@${{ secrets.HOST }}:/var/www/html/dist/
+    
+    - name: Deploy to Server - Set Permissions
+      run: |
+       sshpass -p "${{ secrets.PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.HOST }} "chmod -R 755 /var/www/html/dist"
+  
+    - name: Deploy to Server - Restart Nginx
+      run: |
+       sshpass -p "${{ secrets.PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.HOST }} "sudo systemctl restart nginx"
