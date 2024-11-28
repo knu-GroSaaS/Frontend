@@ -43,4 +43,4 @@ jobs:
   
     - name: Deploy to Server - Restart Nginx
       run: |
-       sshpass -p "${{ secrets.PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.HOST }} "sudo -S systemctl restart nginx"
+       sshpass -p "${{ secrets.PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.HOST }} "sudo service nginx restart"
