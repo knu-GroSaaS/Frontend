@@ -6,7 +6,7 @@ import Search from "../Search/Search";
 
 const CaseForm = () => {
   const [caseList, setCaseList] = useState([]);
-  const [log, setLog] = useState([null]);
+  const [log, setLog] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,12 +25,12 @@ const CaseForm = () => {
 
     const fetchLog = async () => {
       const response = await viewLog();
-      setLog(response);
+      setLog(response || []);
       console.log(response);
     }
 
     fetchCaseList();
-    // fetchLog();
+    fetchLog();
   }, []);
 
   const handleCreateCase = () => {

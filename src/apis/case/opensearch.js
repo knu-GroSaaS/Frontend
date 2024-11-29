@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosInstance from "../axiosInstance";
 
 // 검색할 인덱스와 쿼리
@@ -7,8 +8,7 @@ const size = 10; // 검색할 문서의 개수
 export const viewLog = async () => {
   try {
     // 검색 쿼리
-    const response = await axiosInstance.get(`/api/${index}/_search`, {
-      baseURL: "https://210.109.55.61:9200",
+    const response = await axios.get(`/api/secure/${index}/_search`, {
       auth: {
         username: "admin", // 아이디
         password: "admin", // 비밀번호
