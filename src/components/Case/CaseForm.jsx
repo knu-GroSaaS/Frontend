@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { getCaselist, searchCase } from "../../apis/case/caseapi";
 import { viewLog } from "../../apis/case/opensearch";
 import Search from "../Search/Search";
+import MemoryAndSwapBarGraph from "../OpenSearch/MemoryBarGraph";
 
 const CaseForm = () => {
   const [caseList, setCaseList] = useState([]);
-  const [log, setLog] = useState([]);
+  const [log, setLog] = useState(null); // 단일 데이터 처리
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,10 +27,12 @@ const CaseForm = () => {
     const fetchLog = async () => {
       try {
         const response = await viewLog();
-        setLog(response || []);
+        if (response && response.hits && response.hits.hits.length > 0) {
+          setLog(response.hits.hits[0]._source); // 첫 번째 데이터만 사용
+        }
       } catch (error) {
         console.error("Error fetching log:", error);
-        setLog([]);
+        setLog(null);
       }
     };
 
@@ -70,6 +73,7 @@ const CaseForm = () => {
       <div className="flex flex-row flex-grow">
         {/* Main Content */}
         <div className="flex flex-col flex-grow bg-white p-4">
+          {/* Case List Section */}
           <div className="flex flex-col flex-1">
             <div className="flex justify-between items-center mb-4 gap-4">
               <div className="ml-2 font-bold text-4xl flex-shrink-0">
@@ -143,22 +147,41 @@ const CaseForm = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col flex-1 mt-4">
-            <div className="ml-2 font-bold text-4xl flex-shrink-0 mb-6">
-              Log
-            </div>
-            <div className="flex flex-col">
-              {log.length === 0 ? (
-                <div className="text-center text-gray-500 p-4">
-                  No logs found.
-                </div>
-              ) : (
-                <div className="overflow-y-auto max-h-[330px] border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50 p-4">
+
+          {/* Log and Status Section */}
+          <div className="flex flex-row mt-6 space-x-4 h-full">
+            {/* Log Section */}
+            <div className="w-1/2 h-full flex flex-col">
+              <div className="ml-2 font-bold text-4xl flex-shrink-0 mb-6">
+                Log
+              </div>
+              <div className="flex-1 overflow-y-auto border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50 p-4">
+                {log ? (
                   <pre className="text-sm text-gray-700 whitespace-pre-wrap">
                     {JSON.stringify(log, null, 2)}
                   </pre>
-                </div>
-              )}
+                ) : (
+                  <div className="text-center text-gray-500">
+                    No logs found.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Status Section */}
+            <div className="w-1/2 h-full flex flex-col">
+              <div className="ml-2 font-bold text-4xl flex-shrink-0 mb-6">
+                Status
+              </div>
+              <div className="flex-1 border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50 p-4">
+                {log ? (
+                  <MemoryAndSwapBarGraph data={log} />
+                ) : (
+                  <div className="text-center text-gray-500">
+                    No status data found.
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
