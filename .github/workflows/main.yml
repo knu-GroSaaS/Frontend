@@ -22,7 +22,7 @@ jobs:
 
       # BASEURL env 생성 및 설정
     - name: Create Env Variables
-      run: echo "${{secrets.ENV_PROCUCTION}}" >> .env
+      run: echo "${{secrets.ENV_BASE_URL}}" >> .env
       
       # 의존성 설치 및 빌드
     - name: Install dependencies and build
