@@ -12,6 +12,9 @@ const axiosInstance = axios.create({
 // 요청 인터셉터
 axiosInstance.interceptors.request.use((config) => {
   const { accessToken } = useAuthStore.getState();
+  if (config.url?.startsWith("/api/secure")) {
+    config.baseURL = ""; // baseURL 무시
+  }
   if (accessToken) {
     // api 요청 할 때 header에 accsesToken 넣어줌
     config.headers = {

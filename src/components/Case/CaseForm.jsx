@@ -24,10 +24,14 @@ const CaseForm = () => {
     };
 
     const fetchLog = async () => {
-      const response = await viewLog();
-      setLog(response || []);
-      console.log(response);
-    }
+      try {
+        const response = await viewLog();
+        setLog(response || []);
+      } catch (error) {
+        console.error("Error fetching log:", error);
+        setLog([]);
+      }
+    };
 
     fetchCaseList();
     fetchLog();
@@ -68,7 +72,9 @@ const CaseForm = () => {
         <div className="flex flex-col flex-grow bg-white p-4">
           <div className="flex flex-col flex-1">
             <div className="flex justify-between items-center mb-4 gap-4">
-              <div className="ml-2 font-bold text-4xl flex-shrink-0">Caselist</div>
+              <div className="ml-2 font-bold text-4xl flex-shrink-0">
+                Caselist
+              </div>
               <Search onSearch={handleSearch} />
               <button
                 className="bg-[#BEACEB] text-white p-2 rounded flex-shrink-0"
@@ -138,10 +144,14 @@ const CaseForm = () => {
             </div>
           </div>
           <div className="flex flex-col flex-1 mt-4">
-            <div className="ml-2 font-bold text-4xl flex-shrink-0 mb-6">Log</div>
+            <div className="ml-2 font-bold text-4xl flex-shrink-0 mb-6">
+              Log
+            </div>
             <div className="flex flex-col">
               {log.length === 0 ? (
-                <div className="text-center text-gray-500 p-4">No logs found.</div>
+                <div className="text-center text-gray-500 p-4">
+                  No logs found.
+                </div>
               ) : (
                 <div className="overflow-y-auto max-h-[330px] border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50 p-4">
                   <pre className="text-sm text-gray-700 whitespace-pre-wrap">
