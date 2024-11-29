@@ -19,30 +19,14 @@ const CaseUnit = () => {
   const getPost = async (id) => {
     try {
       console.log("Fetching case data...");
-      const res = await getCase(id);
-      setPost(res);
+      const res = await getCase(id); // getCase 함수 호출
+      setPost(res); // res에 데이터를 설정합니다.
       console.log("Fetched data:", res);
     } catch (error) {
       console.error("Failed to fetch case data:", error);
     } finally {
       setLoading(false);
     }
-  };
-
-  // KST 변환 함수
-  const formatToKST = (utcDate) => {
-    const date = new Date(utcDate);
-    // UTC + 9시간 (KST)
-    const options = {
-      timeZone: "Asia/Seoul",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    };
-    return new Intl.DateTimeFormat("ko-KR", options).format(date);
   };
 
   useEffect(() => {
@@ -52,7 +36,7 @@ const CaseUnit = () => {
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this case?")) {
       try {
-        await deleteCase(id);
+        await deleteCase(id); // API 호출
         alert("Case deleted successfully.");
         navi("/dashboard");
       } catch (error) {
@@ -60,6 +44,23 @@ const CaseUnit = () => {
         alert("Failed to delete the case. Please try again.");
       }
     }
+  };
+
+  // 한국 표준시로 시간 변환 함수
+  const formatKST = (dateString) => {
+    const date = new Date(dateString);
+    // UTC 기준 시간에서 9시간 추가
+    const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZone: "Asia/Seoul",
+    };
+    return new Intl.DateTimeFormat("ko-KR", options).format(kstDate);
   };
 
   if (loading) {
@@ -102,13 +103,31 @@ const CaseUnit = () => {
           </p>
           <p className="text-lg text-gray-700">
             <span className="font-semibold">Created At:</span>{" "}
-            {formatToKST(post.createdAt)}
+            {formatKST(post.createdAt)}
           </p>
           <p className="text-lg text-gray-700">
             <span className="font-semibold">Updated At:</span>{" "}
-            {formatToKST(post.updatedAt)}
+            {formatKST(post.updatedAt)}
           </p>
         </div>
 
         <div className="flex justify-center mt-6">
-         
+          <Link
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded hover:bg-purple-700 transition"
+            to={`/update/${id}`}
+          >
+            Edit
+          </Link>
+          <button
+            className="ml-4 px-4 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-700 transition"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CaseUnit;
