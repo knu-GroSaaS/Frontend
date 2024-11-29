@@ -4,7 +4,7 @@ import { getUser } from "../../apis/admin/admin";
 
 const AdminForm = () => {
   const [userList, setUserList] = useState([]);
-  const[selectedRow, setSelectedRow] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
@@ -26,6 +26,23 @@ const AdminForm = () => {
       return "bg-red-500"; // 빨간불
     }
     return "bg-gray-500"; // 기본 색상
+  };
+
+  // 한국 표준시로 시간 변환 함수
+  const formatKST = (dateString) => {
+    if (!dateString) return "N/A"; // 값이 없으면 "N/A" 반환
+    const date = new Date(dateString);
+    const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZone: "Asia/Seoul",
+    };
+    return new Intl.DateTimeFormat("ko-KR", options).format(kstDate);
   };
 
   return (
@@ -71,7 +88,7 @@ const AdminForm = () => {
 
             {/* 데이터 */}
             <div className="overflow-y-auto flex-1 border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50">
-            {userList.map((row, index) => (
+              {userList.map((row, index) => (
                 <div
                   key={index}
                   className="flex flex-row justify-between border-b p-4 h-16"
@@ -94,8 +111,8 @@ const AdminForm = () => {
                           row.status
                         )}`}
                       ></span>
-                    </div>                  
-                    ].map((cell, idx) => (
+                    </div>,
+                  ].map((cell, idx) => (
                     <div
                       key={idx}
                       className="text-lg flex-[1] text-center px-2 overflow-hidden text-ellipsis whitespace-nowrap"
@@ -114,17 +131,40 @@ const AdminForm = () => {
       {isPopupOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">User Details: {selectedRow?.username}</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              User Details: {selectedRow?.username}
+            </h2>
             <div className="flex flex-col gap-2">
-              <div><strong>CreateTime:</strong> {selectedRow?.createTime}</div>
-              <div><strong>UpdateTime:</strong> {selectedRow?.updateTime}</div>
-              <div><strong>PasswordUpdateTime:</strong> {selectedRow?.passwordUpdateTime}</div>
-              <div><strong>DeleteTime:</strong> {selectedRow?.deleteTime}</div>
-              <div><strong>EmailVerified:</strong> {selectedRow?.emailVerified}</div>
-              <div><strong>EmailVerificationToken:</strong> {selectedRow?.emailVerificationToken}</div>
-              <div><strong>ResetToken:</strong> {selectedRow?.resetToken}</div>
-              <div><strong>TokenExpiryTime:</strong> {selectedRow?.tokenExpiryTime}</div>
-              <div><strong>AuthStatus:</strong> {selectedRow?.authStatus}</div>
+              <div>
+                <strong>CreateTime:</strong> {formatKST(selectedRow?.createTime)}
+              </div>
+              <div>
+                <strong>UpdateTime:</strong> {formatKST(selectedRow?.updateTime)}
+              </div>
+              <div>
+                <strong>PasswordUpdateTime:</strong>{" "}
+                {formatKST(selectedRow?.passwordUpdateTime)}
+              </div>
+              <div>
+                <strong>DeleteTime:</strong> {formatKST(selectedRow?.deleteTime)}
+              </div>
+              <div>
+                <strong>EmailVerified:</strong> {selectedRow?.emailVerified}
+              </div>
+              <div>
+                <strong>EmailVerificationToken:</strong>{" "}
+                {selectedRow?.emailVerificationToken}
+              </div>
+              <div>
+                <strong>ResetToken:</strong> {selectedRow?.resetToken}
+              </div>
+              <div>
+                <strong>TokenExpiryTime:</strong>{" "}
+                {formatKST(selectedRow?.tokenExpiryTime)}
+              </div>
+              <div>
+                <strong>AuthStatus:</strong> {selectedRow?.authStatus}
+              </div>
             </div>
             <button
               className="mt-4 bg-[#BEACEB] text-white py-2 px-4 rounded hover:bg-[#9d87c7]"
@@ -136,7 +176,6 @@ const AdminForm = () => {
         </div>
       )}
     </div>
-
   );
 };
 
