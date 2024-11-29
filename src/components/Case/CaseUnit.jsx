@@ -19,8 +19,8 @@ const CaseUnit = () => {
   const getPost = async (id) => {
     try {
       console.log("Fetching case data...");
-      const res = await getCase(id); // getCase 함수 호출
-      setPost(res); // res에 바로 데이터를 설정합니다.
+      const res = await getCase(id);
+      setPost(res);
       console.log("Fetched data:", res);
     } catch (error) {
       console.error("Failed to fetch case data:", error);
@@ -29,8 +29,8 @@ const CaseUnit = () => {
     }
   };
 
-   // KST 변환 함수
-   const formatToKST = (utcDate) => {
+  // KST 변환 함수
+  const formatToKST = (utcDate) => {
     const date = new Date(utcDate);
     // UTC + 9시간 (KST)
     const options = {
@@ -52,7 +52,7 @@ const CaseUnit = () => {
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this case?")) {
       try {
-        await deleteCase(id); // API 호출
+        await deleteCase(id);
         alert("Case deleted successfully.");
         navi("/dashboard");
       } catch (error) {
@@ -102,31 +102,13 @@ const CaseUnit = () => {
           </p>
           <p className="text-lg text-gray-700">
             <span className="font-semibold">Created At:</span>{" "}
-            {new Date(post.createdAt).toLocaleString()}
+            {formatToKST(post.createdAt)}
           </p>
           <p className="text-lg text-gray-700">
             <span className="font-semibold">Updated At:</span>{" "}
-            {new Date(post.updatedAt).toLocaleString()}
+            {formatToKST(post.updatedAt)}
           </p>
         </div>
 
         <div className="flex justify-center mt-6">
-          <Link
-            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded hover:bg-purple-700 transition"
-            to={`/update/${id}`}
-          >
-            Edit
-          </Link>
-          <button
-            className="ml-4 px-4 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-700 transition"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default CaseUnit;
+         
