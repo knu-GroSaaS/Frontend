@@ -86,9 +86,17 @@ const CaseUnit = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
       {/* 케이스 상세 정보 */}
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          {post.problemTitle} {/* 케이스 제목 */}
-        </h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            {post.problemTitle} {/* 케이스 제목 */}
+          </h1>
+          <button
+            className="ml-4 px-4 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-700 transition"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
+        </div>
 
         {/* 케이스 상세 정보 */}
         <div className="mb-4">
@@ -126,11 +134,12 @@ const CaseUnit = () => {
           >
             Edit
           </Link>
+
           <button
-            className="ml-4 px-4 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-700 transition"
-            onClick={handleDelete}
+            className="ml-4 px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-700 transition"
+            onClick={() => navi("/dashboard")}
           >
-            Delete
+            Back
           </button>
         </div>
       </div>
