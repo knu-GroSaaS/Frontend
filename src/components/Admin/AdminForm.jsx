@@ -51,16 +51,26 @@ const AdminForm = () => {
     return new Intl.DateTimeFormat("ko-KR", options).format(kstDate);
   };
 
+  const handleAuthStatusToggle = (index) => {
+    setUserList((prevList) =>
+      prevList.map((user, idx) =>
+        idx === index
+          ? {
+              ...user,
+              authStatus: user.authStatus === "AUTH" ? "NOT_AUTH" : "AUTH",
+            }
+          : user
+      )
+    );
+  };
+  
   return (
     <div className="flex flex-col w-full h-screen">
       {/* 헤더 섹션 */}
       <div className="bg-white h-20 flex items-center justify-between px-8">
         <div className="font-bold text-[#d9d9d9] text-xl">UserList &gt;</div>
         <div className="flex items-center">
-          <Link className="ml-2 font-bold text-xl">알림</Link>
-          <Link to="/mypage" className="ml-2 font-bold text-xl">
-            MyPage
-          </Link>
+          <div className="ml-2 font-bold text-xl">AdminPage</div>
         </div>
       </div>
 
@@ -76,12 +86,12 @@ const AdminForm = () => {
               {[
                 "User #",
                 "Username",
-                "Password",
                 "Email",
                 "PhoneNum",
                 "UserType",
                 "Site",
                 "Status",
+                "Auth_status",
               ].map((header, index) => (
                 <div
                   key={index}
@@ -104,9 +114,8 @@ const AdminForm = () => {
                   }}
                 >
                   {[
-                    row.id,
+                    index+1,
                     row.username,
-                    row.password,
                     row.email,
                     row.phoneNum,
                     row.usertype,
@@ -118,8 +127,24 @@ const AdminForm = () => {
                           row.status
                         )}`}
                       ></span>
-                    </div>,
-                  ].map((cell, idx) => (
+                    </div>,  
+                    <div className="flex justify-center items-center">
+                      {/* Auth_status 체크박스 */}
+                      <button
+                        className={`flex justify-center items-center py-1 px-4 ${
+                          row.authStatus === "AUTH"
+                            ? "bg-green-500 text-white"
+                            : "bg-gray-300 text-black"
+                        }`}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleAuthStatusToggle(index);
+                        }}
+                      >
+                        {row.authStatus}
+                      </button>
+                    </div>,                
+                    ].map((cell, idx) => (
                     <div
                       key={idx}
                       className="text-lg flex-[1] text-center px-2 overflow-hidden text-ellipsis whitespace-nowrap"
