@@ -29,6 +29,22 @@ const CaseUnit = () => {
     }
   };
 
+   // KST 변환 함수
+   const formatToKST = (utcDate) => {
+    const date = new Date(utcDate);
+    // UTC + 9시간 (KST)
+    const options = {
+      timeZone: "Asia/Seoul",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    };
+    return new Intl.DateTimeFormat("ko-KR", options).format(date);
+  };
+
   useEffect(() => {
     getPost(id);
   }, [id]);
