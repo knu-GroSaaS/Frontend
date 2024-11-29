@@ -105,7 +105,7 @@ const CaseForm = () => {
                     </div>
                   </div>
 
-                  <div className="overflow-y-auto max-h-[330px] border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50">
+                  <div className="overflow-y-auto max-h-[260px] border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50">
                     {caseList.map((row, index) => (
                       <Link
                         to={`/case/${row.caseId}`}
