@@ -47,7 +47,7 @@ let isAlertDisplayed = false;
 // 로그인 페이지로 리디렉션
 const redirectToLogin = () => {
   useAuthStore.getState().clearAuth(); // Zustand 상태 초기화
-  Cookies.set("redirectPath", window.location.pathname, { path: "/" }); // 리디렉션 경로 저장
+  // Cookies.set("redirectPath", window.location.pathname, { path: "/" }); // 리디렉션 경로 저장
 
   if (!isAlertDisplayed) {
     isAlertDisplayed = true;
