@@ -20,10 +20,10 @@ const CaseUnit = () => {
   // 서버에서 케이스 데이터를 가져오는 함수
   const getPost = async (id) => {
     try {
-      console.log("Fetching case data...");
+      // console.log("Fetching case data...");
       const res = await getCase(id); // getCase API 호출
       setPost(res); // 가져온 데이터를 상태에 저장
-      console.log("Fetched data:", res);
+      // console.log("Fetched data:", res);
     } catch (error) {
       console.error("Failed to fetch case data:", error);
     } finally {

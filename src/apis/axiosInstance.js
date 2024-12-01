@@ -62,7 +62,6 @@ axiosInstance.interceptors.response.use(
               await refreshTokens(refreshToken);
 
             // 새로운 토큰을 쿠키와 Zustand 상태에 저장
-            console.log("hi");
             Cookies.set("accessToken", accessToken, {
               path: "/",
               expires: 1 / 24,

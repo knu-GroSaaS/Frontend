@@ -68,7 +68,7 @@ const CaseInfo = ({ editing = false }) => {
         );
         alert("Case updated successfully!");
       } else {
-        console.log(formData);
+        // console.log(formData);
         await createCase(
           formData.problemTitle,
           formData.product,

@@ -18,7 +18,7 @@ export const viewLog = async () => {
     });
 
     // 응답 결과 출력
-    console.log("Search Result:", response.data);
+    // console.log("Search Result:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error while searching documents:", error);
