@@ -8,12 +8,10 @@ import CaseUnit from "./components/Case/CaseUnit";
 import UpdatePage from "./pages/UpdatePage";
 import MyPage from "./pages/MyPage";
 import AdminPage from "./pages/AdminPage";
-import LogoutHandler from "./apis/login/logoutHandler.jsx";
 
 function App() {
   return (
     <>
-      <LogoutHandler />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
