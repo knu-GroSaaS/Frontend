@@ -4,7 +4,7 @@ import axiosInstance from "../axiosInstance";
  * 가입 유저 정보 조회
  * @returns
  */
-export const getUser = async () => {
+export const getUsers = async () => {
   const response = await axiosInstance.get("/manager", {
   });
   return response.data;
@@ -16,7 +16,7 @@ export const getUser = async () => {
  * @param {string} username
  * @returns
  */
-export const CreateAuth = async () => {
+export const CreateAuth = async (requestername, username) => {
   const response = await axiosInstance.post("/manager/authcreate", {
     params: { requestername, username },
   });
@@ -29,7 +29,7 @@ export const CreateAuth = async () => {
  * @param {string} username
  * @returns
  */
-export const DeleteAuth = async () => {
+export const DeleteAuth = async (requestername, username) => {
   const response = await axiosInstance.delete("/manager/authdelete", {
     params: { requestername, username },
   });
