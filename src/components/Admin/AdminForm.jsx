@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getUser } from "../../apis/admin/admin";
+import { CreateAuth, DeleteAuth, getUser } from "../../apis/admin/admin";
 
 const AdminForm = () => {
   // 사용자 목록 상태 관리
@@ -9,9 +9,20 @@ const AdminForm = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   // 팝업 열림 여부 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [requester, setRequester] = useState(null);
 
   // 컴포넌트 마운트 시 사용자 목록을 가져오는 함수 호출
   useEffect(() => {
+    const fetchRequester = async () => {
+      try {
+        const response = await getUser();
+        setRequester(response.data.username);
+      } catch (error) {
+        console.error('Failed to fetch requester information:', error);
+        setRequester('Unknown Requester');
+      }
+    };
+
     const fetchUserList = async () => {
       try {
         // 서버에서 사용자 목록을 가져옴
@@ -21,7 +32,11 @@ const AdminForm = () => {
         console.error("Error fetching user list:", error); // 오류 로그 출력
       }
     };
-    fetchUserList(); // 사용자 목록 가져오기
+
+
+    fetchRequester();
+    fetchUserList();
+
   }, []);
 
   // 사용자 상태에 따라 색상 결정 함수
@@ -53,14 +68,19 @@ const AdminForm = () => {
 
   const handleAuthStatusToggle = (index) => {
     setUserList((prevList) =>
-      prevList.map((user, idx) =>
-        idx === index
-          ? {
-              ...user,
-              authStatus: user.authStatus === "AUTH" ? "NOT_AUTH" : "AUTH",
-            }
-          : user
-      )
+      prevList.map((user, idx) =>{
+        if (idx === index){
+          if (user.authStatus === "AUTH"){
+            user.authStatus = "NOT AUTH";
+            DeleteAuth(requester, user.username);
+          }
+          else if (user.authStatus === "NOT AUTH"){
+            user.authStatus = "AUTH";
+            CreateAuth(requester, user.username);
+          }
+        }
+        else user
+      })
     );
   };
   
@@ -88,7 +108,6 @@ const AdminForm = () => {
                 "Username",
                 "Email",
                 "PhoneNum",
-                "UserType",
                 "Site",
                 "Status",
                 "Auth_status",
@@ -118,7 +137,6 @@ const AdminForm = () => {
                     row.username,
                     row.email,
                     row.phoneNum,
-                    row.usertype,
                     row.site,
                     // 상태 표시 컬러
                     <div className="flex justify-center items-center">
@@ -180,16 +198,6 @@ const AdminForm = () => {
               </div>
               <div>
                 <strong>DeleteTime:</strong> {formatKST(selectedRow?.deleteTime)}
-              </div>
-              <div>
-                <strong>EmailVerified:</strong> {selectedRow?.emailVerified}
-              </div>
-              <div>
-                <strong>EmailVerificationToken:</strong>{" "}
-                {selectedRow?.emailVerificationToken}
-              </div>
-              <div>
-                <strong>ResetToken:</strong> {selectedRow?.resetToken}
               </div>
               <div>
                 <strong>TokenExpiryTime:</strong>{" "}
