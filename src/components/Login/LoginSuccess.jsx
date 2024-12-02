@@ -1,3 +1,4 @@
+// LoginSuccess.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
@@ -41,12 +42,23 @@ const LoginSuccess = () => {
   // 현재 시간을 포맷팅하는 함수
   const updateTime = () => {
     const now = new Date();
-    const formattedTime = now.toISOString().split("T").join(" ").slice(0, 19);
+    const kstTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); // KST 시간 계산
+    const formattedTime = new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).format(kstTime);
     setCurrentTime(formattedTime);
   };
 
   useEffect(() => {
     updateTime(); // 컴포넌트 마운트 시 시간 업데이트
+    const timer = setInterval(updateTime, 1000); // 1초마다 시간 업데이트
+    return () => clearInterval(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, []);
 
   // 로딩 화면 UI
