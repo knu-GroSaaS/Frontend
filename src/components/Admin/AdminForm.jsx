@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CreateAuth, DeleteAuth, getUser } from "../../apis/admin/admin";
+import { CreateAuth, DeleteAuth, getUsers } from "../../apis/admin/admin";
+import { getUser } from "../../apis/user/user";  
 
 const AdminForm = () => {
   // 사용자 목록 상태 관리
@@ -26,17 +27,15 @@ const AdminForm = () => {
     const fetchUserList = async () => {
       try {
         // 서버에서 사용자 목록을 가져옴
-        const response = await getUser();
+        const response = await getUsers();
         setUserList(response); // 사용자 목록 상태에 저장
       } catch (error) {
         console.error("Error fetching user list:", error); // 오류 로그 출력
       }
     };
 
-
     fetchRequester();
     fetchUserList();
-
   }, []);
 
   // 사용자 상태에 따라 색상 결정 함수
@@ -67,21 +66,21 @@ const AdminForm = () => {
   };
 
   const handleAuthStatusToggle = (index) => {
-    setUserList((prevList) =>
-      prevList.map((user, idx) =>{
-        if (idx === index){
-          if (user.authStatus === "AUTH"){
-            user.authStatus = "NOT AUTH";
-            DeleteAuth(requester, user.username);
-          }
-          else if (user.authStatus === "NOT AUTH"){
-            user.authStatus = "AUTH";
-            CreateAuth(requester, user.username);
-          }
-        }
-        else user
-      })
-    );
+    const updatedList = [...userList];
+    const unit = updatedList[index];
+    if (unit){
+      if (unit.authStatus === "AUTH"){
+        unit.authStatus = "NOT_AUTH";
+        DeleteAuth(requester, unit.username);
+      }
+      else if (unit.authStatus === "NOT_AUTH"){
+        unit.authStatus = "AUTH";
+        CreateAuth(requester, unit.username);
+      }
+      setUserList(updatedList);
+    } else {
+      console.error("User not found at index:", index);
+    }
   };
   
   return (
