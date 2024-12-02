@@ -37,6 +37,23 @@ export const getLogin = async (username, password) => {
 };
 
 /**
+ * 로그아웃
+ * @returns
+ */
+export const logOut = async (refreshToken) => {
+  console.log(refreshToken);
+  const response = await axiosInstance.post("/logout", 
+    {},
+    {
+      headers: {
+        refreshToken,
+      },
+    }
+  );
+  return response.data;
+};
+
+/**
  * 토큰 재발급 (POST /api/auth/refresh)
  * @param {string} refreshToken - 재발급에 사용할 RefreshToken
  * @returns {{ accessToken: string, refreshToken: string }}
