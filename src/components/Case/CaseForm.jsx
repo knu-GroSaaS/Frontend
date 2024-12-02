@@ -58,19 +58,20 @@ const CaseForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen">
-      {/* Header */}
-      <div className="bg-white h-20 flex items-center justify-between px-8">
-        <div className="font-bold text-[#d9d9d9] text-xl">Dashboard &gt;</div>
-        <div className="flex items-center">
-          <Link className="ml-2 font-bold text-xl">알림</Link>
-          <Link to="/mypage" className="ml-2 font-bold text-xl">
-            MyPage
-          </Link>
-        </div>
+    <div className="flex flex-col w-full h-screen" style={{ marginLeft: "276px" }}>
+    {/* Header */}
+    <div className="bg-white h-20 flex items-center justify-between px-8">
+      <div className="font-bold text-[#d9d9d9] text-xl">Dashboard &gt;</div>
+      <div className="flex items-center">
+        <Link className="ml-2 font-bold text-xl">알림</Link>
+        <Link to="/mypage" className="ml-2 font-bold text-xl">
+          MyPage
+        </Link>
       </div>
+    </div>
 
-      <div className="flex flex-row flex-grow">
+    <div className="flex flex-row flex-grow">
+      {/* Main Content */}
         {/* Main Content */}
         <div className="flex flex-col flex-grow bg-white p-4">
           {/* Case List Section */}
