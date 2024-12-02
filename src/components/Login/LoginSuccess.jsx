@@ -38,15 +38,36 @@ const LoginSuccess = () => {
     }
   }, [isLoading, role, navigate]); // 의존성 배열에 role 추가
 
-  // 현재 시간을 포맷팅하는 함수
-  const updateTime = () => {
+  // 날짜를 한국 표준시(KST)로 포맷팅하는 함수
+  const formatKST = () => {
+    // 현재 UTC 시간 가져오기
     const now = new Date();
-    const formattedTime = now.toISOString().split("T").join(" ").slice(0, 19);
-    setCurrentTime(formattedTime);
+  
+    // 한국 표준시로 변환
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZone: "Asia/Seoul", // 강제적으로 한국 표준시 설정
+    };
+  
+    // 정확한 한국 시간 반환
+    return new Intl.DateTimeFormat("ko-KR", options).format(now);
+  };
+  
+
+  // 현재 시간을 업데이트하는 함수
+  const updateTime = () => {
+    setCurrentTime(formatKST()); // 한국 표준시로 포맷팅
   };
 
   useEffect(() => {
     updateTime(); // 컴포넌트 마운트 시 시간 업데이트
+    const timer = setInterval(updateTime, 1000); // 1초마다 시간 업데이트
+    return () => clearInterval(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, []);
 
   // 로딩 화면 UI

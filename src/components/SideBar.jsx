@@ -28,7 +28,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="w-[276px] h-screen bg-[#BEACEB] relative py-16">
+    <div className="fixed left-0 top-0 w-[276px] h-screen bg-[#BEACEB] py-16">
       {/* Logo and Text */}
       <div className="flex items-center pl-[19.5px] mb-1.5">
         <img
@@ -76,7 +76,6 @@ const SideBar = () => {
             src="/assets/usericon.png"
             alt="User Icon"
           />
-          {/* 사용자 이름에 링크 추가 */}
           {username}
         </div>
         <Link
@@ -107,4 +106,13 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+const Layout = ({ children }) => {
+  return (
+    <div className="flex h-screen">
+      <SideBar />
+      <div className="flex-grow bg-gray-100 overflow-auto">{children}</div>
+    </div>
+  );
+};
+
+export default Layout;
