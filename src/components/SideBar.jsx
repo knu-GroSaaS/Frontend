@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUser } from "../apis/user/user.js";
 import { useAuthStore } from "../store.js";
+import { logOut } from "../apis/login/loginapi.js";
+import Cookies from "js-cookie";
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -23,7 +25,9 @@ const SideBar = () => {
   }, []);
 
   const handleLogout = () => {
+    const refreshToken = Cookies.get("refreshToken");
     clearAuth(); // 상태 및 쿠키 초기화
+    logOut(refreshToken);
     navigate("/"); // 로그아웃 후 리다이렉트
   };
 
