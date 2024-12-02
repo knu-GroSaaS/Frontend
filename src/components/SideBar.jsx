@@ -28,7 +28,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="w-[276px] h-screen bg-[#BEACEB] relative py-16">
+    <div className="w-[276px] h-screen bg-[#BEACEB] fixed top-0 left-0 py-16">
       {/* Logo and Text */}
       <div className="flex items-center pl-[19.5px] mb-1.5">
         <img
@@ -43,7 +43,7 @@ const SideBar = () => {
           GroSaaS
         </div>
       </div>
-
+  
       {/* Dashboard Title */}
       <div
         className="text-black text-2xl font-bold ml-[19.5px] mt-1.5"
@@ -51,7 +51,7 @@ const SideBar = () => {
       >
         Dashboard
       </div>
-
+  
       {/* Menu Items */}
       <div className="mt-8 ml-[19.5px] text-white text-lg font-bold leading-relaxed space-y-2">
         <Link to="/security-event" className="block">
@@ -67,7 +67,7 @@ const SideBar = () => {
           Download History
         </Link>
       </div>
-
+  
       {/* User Information */}
       <div className="flex items-center justify-between absolute bottom-16 w-full px-[19.5px]">
         <div className="flex items-center">
@@ -76,7 +76,6 @@ const SideBar = () => {
             src="/assets/usericon.png"
             alt="User Icon"
           />
-          {/* 사용자 이름에 링크 추가 */}
           {username}
         </div>
         <Link
@@ -90,7 +89,7 @@ const SideBar = () => {
           />
         </Link>
       </div>
-
+  
       {/* Logout */}
       <div
         className="flex items-center absolute bottom-5 left-[19.5px] text-black text-base font-bold cursor-pointer"
@@ -105,6 +104,6 @@ const SideBar = () => {
       </div>
     </div>
   );
-};
+}
 
 export default SideBar;
