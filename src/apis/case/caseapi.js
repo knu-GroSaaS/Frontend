@@ -93,6 +93,5 @@ export const searchCase = async (keyWord) => {
   const response = await axiosInstance.get("/api/board/search", {
     params: { keyWord },
   });
-  console.log(response);
   return response.data;
 };

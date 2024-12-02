@@ -68,7 +68,7 @@ const CaseInfo = ({ editing = false }) => {
         );
         alert("Case updated successfully!");
       } else {
-        console.log(formData);
+        // console.log(formData);
         await createCase(
           formData.problemTitle,
           formData.product,
@@ -78,7 +78,11 @@ const CaseInfo = ({ editing = false }) => {
         );
         alert("Case created successfully!");
       }
-      navigate("/dashboard");
+      if (editing) {
+        navigate(`/case/${id}`);
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.error("Error saving case:", error);
       alert("An error occurred while saving the case.");
@@ -86,7 +90,11 @@ const CaseInfo = ({ editing = false }) => {
   };
 
   const handleClose = () => {
-    navigate("/dashboard");
+    if (editing) {
+      navigate(`/case/${id}`);
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -169,7 +177,7 @@ const CaseInfo = ({ editing = false }) => {
               className="w-full ml-2 bg-gray-500 text-white py-2 rounded hover:bg-gray-600 transition duration-200"
               onClick={handleClose}
             >
-              Close
+              Cancel
             </button>
           </div>
         </form>

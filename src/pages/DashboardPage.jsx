@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CaseForm from "../components/Case/CaseForm";
 import SideBar from "../components/SideBar";
 
