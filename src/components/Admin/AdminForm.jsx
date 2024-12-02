@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getUser } from "../../apis/admin/admin";
+import { CreateAuth, DeleteAuth, getUser } from "../../apis/admin/admin";
 
 const AdminForm = () => {
   const [userList, setUserList] = useState([]);
   const[selectedRow, setSelectedRow] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [requester, setRequester] = useState(null);
 
   useEffect(() => {
+    const fetchRequester = async () => {
+      try {
+        const response = await getUser();
+        setRequester(response.data.username);
+      } catch (error) {
+        console.error('Failed to fetch requester information:', error);
+        setRequester('Unknown Requester');
+      }
+    };
+
     const fetchUserList = async () => {
       try {
         const response = await getUser();
@@ -16,6 +27,8 @@ const AdminForm = () => {
         console.error("Error fetching user list:", error);
       }
     };
+
+    fetchRequester();
     fetchUserList();
   }, []);
 
@@ -30,14 +43,19 @@ const AdminForm = () => {
 
   const handleAuthStatusToggle = (index) => {
     setUserList((prevList) =>
-      prevList.map((user, idx) =>
-        idx === index
-          ? {
-              ...user,
-              authStatus: user.authStatus === "AUTH" ? "NOT_AUTH" : "AUTH",
-            }
-          : user
-      )
+      prevList.map((user, idx) =>{
+        if (idx === index){
+          if (user.authStatus === "AUTH"){
+            user.authStatus = "NOT AUTH";
+            DeleteAuth(requester, user.username);
+          }
+          else if (user.authStatus === "NOT AUTH"){
+            user.authStatus = "AUTH";
+            CreateAuth(requester, user.username);
+          }
+        }
+        else user
+      })
     );
   };
   
@@ -65,7 +83,6 @@ const AdminForm = () => {
                 "Username",
                 "Email",
                 "PhoneNum",
-                "UserType",
                 "Site",
                 "Status",
                 "Auth_status",
@@ -95,7 +112,6 @@ const AdminForm = () => {
                     row.username,
                     row.email,
                     row.phoneNum,
-                    row.usertype,
                     row.site,
                     <div className="flex justify-center items-center">
                       <span
@@ -145,9 +161,6 @@ const AdminForm = () => {
               <div><strong>UpdateTime:</strong> {selectedRow?.updateTime}</div>
               <div><strong>PasswordUpdateTime:</strong> {selectedRow?.passwordUpdateTime}</div>
               <div><strong>DeleteTime:</strong> {selectedRow?.deleteTime}</div>
-              <div><strong>EmailVerified:</strong> {selectedRow?.emailVerified}</div>
-              <div><strong>EmailVerificationToken:</strong> {selectedRow?.emailVerificationToken}</div>
-              <div><strong>ResetToken:</strong> {selectedRow?.resetToken}</div>
               <div><strong>TokenExpiryTime:</strong> {selectedRow?.tokenExpiryTime}</div>
               <div><strong>AuthStatus:</strong> {selectedRow?.authStatus}</div>
             </div>
