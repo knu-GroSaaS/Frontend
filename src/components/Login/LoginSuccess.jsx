@@ -32,8 +32,11 @@ const LoginSuccess = () => {
     if (!isLoading && role) {
       if (role === "ROLE_ADMIN") {
         navigate("/adminpage");
-      } else {
+      } else if (role === "ROLE_USER") {
         navigate("/dashboard");
+      } else {
+        alert("권한이 없습니다.");
+        navigate("/login");
       }
     }
   }, [isLoading, role, navigate]); // 의존성 배열에 role 추가
