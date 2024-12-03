@@ -1,13 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store";
+import { logOut } from "../../apis/login/loginapi";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
   const handleLogout = () => {
+    const refreshToken = Cookies.get("refreshToken");
     clearAuth(); // 상태 및 쿠키 초기화
+    logOut(refreshToken);
     navigate("/"); // 로그아웃 후 리다이렉트
   };
 
