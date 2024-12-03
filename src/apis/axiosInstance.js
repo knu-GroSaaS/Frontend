@@ -75,7 +75,7 @@ axiosInstance.interceptors.response.use(
             try {
               const { accessToken, refreshToken: newRefreshToken } =
                 await refreshTokens(refreshToken);
-                
+
               // 새로운 토큰 저장
               Cookies.set("accessToken", accessToken, {
                 path: "/",
@@ -116,7 +116,7 @@ axiosInstance.interceptors.response.use(
       } else if (status === 462) {
         // 로그인 실패
         redirectToLogin("아이디 또는 비밀번호가 일치하지 않습니다.");
-      } else if (status === 401 || status === 403) {
+      } else if (status === 400 || status === 401 || status === 403) {
         // 권한 없음
         redirectToLogin();
       }
