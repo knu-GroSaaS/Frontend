@@ -33,6 +33,7 @@ export const getLogin = async (username, password) => {
   // const redirectPath = Cookies.get("redirectPath") || "/dashboard"; // 기본 경로 설정
   // Cookies.remove("redirectPath"); // 리다이렉션 경로 삭제
   // window.location.href = redirectPath; // 저장된 경로로 이동
+  sessionStorage.setItem("isRefresh", "true"); // 새로고침 시 로그아웃 되는 것을 방지
   return response.data;
 };
 
@@ -41,7 +42,7 @@ export const getLogin = async (username, password) => {
  * @returns
  */
 export const logOut = async (refreshToken) => {
-  console.log(refreshToken);
+  alert("로그아웃 되었습니다.");
   const response = await axiosInstance.post("/logout", 
     {},
     {
@@ -50,6 +51,7 @@ export const logOut = async (refreshToken) => {
       },
     }
   );
+  sessionStorage.removeItem("isRefresh");
   return response.data;
 };
 
