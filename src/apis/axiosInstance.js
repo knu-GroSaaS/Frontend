@@ -45,13 +45,13 @@ axiosInstance.interceptors.request.use((config) => {
 let isAlertDisplayed = false;
 
 // 로그인 페이지로 리디렉션
-const redirectToLogin = () => {
+const redirectToLogin = (customMessage = "다시 로그인 해 주세요.") => {
   useAuthStore.getState().clearAuth(); // Zustand 상태 초기화
   // Cookies.set("redirectPath", window.location.pathname, { path: "/" }); // 리디렉션 경로 저장
 
   if (!isAlertDisplayed) {
     isAlertDisplayed = true;
-    alert("다시 로그인 해 주세요.");
+    alert(customMessage);
     window.location.href = "/login";
   }
 };
@@ -113,7 +113,11 @@ axiosInstance.interceptors.response.use(
             return axiosInstance(originalRequest);
           })
           .catch((err) => Promise.reject(err));
-      } else if (status === 401) {
+      } else if (status === 462) {
+        // 로그인 실패
+        redirectToLogin("아이디 또는 비밀번호가 일치하지 않습니다.");
+      } else if (status === 401 || status === 403) {
+        // 권한 없음
         redirectToLogin();
       }
     }
