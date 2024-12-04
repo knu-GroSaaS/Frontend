@@ -69,7 +69,10 @@ const CaseForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen" style={{ marginLeft: "276px" }}>
+    <div
+      className="flex flex-col w-full h-screen"
+      style={{ marginLeft: "276px" }}
+    >
       {/* 상단 헤더 */}
       <div className="bg-white h-20 flex items-center justify-between px-8">
         <div className="font-bold text-[#d9d9d9] text-xl">Dashboard &gt;</div>
@@ -86,7 +89,9 @@ const CaseForm = () => {
         {/* 상단 영역: 케이스 리스트 */}
         <div className="flex flex-col h-1/2 p-4 overflow-hidden">
           <div className="flex justify-between items-center mb-4 gap-4">
-            <div className="ml-2 font-bold text-4xl flex-shrink-0">Caselist</div>
+            <div className="ml-2 font-bold text-4xl flex-shrink-0">
+              Caselist
+            </div>
             {/* 검색 컴포넌트 */}
             <Search onSearch={handleSearch} />
             <button
@@ -96,9 +101,11 @@ const CaseForm = () => {
               + Create Case
             </button>
           </div>
-          <div className="flex flex-col h-full overflow-y-auto">
+          <div className="flex flex-col h-full overflow-y-auto border border-b-gray-300 rounded shadow-xl bg-gradient-to-b from-gray-100 to-gray-50">
             {caseList.length === 0 ? (
-              <div className="text-center text-gray-500 p-4">No cases found.</div>
+              <div className="text-center text-gray-500 p-4">
+                No cases found.
+              </div>
             ) : (
               <>
                 {/* 케이스 리스트 헤더 */}
@@ -162,7 +169,7 @@ const CaseForm = () => {
           {/* 로그 섹션 */}
           <div className="flex flex-col w-1/2">
             <div className="ml-2 font-bold text-4xl mb-4">Log</div>
-            <div className="flex-grow overflow-y-auto bg-gradient-to-b from-gray-100 to-gray-50 p-4 rounded shadow">
+            <div className="flex-grow overflow-y-auto bg-gradient-to-b from-gray-100 to-gray-50 p-4 rounded shadow-xl">
               {log ? (
                 <pre className="text-sm text-gray-700 whitespace-pre-wrap">
                   {JSON.stringify(log, null, 2)}
@@ -176,11 +183,13 @@ const CaseForm = () => {
           {/* 상태 섹션 */}
           <div className="flex flex-col w-1/2">
             <div className="ml-2 font-bold text-4xl mb-4">Status</div>
-            <div className="flex-grow bg-gradient-to-b from-gray-100 to-gray-50 p-4 rounded shadow">
+            <div className="flex-grow bg-gradient-to-b from-gray-100 to-gray-50 p-4 rounded shadow-xl">
               {log ? (
                 <MemoryAndSwapBarGraph data={log} />
               ) : (
-                <div className="text-center text-gray-500">No status data found.</div>
+                <div className="text-center text-gray-500">
+                  No status data found.
+                </div>
               )}
             </div>
           </div>
