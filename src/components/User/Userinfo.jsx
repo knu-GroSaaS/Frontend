@@ -59,12 +59,9 @@ const MyPage = () => {
   const handleSendCode = async () => {
     try {
       setError("");
-      await sendVerificationCode();
       setIsCodeSent(true);
+      await sendVerificationCode();
       setCodeMessage("인증번호가 이메일로 전송되었습니다.");
-      setTimeout(() => {
-        setIsCodeSent(false); // 1분 후 버튼 재활성화
-      }, 60000);
     } catch (error) {
       console.error("인증번호 전송 실패:", error);
       setError("인증번호 전송에 실패했습니다.");
@@ -100,7 +97,8 @@ const MyPage = () => {
 
     try {
       await changePassword(userData.username, currentPassword, newPassword);
-      setPasswordMessage("비밀번호가 성공적으로 변경되었습니다.");
+      alert("비밀번호가 성공적으로 변경되었습니다. 다시 로그인 해주세요.");
+      window.location.href = "/login";
       setShowPasswordPopup(false); // 팝업 닫기
     } catch (error) {
       console.error("비밀번호 변경 실패:", error);
