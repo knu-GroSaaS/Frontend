@@ -136,24 +136,24 @@ const MyPage = () => {
 
         {/* 인증번호 섹션 */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">이메일 인증</h2>
+          <h2 className="text-xl font-semibold mb-4">비밀번호 변경하기</h2>
           <div className="flex items-center gap-4">
             <input
               type="text"
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value)}
               className="p-2 border border-gray-300 rounded-md w-full"
-              placeholder="인증번호를 입력하세요"
+              placeholder=" 비밀번호 변경을 위해 이메일 인증이 필요합니다."
               disabled={!isCodeSent}
             />
             <button
-              onClick={isCodeSent ? handleVerifyCode : handleSendCode}
-              className={`px-4 py-2 rounded-md text-white ${
-                isCodeSent ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"
-              }`}
-            >
-              {isCodeSent ? "인증번호 확인" : "인증번호 전송"}
-            </button>
+      onClick={isCodeSent ? handleVerifyCode : handleSendCode}
+      className={`px-4 h-12 rounded-md text-white ${
+        isCodeSent ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"
+      }`}
+    >
+      {isCodeSent ? "인증번호 확인" : "인증번호 전송"}
+    </button>
           </div>
           {codeMessage && (
             <p
