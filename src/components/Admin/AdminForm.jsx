@@ -39,10 +39,11 @@ const AdminForm = () => {
   }, []);
 
   // 사용자 상태에 따라 색상 결정 함수
-  const getStatusColor = (status) => {
-    if (status === "ACTIVE") {
+  const getStatusColor = (type) => {
+    console.log("type: "+type);
+    if (type === "ROLE_USER" || type === "ROLE_ADMIN") {
       return "bg-green-500"; // 활성 상태인 경우 초록색
-    } else if (status === "INACTIVE") {
+    } else if (type === null) {
       return "bg-red-500"; // 비활성 상태인 경우 빨간색
     }
     return "bg-gray-500"; // 기본 상태 색상
@@ -141,7 +142,7 @@ const AdminForm = () => {
                     <div className="flex justify-center items-center">
                       <span
                         className={`w-3 h-3 rounded-full ${getStatusColor(
-                          row.status
+                          row.userType
                         )}`}
                       ></span>
                     </div>,  
@@ -194,16 +195,6 @@ const AdminForm = () => {
               <div>
                 <strong>PasswordUpdateTime:</strong>{" "}
                 {formatKST(selectedRow?.passwordUpdateTime)}
-              </div>
-              <div>
-                <strong>DeleteTime:</strong> {formatKST(selectedRow?.deleteTime)}
-              </div>
-              <div>
-                <strong>TokenExpiryTime:</strong>{" "}
-                {formatKST(selectedRow?.tokenExpiryTime)}
-              </div>
-              <div>
-                <strong>AuthStatus:</strong> {selectedRow?.authStatus}
               </div>
             </div>
             {/* 팝업 닫기 버튼 */}
