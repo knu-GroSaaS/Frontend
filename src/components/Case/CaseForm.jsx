@@ -71,9 +71,9 @@ const CaseForm = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col flex-grow bg-white">
+      <div className="flex flex-col bg-white h-[calc(100vh-5rem)]">
         {/* Upper Half: Case List */}
-        <div className="flex flex-col flex-[0.5] p-4 overflow-hidden">
+        <div className="flex flex-col h-1/2 p-4 overflow-hidden">
           <div className="flex justify-between items-center mb-4 gap-4">
             <div className="ml-2 font-bold text-4xl flex-shrink-0">Caselist</div>
             <Search onSearch={handleSearch} />
@@ -144,7 +144,7 @@ const CaseForm = () => {
         </div>
 
         {/* Lower Half: Log and Status */}
-        <div className="flex flex-row flex-[0.5] space-x-4 p-4">
+        <div className="flex h-1/2 space-x-4 p-4">
           {/* Log Section */}
           <div className="flex flex-col w-1/2">
             <div className="ml-2 font-bold text-4xl mb-4">Log</div>
