@@ -1,8 +1,58 @@
-# React + Vite
+# OpenSearch 기반 [보안 Data] 관리 DashBoard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 프로젝트 개요
 
-Currently, two official plugins are available:
+이 프로젝트는 OpenSearch 기반의 보안 데이터 관리를 위한 대시보드 웹의 프론트엔드 서버입니다. 로그인 및 회원가입, 권한 관리, 보안 Case CRUD, 보안 데이터 시각화 등 다양한 기능을 제공하며, 효율적이고 안정적인 보안 데이터 관리를 목표로 개발 되었습니다. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+&#x20;
+
+- **로그인 및 회원가입**
+- **관리자 대시보드 페이지**: 권한 관리, 사용자 정보 및 상태 조회
+- **사용자 대시보드 페이지**: 보안 데이터 시각화, 보안 Case CRUD
+- **사용자 친화적인 네비게이션**: 사이드바와 헤더를 통한 간편한 탐색
+
+## 기술 스택
+
+- **React**: UI 컴포넌트 기반의 프론트엔드 라이브러리
+- **Vite**: 빠른 번들링 및 개발 서버 환경 제공
+- **Tailwind CSS**: 효율적인 스타일링과 반응형 디자인 구현
+- **React Router**: 클라이언트 사이드 라우팅
+- **Axios**: API 요청 및 데이터 처리
+
+```
+```
+
+## 설치 및 실행 방법
+
+### 1. 프로젝트 클론
+
+```
+git clone <repository-url>
+cd <repository-folder>
+```
+
+### 2. 의존성 설치
+
+```
+npm install
+```
+
+### 3. 개발 서버 실행
+
+```
+npm run dev
+```
+
+### 4. 빌드 및 배포
+
+```
+npm run build
+```
+
+## 주요 페이지
+
+- **메인 페이지**: `/`
+- **로그인 페이지**: `/login`
+- **회원가입 페이지**: `/signup`
+- **대시보드 페이지**: `/dashboard`
+
