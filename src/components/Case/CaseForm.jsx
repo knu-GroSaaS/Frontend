@@ -82,7 +82,7 @@ const CaseForm = () => {
           Dashboard &gt;
         </button>
         <div className="flex items-center">
-          <Link className="ml-2 font-bold text-xl">알림</Link>
+        <Link to="*" className="ml-2 font-bold text-xl">알림</Link>
           <Link to="/mypage" className="ml-2 font-bold text-xl">
             MyPage
           </Link>
