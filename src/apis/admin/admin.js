@@ -18,7 +18,7 @@ export const getUsers = async () => {
  */
 export const CreateAuth = async (requestername, username) => {
   const response = await axiosInstance.post("/manager/authcreate", {
-    params: { requestername, username },
+    requestername, username
   });
   return response.data;
 };
@@ -31,7 +31,9 @@ export const CreateAuth = async (requestername, username) => {
  */
 export const DeleteAuth = async (requestername, username) => {
   const response = await axiosInstance.delete("/manager/authdelete", {
-    params: { requestername, username },
+    data: {
+      requestername, username
+    },
   });
   return response.data;
 };
