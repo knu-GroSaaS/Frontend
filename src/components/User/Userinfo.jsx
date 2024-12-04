@@ -55,18 +55,24 @@ const MyPage = () => {
   }, []);
 
   // 인증번호 전송
-  const handleSendCode = async () => {
-    try {
-      setError("");
-      await sendVerificationCode();
-      setIsCodeSent(true);
-      setCodeMessage("인증번호가 이메일로 전송되었습니다.");
-      setIsCodeValid(null); // 인증 상태 초기화
-    } catch (error) {
-      console.error("인증번호 전송 실패:", error);
-      setError("인증번호 전송에 실패했습니다.");
-    }
-  };
+const handleSendCode = async () => {
+  try {
+    setError("");
+    await sendVerificationCode();
+    setIsCodeSent(true);
+    setCodeMessage("인증번호가 이메일로 전송되었습니다.");
+    setIsCodeValid(null); // 인증 상태 초기화
+
+    // 인증번호 전송 후 버튼 비활성화 타이머 설정
+    setTimeout(() => {
+      setIsCodeSent(false);
+    }, 60000); // 60초 동안 비활성화
+  } catch (error) {
+    console.error("인증번호 전송 실패:", error);
+    setError("인증번호 전송에 실패했습니다.");
+  }
+};
+
 
   // 인증번호 확인
   const handleVerifyCode = async () => {
@@ -138,23 +144,26 @@ const MyPage = () => {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">비밀번호 변경하기</h2>
           <div className="flex items-center gap-4">
-            <input
-              type="text"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              className="p-2 border border-gray-300 rounded-md w-full"
-              placeholder=" 비밀번호 변경을 위해 이메일 인증이 필요합니다."
-              disabled={!isCodeSent}
-            />
-            <button
-      onClick={isCodeSent ? handleVerifyCode : handleSendCode}
-      className={`px-4 h-12 rounded-md text-white ${
-        isCodeSent ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"
-      }`}
-    >
-      {isCodeSent ? "인증번호 확인" : "인증번호 전송"}
-    </button>
-          </div>
+  <input
+    type="text"
+    value={verificationCode}
+    onChange={(e) => setVerificationCode(e.target.value)}
+    className="p-2 border border-gray-300 rounded-md w-full h-12" // 입력 필드 높이 설정
+    placeholder=" 비밀번호 변경을 위해 이메일 인증이 필요합니다."
+    disabled={!isCodeSent}
+  />
+  <button
+    onClick={isCodeSent ? handleVerifyCode : handleSendCode}
+    className={`flex items-center justify-center px-6 rounded-md text-white text-center ${
+      isCodeSent ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+    }`}
+    disabled={isCodeSent}
+    style={{ height: "48px", whiteSpace: "nowrap", minWidth: "120px" }} // 버튼 높이와 텍스트 설정
+  >
+    {isCodeSent ? "인증번호 전송 중" : "인증번호 전송"}
+  </button>
+</div>
+
           {codeMessage && (
             <p
               className={`text-sm mt-2 ${
