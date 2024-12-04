@@ -1,110 +1,90 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { changePassword, getUser, sendVerificationCode, verifyCode } from "../../apis/user/user.js";
+import { getUser, sendVerificationCode, verifyCode, changePassword } from "../../apis/user/user.js";
 
 const MyPage = () => {
   const navigate = useNavigate();
 
+  // 사용자 정보
   const [userData, setUserData] = useState({
     username: "",
     email: "",
     phoneNum: "",
     site: "",
   });
+
+  // 인증 상태
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const [codeMessage, setCodeMessage] = useState("");
+  const [isCodeValid, setIsCodeValid] = useState(null); // 인증번호 유효 상태
+
+  // 비밀번호 변경 상태
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [isCodeSent, setIsCodeSent] = useState(false);
-  const [isCodeValid, setIsCodeValid] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [isPasswordChanged, setIsPasswordChanged] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        setLoading(true);
         const response = await getUser();
         setUserData(response.data);
       } catch (error) {
         console.error("사용자 정보 가져오기 실패:", error);
-        setError("사용자 정보를 불러오는 데 실패했습니다.");
-      } finally {
-        setLoading(false);
       }
     };
-
     fetchUserData();
   }, []);
 
+  // 인증번호 전송
   const handleSendCode = async () => {
     try {
-      setError("");
       await sendVerificationCode(userData.email);
       setIsCodeSent(true);
-      alert("인증번호가 이메일로 전송되었습니다.");
+      setCodeMessage("인증번호가 이메일로 전송되었습니다.");
     } catch (error) {
       console.error("인증번호 전송 실패:", error);
-      setError("인증번호 전송에 실패했습니다.");
+      setCodeMessage("인증번호 전송에 실패했습니다.");
     }
   };
 
+  // 인증번호 확인
   const handleVerifyCode = async () => {
     try {
-      setError("");
       const isValid = await verifyCode(userData.email, verificationCode);
-      if (isValid) {
-        setIsCodeValid(true);
-        alert("인증번호가 확인되었습니다.");
-      } else {
-        setError("인증번호가 일치하지 않습니다.");
-      }
+      setIsCodeValid(isValid);
+      setCodeMessage(isValid ? "인증번호가 확인되었습니다." : "인증번호가 일치하지 않습니다.");
     } catch (error) {
       console.error("인증번호 확인 실패:", error);
-      setError("인증번호 확인에 실패했습니다.");
+      setCodeMessage("인증번호 확인에 실패했습니다.");
     }
   };
 
-  const handlePasswordSubmit = async () => {
-    if (!isCodeValid) {
-      setError("이메일 인증을 완료해주세요.");
-      return;
-    }
-
+  // 비밀번호 변경
+  const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
-      setError("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+      setPasswordMessage("새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       return;
     }
-
-    setIsSubmitting(true);
-    setError("");
 
     try {
       await changePassword(userData.username, currentPassword, newPassword);
-
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-      alert("비밀번호가 성공적으로 변경되었습니다.");
+      setPasswordMessage("비밀번호가 성공적으로 변경되었습니다.");
+      setIsPasswordChanged(true);
     } catch (error) {
       console.error("비밀번호 변경 실패:", error);
-      setError("비밀번호 변경에 실패했습니다.");
-    } finally {
-      setIsSubmitting(false);
+      setPasswordMessage("비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인하세요.");
     }
   };
-
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
 
   return (
     <div className="flex flex-col items-center bg-gray-100 p-6 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
         <h1 className="text-3xl font-bold text-center mb-6">My Page</h1>
 
-        {/* 사용자 정보 섹션 */}
+        {/* 사용자 정보 */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">사용자 정보</h2>
           <div className="mb-2">
@@ -112,12 +92,6 @@ const MyPage = () => {
           </div>
           <div className="mb-2">
             <strong>이메일:</strong> <span>{userData.email}</span>
-          </div>
-          <div className="mb-2">
-            <strong>전화번호:</strong> <span>{userData.phoneNum}</span>
-          </div>
-          <div>
-            <strong>사이트:</strong> <span>{userData.site}</span>
           </div>
         </div>
 
@@ -142,63 +116,63 @@ const MyPage = () => {
               {isCodeSent ? "인증번호 확인" : "인증번호 전송"}
             </button>
           </div>
-          {error && <p className="text-red-500 mt-2">{error}</p>}
+          {codeMessage && (
+            <p
+              className={`text-sm mt-2 ${
+                isCodeValid === null
+                  ? "text-gray-500"
+                  : isCodeValid
+                  ? "text-blue-500"
+                  : "text-red-500"
+              }`}
+            >
+              {codeMessage}
+            </p>
+          )}
         </div>
 
         {/* 비밀번호 변경 섹션 */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">비밀번호 변경</h2>
-          <div className="mb-2">
-            <label className="block text-sm font-medium mb-1">
-              현재 비밀번호
-            </label>
+        {isCodeValid && (
+          <div>
+            <h2 className="text-xl font-semibold mb-4">비밀번호 변경</h2>
             <input
               type="password"
+              placeholder="현재 비밀번호"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="p-2 border border-gray-300 rounded-md w-full"
+              className="p-2 border border-gray-300 rounded-md w-full mb-4"
             />
-          </div>
-          <div className="mb-2">
-            <label className="block text-sm font-medium mb-1">
-              새 비밀번호
-            </label>
             <input
               type="password"
+              placeholder="새 비밀번호"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="p-2 border border-gray-300 rounded-md w-full"
+              className="p-2 border border-gray-300 rounded-md w-full mb-4"
             />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">
-              비밀번호 확인
-            </label>
             <input
               type="password"
+              placeholder="새 비밀번호 확인"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="p-2 border border-gray-300 rounded-md w-full"
+              className="p-2 border border-gray-300 rounded-md w-full mb-4"
             />
-          </div>
-          <div className="flex justify-end gap-4">
             <button
-              onClick={handlePasswordSubmit}
-              className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
-                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={isSubmitting}
+              onClick={handleChangePassword}
+              className="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md w-full"
             >
-              {isSubmitting ? "변경 중..." : "변경"}
+              비밀번호 변경
             </button>
-            <button
-              onClick={() => navigate(-1)}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
-            >
-              뒤로가기
-            </button>
+            {passwordMessage && (
+              <p
+                className={`text-sm mt-2 ${
+                  isPasswordChanged ? "text-blue-500" : "text-red-500"
+                }`}
+              >
+                {passwordMessage}
+              </p>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
