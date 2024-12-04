@@ -30,10 +30,8 @@ export const CreateAuth = async (requestername, username) => {
  * @returns
  */
 export const DeleteAuth = async (requestername, username) => {
-  const response = await axiosInstance.delete("/manager/authdelete", {
-    data: {
-      requestername, username
-    },
+  const response = await axiosInstance.post("/manager/authdelete", {
+    requestername, username
   });
   return response.data;
 };
