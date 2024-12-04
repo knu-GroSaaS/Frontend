@@ -28,7 +28,8 @@ const AdminForm = () => {
       try {
         // 서버에서 사용자 목록을 가져옴
         const response = await getUsers();
-        setUserList(response); // 사용자 목록 상태에 저장
+        const newResponse = response.filter(item => item.userType !== "ROLE_ADMIN")
+        setUserList(newResponse); // 사용자 목록 상태에 저장
       } catch (error) {
         console.error("Error fetching user list:", error); // 오류 로그 출력
       }
@@ -39,13 +40,12 @@ const AdminForm = () => {
   }, []);
 
   // 사용자 상태에 따라 색상 결정 함수
-  const getStatusColor = (type) => {
-    console.log("type: "+type);
-    if (type === "ROLE_USER" || type === "ROLE_ADMIN") {
-      return "bg-green-500"; // 활성 상태인 경우 초록색
-    } else if (type === null) {
+  const getStatusColor = (status, type) => {
+    if (status === "INACTIVE" || type === "NULL") {
       return "bg-red-500"; // 비활성 상태인 경우 빨간색
-    }
+    } else if (status === "ACTIVE") {
+      return "bg-green-500"; // 활성 상태인 경우 초록색
+    } 
     return "bg-gray-500"; // 기본 상태 색상
   };
 
@@ -66,16 +66,16 @@ const AdminForm = () => {
     return new Intl.DateTimeFormat("ko-KR", options).format(kstDate);
   };
 
-  const handleAuthStatusToggle = (index) => {
+  const handleUserTypeToggle = (index) => {
     const updatedList = [...userList];
     const unit = updatedList[index];
     if (unit){
-      if (unit.authStatus === "AUTH"){
-        unit.authStatus = "NOT_AUTH";
+      if (unit.userType === "ROLE_USER"){
+        unit.userType = "NULL";
         DeleteAuth(requester, unit.username);
       }
-      else if (unit.authStatus === "NOT_AUTH"){
-        unit.authStatus = "AUTH";
+      else if (unit.userType === "NULL"){
+        unit.userType = "ROLE_USER";
         CreateAuth(requester, unit.username);
       }
       setUserList(updatedList);
@@ -110,7 +110,7 @@ const AdminForm = () => {
                 "PhoneNum",
                 "Site",
                 "Status",
-                "Auth_status",
+                "UserType",
               ].map((header, index) => (
                 <div
                   key={index}
@@ -142,7 +142,7 @@ const AdminForm = () => {
                     <div className="flex justify-center items-center">
                       <span
                         className={`w-3 h-3 rounded-full ${getStatusColor(
-                          row.userType
+                          row.status, row.userType
                         )}`}
                       ></span>
                     </div>,  
@@ -150,16 +150,16 @@ const AdminForm = () => {
                       {/* Auth_status 체크박스 */}
                       <button
                         className={`flex justify-center items-center py-1 px-4 ${
-                          row.authStatus === "AUTH"
+                          (row.userType === "ROLE_ADMIN" || row.userType === "ROLE_USER")
                             ? "bg-green-500 text-white"
                             : "bg-gray-300 text-black"
                         }`}
                         onClick={(event) => {
                           event.stopPropagation();
-                          handleAuthStatusToggle(index);
+                          handleUserTypeToggle(index);
                         }}
                       >
-                        {row.authStatus}
+                        {row.userType === "NULL" ? "NOT_AUTH" : row.userType}
                       </button>
                     </div>,                
                     ].map((cell, idx) => (
