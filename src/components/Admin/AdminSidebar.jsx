@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store";
 import { logOut } from "../../apis/login/loginapi";
+import Cookies from "js-cookie";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
