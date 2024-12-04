@@ -5,7 +5,7 @@ import { getUser, sendVerificationCode, verifyCode, changePassword } from "../..
 const MyPage = () => {
   const navigate = useNavigate();
 
-  // 사용자 정보 상태 (username은 비밀번호 변경을 위해 유지하지만 화면에 표시하지 않음)
+  // 사용자 정보 상태
   const [userData, setUserData] = useState({
     id: 0,
     username: "",
@@ -17,20 +17,21 @@ const MyPage = () => {
   // 인증 상태
   const [verificationCode, setVerificationCode] = useState("");
   const [isCodeSent, setIsCodeSent] = useState(false);
-  const [codeMessage, setCodeMessage] = useState("");
   const [isCodeValid, setIsCodeValid] = useState(null); // 인증번호 유효 상태
+  const [codeMessage, setCodeMessage] = useState("");
 
   // 비밀번호 변경 상태
+  const [showPasswordPopup, setShowPasswordPopup] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
-  const [isPasswordChanged, setIsPasswordChanged] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // 사용자 데이터 불러오기
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -55,24 +56,20 @@ const MyPage = () => {
   }, []);
 
   // 인증번호 전송
-const handleSendCode = async () => {
-  try {
-    setError("");
-    await sendVerificationCode();
-    setIsCodeSent(true);
-    setCodeMessage("인증번호가 이메일로 전송되었습니다.");
-    setIsCodeValid(null); // 인증 상태 초기화
-
-    // 인증번호 전송 후 버튼 비활성화 타이머 설정
-    setTimeout(() => {
-      setIsCodeSent(false);
-    }, 60000); // 60초 동안 비활성화
-  } catch (error) {
-    console.error("인증번호 전송 실패:", error);
-    setError("인증번호 전송에 실패했습니다.");
-  }
-};
-
+  const handleSendCode = async () => {
+    try {
+      setError("");
+      await sendVerificationCode();
+      setIsCodeSent(true);
+      setCodeMessage("인증번호가 이메일로 전송되었습니다.");
+      setTimeout(() => {
+        setIsCodeSent(false); // 1분 후 버튼 재활성화
+      }, 60000);
+    } catch (error) {
+      console.error("인증번호 전송 실패:", error);
+      setError("인증번호 전송에 실패했습니다.");
+    }
+  };
 
   // 인증번호 확인
   const handleVerifyCode = async () => {
@@ -81,6 +78,9 @@ const handleSendCode = async () => {
       const isValid = await verifyCode(verificationCode);
       setIsCodeValid(isValid);
       setCodeMessage(isValid ? "인증번호가 확인되었습니다." : "인증번호가 일치하지 않습니다.");
+      if (isValid) {
+        setShowPasswordPopup(true); // 비밀번호 변경 팝업 표시
+      }
     } catch (error) {
       console.error("인증번호 확인 실패:", error);
       setCodeMessage("인증번호 확인에 실패했습니다.");
@@ -101,11 +101,7 @@ const handleSendCode = async () => {
     try {
       await changePassword(userData.username, currentPassword, newPassword);
       setPasswordMessage("비밀번호가 성공적으로 변경되었습니다.");
-      setIsPasswordChanged(true);
-      // 비밀번호 변경 후 입력 필드 초기화
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
+      setShowPasswordPopup(false); // 팝업 닫기
     } catch (error) {
       console.error("비밀번호 변경 실패:", error);
       setPasswordMessage("비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인하세요.");
@@ -127,7 +123,7 @@ const handleSendCode = async () => {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">사용자 정보</h2>
           <div className="mb-2">
-            <strong>아이디:</strong> <span>{userData.id}</span>
+            <strong>아이디:</strong> <span>{userData.username}</span>
           </div>
           <div className="mb-2">
             <strong>이메일:</strong> <span>{userData.email}</span>
@@ -144,97 +140,88 @@ const handleSendCode = async () => {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">비밀번호 변경하기</h2>
           <div className="flex items-center gap-4">
-  <input
-    type="text"
-    value={verificationCode}
-    onChange={(e) => setVerificationCode(e.target.value)}
-    className="p-2 border border-gray-300 rounded-md w-full h-12" // 입력 필드 높이 설정
-    placeholder=" 비밀번호 변경을 위해 이메일 인증이 필요합니다."
-    disabled={!isCodeSent}
-  />
-  <button
-    onClick={isCodeSent ? handleVerifyCode : handleSendCode}
-    className={`flex items-center justify-center px-6 rounded-md text-white text-center ${
-      isCodeSent ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
-    }`}
-    disabled={isCodeSent}
-    style={{ height: "48px", whiteSpace: "nowrap", minWidth: "120px" }} // 버튼 높이와 텍스트 설정
-  >
-    {isCodeSent ? "인증번호 전송 중" : "인증번호 전송"}
-  </button>
-</div>
+            <input
+              type="text"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              className="p-2 border border-gray-300 rounded-md w-full h-12"
+              placeholder="인증번호를 입력하세요."
+              disabled={!isCodeSent}
+            />
+            <button
+              onClick={isCodeSent && verificationCode ? handleVerifyCode : handleSendCode}
+              className={`flex items-center justify-center px-6 rounded-md text-white text-center ${
+                isCodeSent && !verificationCode
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-500 hover:bg-blue-600"
+              }`}
+              disabled={isCodeSent && !verificationCode}
+              style={{ height: "48px", whiteSpace: "nowrap", minWidth: "120px" }}
+            >
+              {isCodeSent && verificationCode ? "인증번호 확인" : "인증번호 전송"}
+            </button>
+          </div>
 
           {codeMessage && (
-            <p
-              className={`text-sm mt-2 ${
-                isCodeValid === null
-                  ? "text-gray-500"
-                  : isCodeValid
-                  ? "text-blue-500"
-                  : "text-red-500"
-              }`}
-            >
+            <p className={`text-sm mt-2 ${isCodeValid ? "text-blue-500" : "text-red-500"}`}>
               {codeMessage}
             </p>
           )}
-          {error && <p className="text-red-500 mt-2">{error}</p>}
         </div>
 
-        {/* 비밀번호 변경 섹션 */}
-        {isCodeValid && (
-          <div>
-            <h2 className="text-xl font-semibold mb-4">비밀번호 변경</h2>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">
-                현재 비밀번호
-              </label>
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">
-                새 비밀번호
-              </label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">
-                새 비밀번호 확인
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
-              />
-            </div>
-            <button
-              onClick={handleChangePassword}
-              className={`w-full px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md ${
-                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "변경 중..." : "비밀번호 변경"}
-            </button>
-            {passwordMessage && (
-              <p
-                className={`text-sm mt-2 ${
-                  isPasswordChanged ? "text-blue-500" : "text-red-500"
+        {/* 비밀번호 변경 팝업 */}
+        {showPasswordPopup && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-8 w-full max-w-md">
+              <h2 className="text-xl font-semibold mb-4">비밀번호 변경</h2>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">현재 비밀번호</label>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="p-2 border border-gray-300 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">새 비밀번호</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="p-2 border border-gray-300 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">새 비밀번호 확인</label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="p-2 border border-gray-300 rounded-md w-full"
+                />
+              </div>
+              <button
+                onClick={handleChangePassword}
+                className={`w-full px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md ${
+                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                 }`}
+                disabled={isSubmitting}
               >
-                {passwordMessage}
-              </p>
-            )}
+                {isSubmitting ? "변경 중..." : "비밀번호 변경"}
+              </button>
+              {passwordMessage && (
+                <p className={`text-sm mt-2 ${isSubmitting ? "text-red-500" : "text-blue-500"}`}>
+                  {passwordMessage}
+                </p>
+              )}
+              <button
+                onClick={() => setShowPasswordPopup(false)}
+                className="mt-4 w-full text-center text-red-500"
+              >
+                닫기
+              </button>
+            </div>
           </div>
         )}
 

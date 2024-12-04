@@ -7,7 +7,7 @@ import MemoryAndSwapBarGraph from "../OpenSearch/MemoryBarGraph";
 
 const CaseForm = () => {
   const [caseList, setCaseList] = useState([]);
-  const [log, setLog] = useState(null); // 단일 데이터 처리
+  const [log, setLog] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const CaseForm = () => {
       try {
         const response = await viewLog();
         if (response && response.hits && response.hits.hits.length > 0) {
-          setLog(response.hits.hits[0]._source); // 첫 번째 데이터만 사용
+          setLog(response.hits.hits[0]._source);
         }
       } catch (error) {
         console.error("Error fetching log:", error);
@@ -73,7 +73,7 @@ const CaseForm = () => {
       {/* Main Content */}
       <div className="flex flex-col flex-grow bg-white">
         {/* Upper Half: Case List */}
-        <div className="flex flex-col flex-1 p-4">
+        <div className="flex flex-col flex-[0.5] p-4 overflow-hidden">
           <div className="flex justify-between items-center mb-4 gap-4">
             <div className="ml-2 font-bold text-4xl flex-shrink-0">Caselist</div>
             <Search onSearch={handleSearch} />
@@ -84,7 +84,7 @@ const CaseForm = () => {
               + Create Case
             </button>
           </div>
-          <div className="flex flex-col overflow-y-auto">
+          <div className="flex flex-col h-full overflow-y-auto">
             {caseList.length === 0 ? (
               <div className="text-center text-gray-500 p-4">No cases found.</div>
             ) : (
@@ -110,7 +110,7 @@ const CaseForm = () => {
                   </div>
                 </div>
 
-                <div className="overflow-y-auto flex-grow bg-gradient-to-b from-gray-100 to-gray-50">
+                <div className="overflow-y-auto h-full">
                   {caseList.map((row, index) => (
                     <Link
                       to={`/case/${row.caseId}`}
@@ -144,7 +144,7 @@ const CaseForm = () => {
         </div>
 
         {/* Lower Half: Log and Status */}
-        <div className="flex flex-row flex-1 space-x-4 p-4">
+        <div className="flex flex-row flex-[0.5] space-x-4 p-4">
           {/* Log Section */}
           <div className="flex flex-col w-1/2">
             <div className="ml-2 font-bold text-4xl mb-4">Log</div>
