@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // 뒤로가기 기능을 위해 추가
+import { useNavigate } from "react-router-dom";
 import { changePassword, getUser } from "../../apis/user/user.js";
 
 const MyPage = () => {
-  const navigate = useNavigate(); // 뒤로가기 기능
+  const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
     username: "",
@@ -81,7 +81,7 @@ const MyPage = () => {
   }
 
   return (
-    <div className="flex flex-col items-center bg-gray-100 p-6 min-h-screen">
+    <div className="flex justify-center items-center bg-gray-100 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
         <h1 className="text-3xl font-bold text-center mb-6">My Page</h1>
 
@@ -139,7 +139,7 @@ const MyPage = () => {
             />
           </div>
           {error && <p className="text-red-500 mb-4">{error}</p>}
-          <div className="flex justify-end gap-4"> {/* 버튼 컨테이너 */}
+          <div className="flex justify-end gap-4">
             <button
               onClick={handlePasswordSubmit}
               className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
@@ -150,7 +150,7 @@ const MyPage = () => {
               {isSubmitting ? "변경 중..." : "변경"}
             </button>
             <button
-              onClick={() => navigate(-1)} // 뒤로가기
+              onClick={() => navigate(-1)}
               className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
             >
               뒤로가기
