@@ -145,7 +145,7 @@ const MyPage = () => {
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value)}
               className="p-2 border border-gray-300 rounded-md w-full h-12"
-              placeholder="인증번호를 입력하세요."
+              placeholder="비밀번호 변경을 위해 이메일 인증번호를 입력해주세요."
               disabled={!isCodeSent}
             />
             <button
