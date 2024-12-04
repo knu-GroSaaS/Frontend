@@ -17,7 +17,7 @@ const AdminForm = () => {
     const fetchRequester = async () => {
       try {
         const response = await getUser();
-        setRequester(response.data.username);
+        setRequester(response.username);
       } catch (error) {
         console.error('Failed to fetch requester information:', error);
         setRequester('Unknown Requester');
@@ -41,7 +41,7 @@ const AdminForm = () => {
 
   // 사용자 상태에 따라 색상 결정 함수
   const getStatusColor = (status, type) => {
-    if (status === "INACTIVE" || type === "NULL") {
+    if (status === "INACTIVE" || !type) {
       return "bg-red-500"; // 비활성 상태인 경우 빨간색
     } else if (status === "ACTIVE") {
       return "bg-green-500"; // 활성 상태인 경우 초록색
@@ -71,10 +71,10 @@ const AdminForm = () => {
     const unit = updatedList[index];
     if (unit){
       if (unit.userType === "ROLE_USER"){
-        unit.userType = "NULL";
+        unit.userType = null;
         DeleteAuth(requester, unit.username);
       }
-      else if (unit.userType === "NULL"){
+      else if (!unit.userType){
         unit.userType = "ROLE_USER";
         CreateAuth(requester, unit.username);
       }
@@ -126,7 +126,7 @@ const AdminForm = () => {
               {userList.map((row, index) => (
                 <div
                   key={index}
-                  className="flex flex-row justify-between border-b p-4 h-16"
+                  className="flex flex-row justify-between border-b p-4 h-16 cursor-pointer"
                   onClick={() => {
                     setSelectedRow(row); // 선택된 사용자 저장
                     setIsPopupOpen(true); // 팝업 열기
@@ -159,7 +159,7 @@ const AdminForm = () => {
                           handleUserTypeToggle(index);
                         }}
                       >
-                        {row.userType === "NULL" ? "NOT_AUTH" : row.userType}
+                        {!row.userType ? "NOT_AUTH" : row.userType}
                       </button>
                     </div>,                
                     ].map((cell, idx) => (
