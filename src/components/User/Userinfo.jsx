@@ -156,37 +156,25 @@ const MyPage = () => {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">비밀번호 변경하기</h2>
           <div className="flex items-center gap-4">
-            <input
-              type="text"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              className="p-2 border border-gray-300 rounded-md w-full h-12"
-              placeholder="비밀번호 변경을 위해 이메일 인증번호를 입력해주세요."
-              disabled={!isCodeSent}
-            />
-            <button
-              onClick={
-                isCodeSent && verificationCode
-                  ? handleVerifyCode
-                  : handleSendCode
-              }
-              className={`flex items-center justify-center px-6 rounded-md text-white text-center ${
-                isCodeSent && !verificationCode
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600"
-              }`}
-              disabled={isCodeSent && !verificationCode}
-              style={{
-                height: "48px",
-                whiteSpace: "nowrap",
-                minWidth: "120px",
-              }}
-            >
-              {isCodeSent && verificationCode
-                ? "인증번호 확인"
-                : "인증번호 전송"}
-            </button>
-          </div>
+  <input
+    type="text"
+    value={verificationCode}
+    onChange={(e) => setVerificationCode(e.target.value)}
+    className="p-2 border border-gray-300 rounded-md w-full h-12" // 입력 필드 높이 설정
+    placeholder=" 비밀번호 변경을 위해 이메일 인증이 필요합니다."
+    disabled={!isCodeSent}
+  />
+  <button
+    onClick={isCodeSent ? handleVerifyCode : handleSendCode}
+    className={`flex items-center justify-center px-6 rounded-md text-white text-center ${
+      isCodeSent ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+    }`}
+    disabled={isCodeSent}
+    style={{ height: "48px", whiteSpace: "nowrap", minWidth: "120px" }} // 버튼 높이와 텍스트 설정
+  >
+    {isCodeSent ? "인증번호 전송 중" : "인증번호 전송"}
+  </button>
+</div>
 
           {codeMessage && (
             <p
