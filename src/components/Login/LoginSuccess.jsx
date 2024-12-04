@@ -29,14 +29,14 @@ const LoginSuccess = () => {
 
   useEffect(() => {
     // 로딩이 완료되고 role이 설정되었을 때 이동
-    if (!isLoading && role) {
+    if (!isLoading) {
       if (role === "ROLE_ADMIN") {
         navigate("/adminpage");
       } else if (role === "ROLE_USER") {
         navigate("/dashboard");
       } else {
-        alert("권한이 없습니다.");
-        navigate("/login");
+        alert("승인되지 않은 계정입니다.");
+        window.location.href = "/login";
       }
     }
   }, [isLoading, role, navigate]); // 의존성 배열에 role 추가
@@ -87,8 +87,8 @@ const LoginSuccess = () => {
         </h1>
 
         <div className="flex items-center justify-center mb-4">
-          <span className="text-3xl text-green-500 mr-2">✅</span>
-          <h2 className="text-lg font-semibold text-white">Login successful</h2>
+          <span className="text-3xl mr-2">{role ? "✅" : "❌"}</span>
+          <h2 className="text-lg font-semibold text-white">{role ? "Login successful" : "Login failed"}</h2>
         </div>
 
         <p className="text-white mb-4">
