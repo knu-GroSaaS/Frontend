@@ -14,7 +14,7 @@ const SideBar = () => {
     const fetchUser = async () => {
       try {
         const response = await getUser();
-        setUsername(response.data.username); // 사용자 이름 설정
+        setUsername(response.username); // 사용자 이름 설정
       } catch (error) {
         console.error("Failed to fetch user information:", error);
         setUsername("Unknown User"); // 실패 시 기본 이름

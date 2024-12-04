@@ -13,7 +13,7 @@ const LoginSuccess = () => {
     const fetchUserData = async () => {
       try {
         const response = await getUser();
-        setRole(response.data.usertype); // 사용자 역할 저장
+        setRole(response.userType); // 사용자 역할 저장
       } catch (error) {
         console.error("사용자 정보 가져오기 실패:", error);
       } finally {
