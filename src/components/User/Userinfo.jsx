@@ -37,11 +37,11 @@ const MyPage = () => {
         setLoading(true);
         const response = await getUser();
         setUserData({
-          id: response.data.id,
-          username: response.data.username,
-          email: response.data.email,
-          phoneNum: response.data.phoneNum,
-          site: response.data.site,
+          id: response.id,
+          username: response.username,
+          email: response.email,
+          phoneNum: response.phoneNum,
+          site: response.site,
         });
       } catch (error) {
         console.error("사용자 정보 가져오기 실패:", error);
@@ -58,7 +58,7 @@ const MyPage = () => {
   const handleSendCode = async () => {
     try {
       setError("");
-      await sendVerificationCode(userData.email);
+      await sendVerificationCode();
       setIsCodeSent(true);
       setCodeMessage("인증번호가 이메일로 전송되었습니다.");
       setIsCodeValid(null); // 인증 상태 초기화
@@ -72,7 +72,7 @@ const MyPage = () => {
   const handleVerifyCode = async () => {
     try {
       setError("");
-      const isValid = await verifyCode(userData.email, verificationCode);
+      const isValid = await verifyCode(verificationCode);
       setIsCodeValid(isValid);
       setCodeMessage(isValid ? "인증번호가 확인되었습니다." : "인증번호가 일치하지 않습니다.");
     } catch (error) {
