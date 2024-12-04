@@ -52,4 +52,23 @@ export const sendVerificationCode = (email) => {
   );
 };
 
+/**
+ * 인증 코드 검증 API
+ * POST /password/tokenval
+ * @param {string} email - 사용자 이메일 주소
+ * @param {string} token - 사용자가 입력한 인증 코드
+ * @returns {Promise<boolean>} 인증 성공 여부 반환
+ */
+export const verifyCode = (email, token) => {
+  return axiosInstance.post(
+    "/password/tokenval",
+    { email, token },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    }
+  ).then((response) => response.data === true); // 서버가 true 반환 시 인증 성공
+};
 
