@@ -13,6 +13,7 @@ const SignUpForm = () => {
 
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
   const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [nicknameValid, setNicknameValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false); // 이메일 형식 유효성 상태
   const [nicknameError, setNicknameError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -60,6 +61,18 @@ const SignUpForm = () => {
     }
   };
 
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    setName(name);
+    // 이메일 형식 검증
+    if (name.length > 0) {
+      setNicknameValid(true);
+    } else {
+      setNicknameValid(false);
+    }
+    setNicknameError("");
+  };
+
   const handleEmailChange = (e) => {
     const email = e.target.value;
     setEmail(email);
@@ -102,15 +115,16 @@ const SignUpForm = () => {
           <div className={`flex items-center ${!nicknameError ? "mb-4" : ""}`}>
             <input
               type="text"
-              placeholder="이름"
+              placeholder="아이디"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleNameChange}
               className="flex-1 p-2 border border-gray-300 rounded-md mr-2"
             />
             <button
               type="button"
               onClick={handleUsernameCheck}
-              className="w-20 h-10 bg-indigo-600 hover:bg-indigo-700 text-white text-xs rounded-md flex items-center justify-center"
+              className={`w-20 h-10 ${nicknameValid ? "bg-indigo-600 hover:bg-indigo-700" : "bg-gray-400 cursor-not-allowed"} text-white text-xs rounded-md flex items-center justify-center`}
+              disabled={!nicknameValid}
             >
               중복 확인
             </button>
