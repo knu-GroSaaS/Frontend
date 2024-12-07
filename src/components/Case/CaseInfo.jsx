@@ -34,7 +34,7 @@ const CaseInfo = ({ editing = false }) => {
             setOriginalData(fetchedData);
           }
         } catch (error) {
-          console.error("Error fetching case data:", error);
+          //console.error("Error fetching case data:", error);
         }
       };
       fetchData();

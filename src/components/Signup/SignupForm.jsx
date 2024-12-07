@@ -39,7 +39,7 @@ const SignUpForm = () => {
       await getJoin(name, email, phoneNum, site);
       navi("/login");
     } catch (err) {
-      console.error("Signup failed", err);
+      //console.error("Signup failed", err);
       setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
     } finally {
       setIsLoading(false);
@@ -56,7 +56,7 @@ const SignUpForm = () => {
       setIsNicknameChecked(isNicknameAvailable);
       setNicknameError(isNicknameAvailable ? "사용 가능한 닉네임입니다." : "이미 사용 중인 닉네임입니다.");
     } catch (err) {
-      console.error("Nickname check failed", err);
+      //console.error("Nickname check failed", err);
       setNicknameError("닉네임 중복 체크에 실패했습니다.");
     }
   };
@@ -94,7 +94,7 @@ const SignUpForm = () => {
       setIsEmailChecked(isEmailAvailable);
       setEmailError(isEmailAvailable ? "사용 가능한 이메일입니다." : "이미 사용 중인 이메일입니다.");
     } catch (err) {
-      console.error("Email check failed", err);
+      //console.error("Email check failed", err);
       setEmailError("이메일 중복 체크에 실패했습니다.");
     }
   };

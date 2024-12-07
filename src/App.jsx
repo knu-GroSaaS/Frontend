@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage"
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -8,6 +8,7 @@ import CaseUnit from "./components/Case/CaseUnit";
 import UpdatePage from "./pages/UpdatePage";
 import MyPage from "./pages/MyPage";
 import AdminPage from "./pages/AdminPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/case/:id" element={<CaseUnit/>}/>
           <Route path="/mypage" element={<MyPage/>}/>
           <Route path="/adminpage" element={<AdminPage/>}/>
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </>

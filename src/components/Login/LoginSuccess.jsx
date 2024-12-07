@@ -15,7 +15,7 @@ const LoginSuccess = () => {
         const response = await getUser();
         setRole(response.userType); // 사용자 역할 저장
       } catch (error) {
-        console.error("사용자 정보 가져오기 실패:", error);
+        //console.error("사용자 정보 가져오기 실패:", error);
       } finally {
         // 최소 로딩 시간 확보
         setTimeout(() => {

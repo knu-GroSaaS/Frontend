@@ -25,7 +25,7 @@ const CaseUnit = () => {
       setPost(res); // 가져온 데이터를 상태에 저장
       // console.log("Fetched data:", res);
     } catch (error) {
-      console.error("Failed to fetch case data:", error);
+      //console.error("Failed to fetch case data:", error);
     } finally {
       setLoading(false); // 로딩 상태 종료
     }
@@ -44,7 +44,7 @@ const CaseUnit = () => {
         alert("Case deleted successfully."); // 삭제 성공 알림
         navi("/dashboard"); // 대시보드 페이지로 이동
       } catch (error) {
-        console.error("Error deleting case:", error);
+        //console.error("Error deleting case:", error);
         alert("Failed to delete the case. Please try again."); // 삭제 실패 알림
       }
     }

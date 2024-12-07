@@ -116,6 +116,10 @@ axiosInstance.interceptors.response.use(
       } else if (status === 462) {
         // 로그인 실패
         redirectToLogin("아이디 또는 비밀번호가 일치하지 않습니다.");
+      } else if (status === 464 && originalRequest.url.includes("/mypage")) {
+        // 비밀번호 변경 실패
+        alert("기존 비밀번호가 일치하지 않습니다.");
+        window.location.href = "/mypage";
       } else if (status === 401 || status === 403) {
         // 권한 없음
         redirectToLogin();
