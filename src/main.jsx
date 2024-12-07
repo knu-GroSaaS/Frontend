@@ -58,7 +58,7 @@ function Root() {
       const refreshToken = Cookies.get("refreshToken");
       if (refreshToken) {
         // 로그아웃 요청
-        console.log("Logout request sent");
+        // console.log("Logout request sent");
         const url = `${import.meta.env.VITE_API_BASE_URL}/clogout`;
         const data = JSON.stringify({ refreshToken });
 

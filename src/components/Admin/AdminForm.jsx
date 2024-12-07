@@ -19,7 +19,7 @@ const AdminForm = () => {
         const response = await getUser();
         setRequester(response.username);
       } catch (error) {
-        console.error('Failed to fetch requester information:', error);
+        //console.error('Failed to fetch requester information:', error);
         setRequester('Unknown Requester');
       }
     };
@@ -31,7 +31,7 @@ const AdminForm = () => {
         const newResponse = response.filter(item => item.userType !== "ROLE_ADMIN")
         setUserList(newResponse); // 사용자 목록 상태에 저장
       } catch (error) {
-        console.error("Error fetching user list:", error); // 오류 로그 출력
+        //console.error("Error fetching user list:", error); // 오류 로그 출력
       }
     };
 
@@ -80,7 +80,7 @@ const AdminForm = () => {
       }
       setUserList(updatedList);
     } else {
-      console.error("User not found at index:", index);
+      //console.error("User not found at index:", index);
     }
   };
   

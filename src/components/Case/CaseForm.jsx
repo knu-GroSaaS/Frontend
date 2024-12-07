@@ -24,7 +24,7 @@ const CaseForm = () => {
         );
         setCaseList(sortedData || []);
       } catch (error) {
-        console.error("케이스 리스트를 가져오는 중 오류 발생:", error);
+        //console.error("케이스 리스트를 가져오는 중 오류 발생:", error);
         setCaseList([]);
       }
     };
@@ -38,7 +38,7 @@ const CaseForm = () => {
           setLog(response.hits.hits[0]._source);
         }
       } catch (error) {
-        console.error("로그 데이터를 가져오는 중 오류 발생:", error);
+        //console.error("로그 데이터를 가져오는 중 오류 발생:", error);
         setLog(null);
       }
     };
@@ -63,7 +63,7 @@ const CaseForm = () => {
       );
       setCaseList(sortedData || []);
     } catch (error) {
-      console.error("케이스 검색 중 오류 발생:", error);
+      //console.error("케이스 검색 중 오류 발생:", error);
       setCaseList([]);
     }
   };
@@ -75,7 +75,12 @@ const CaseForm = () => {
     >
       {/* 상단 헤더 */}
       <div className="bg-white h-20 flex items-center justify-between px-8">
-        <div className="font-bold text-[#d9d9d9] text-xl">Dashboard &gt;</div>
+        <button
+          className="font-bold text-[#d9d9d9] text-xl"
+          onClick={() => navigate("/dashboard")}
+        >
+          Dashboard &gt;
+        </button>
         <div className="flex items-center">
           <Link className="ml-2 font-bold text-xl">알림</Link>
           <Link to="/mypage" className="ml-2 font-bold text-xl">

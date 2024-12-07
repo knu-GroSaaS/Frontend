@@ -19,7 +19,7 @@ const LoginForm = () => {
         throw new Error("Login failed");
       }
     } catch (err) {
-      console.error("Login failed", err);
+      //console.error("Login failed", err);
       setErrorMessage(
         "로그인에 실패했습니다.\n아이디와 비밀번호를 확인해주세요."
       );

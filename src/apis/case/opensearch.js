@@ -21,6 +21,6 @@ export const viewLog = async () => {
     // console.log("Search Result:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error while searching documents:", error);
+    //console.error("Error while searching documents:", error);
   }
 };
