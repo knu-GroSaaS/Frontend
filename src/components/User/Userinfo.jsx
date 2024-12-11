@@ -32,6 +32,8 @@ const MyPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [verificationButton, setVerificationButton] = useState("인증번호 전송");
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -62,14 +64,19 @@ const MyPage = () => {
 
   // 인증번호 전송
   const handleSendCode = async () => {
+    setVerificationButton("인증번호 전송 중");
+    setIsDisabled(true);
     try {
       setError("");
       setIsCodeSent(true);
       await sendVerificationCode();
+      setVerificationButton("인증번호 확인")
       setCodeMessage("인증번호가 이메일로 전송되었습니다.");
     } catch (error) {
       //console.error("인증번호 전송 실패:", error);
       setError("인증번호 전송에 실패했습니다.");
+      setVerificationButton("인증번호 전송");
+      setIsDisabled(false);
     }
   };
 
@@ -90,6 +97,13 @@ const MyPage = () => {
       setCodeMessage("인증번호 확인에 실패했습니다.");
       setIsCodeValid(false);
     }
+  };
+
+  // 인증번호 입력 란
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setVerificationCode(value);
+    setIsDisabled(value.trim() === ""); // 입력값이 없으면 버튼 비활성화
   };
 
   // 비밀번호 변경
@@ -156,25 +170,31 @@ const MyPage = () => {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">비밀번호 변경하기</h2>
           <div className="flex items-center gap-4">
-  <input
-    type="text"
-    value={verificationCode}
-    onChange={(e) => setVerificationCode(e.target.value)}
-    className="p-2 border border-gray-300 rounded-md w-full h-12" // 입력 필드 높이 설정
-    placeholder=" 비밀번호 변경을 위해 이메일 인증이 필요합니다."
-    disabled={!isCodeSent}
-  />
-  <button
-    onClick={isCodeSent ? handleVerifyCode : handleSendCode}
-    className={`flex items-center justify-center px-6 rounded-md text-white text-center ${
-      isCodeSent ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
-    }`}
-    disabled={isCodeSent}
-    style={{ height: "48px", whiteSpace: "nowrap", minWidth: "120px" }} // 버튼 높이와 텍스트 설정
-  >
-    {isCodeSent ? "인증번호 전송 중" : "인증번호 전송"}
-  </button>
-</div>
+            <input
+              type="text"
+              value={verificationCode}
+              onChange={handleInputChange}
+              className="p-2 border border-gray-300 rounded-md w-full h-12" // 입력 필드 높이 설정
+              placeholder=" 비밀번호 변경을 위해 이메일 인증이 필요합니다."
+              disabled={!isCodeSent}
+            />
+            <button
+              onClick={isCodeSent ? handleVerifyCode : handleSendCode}
+              className={`flex items-center justify-center px-6 rounded-md text-white text-center ${
+                isDisabled
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-500 hover:bg-blue-600"
+              }`}
+              disabled={isDisabled}
+              style={{
+                height: "48px",
+                whiteSpace: "nowrap",
+                minWidth: "120px",
+              }} // 버튼 높이와 텍스트 설정
+            >
+              {verificationButton}
+            </button>
+          </div>
 
           {codeMessage && (
             <p
