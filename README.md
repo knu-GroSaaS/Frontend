@@ -55,4 +55,5 @@ npm run build
 - **로그인 페이지**: `/login`
 - **회원가입 페이지**: `/signup`
 - **대시보드 페이지**: `/dashboard`
+- **마이페이지**: `/mypage`
 
